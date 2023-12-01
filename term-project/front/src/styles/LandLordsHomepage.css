@@ -1,6 +1,6 @@
-/* RentersHomePage component styles */
+/* LandLords HomePage component styles */
 
-.Renters-HomePage {
+.LandLords-HomePage {
   display: flex;
   justify-content: space-between;
   max-width: 800px; /* Sets a maximum width for the component */

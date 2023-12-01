@@ -1,25 +1,32 @@
-import "../styles/RentersHomePage.css"; // Import the CSS file
+import "../styles/LandLordsHomepage.css"; // Import the CSS file
 
-export default function RentersHomePage() {
+export default function LandLordsHomePage() {
       const mockListings = [
         {
           id: 1,
-          title: "Beautiful Apartment",
+          title: "Beautiful Apartment #1",
           address: "78 Brown st",
           bedrooms: 2,
           details: "Lorem ipsum dolor sit amet",
         },
         {
           id: 2,
-          title: "Cozy House",
+          title: "Cozy Apartment #2",
           address: "34 Brown st",
           bedrooms: 3,
           details: "Consectetur adipiscing elit",
         },
+        {
+          id: 3,
+          title: "Small Apartment",
+          address: "790 Flatturn Ave",
+          bedrooms: 1,
+          details: "Duis aute irure dolor in reprehenderit ",
+        },
       ];
 
   return (
-    <div className="Renters-HomePage">
+    <div className="LandLords-HomePage">
       <div className="listings-section">
         <h2>My Listings</h2>
         <div className="listing-boxes">

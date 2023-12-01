@@ -11,7 +11,8 @@ import firebase from "firebase/compat/app"; // Use 'compat' for compatibility mo
 import "firebase/compat/firestore";
 // import { addDoc, collection, getDocs } from "firebase/compat/firestore";
 import "firebase/firestore";
-import RentersHomePage from "./RentersHomepage";
+import RentersHomePage from "./LandLordsHomepage";
+import LandLordsHomePage from "./LandLordsHomepage";
 const firebaseConfig = {
   apiKey: "AIzaSyB9n45pzHpWOXhKQeFxStBn2GJyJsPdXIE",
   authDomain: "fir-test-75302.firebaseapp.com",
@@ -67,7 +68,7 @@ function App() {
           <Route path="/login" element={<LoginPage></LoginPage>}></Route>
           <Route path="/register" element={<RegistrationPage></RegistrationPage>}> </Route>
           <Route path="/listings" element={<ListingsPage></ListingsPage>}> </Route>
-          <Route path= "/rentershomepage" element={<RentersHomePage></RentersHomePage>}> </Route>
+          <Route path= "/LandLordsHomepage" element={<LandLordsHomePage></LandLordsHomePage>}> </Route>
         </Routes>
       </BrowserRouter>
     </div>
