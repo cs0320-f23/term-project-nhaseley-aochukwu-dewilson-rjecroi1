@@ -32,7 +32,6 @@ export default function LoginPage() {
           className="renter-login-form"
           aria-label="You can login as a renter here"
         >
-          git
           <h2>Renter</h2>
           <label>
             <input
