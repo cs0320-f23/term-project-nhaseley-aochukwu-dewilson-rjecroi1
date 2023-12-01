@@ -25,7 +25,9 @@ export default function LoginPage() {
             aria-label="You can enter your password here"
             placeholder="Enter password here"
           />
-          <button type="submit">Login</button>
+          <button type="submit" id="intern-submit">
+            Login
+          </button>
         </form>
 
         <form
@@ -47,14 +49,16 @@ export default function LoginPage() {
               placeholder="Enter password here"
             />
           </label>
-          <button type="submit">Login</button>
+          <button type="submit" id="landlord-submit">
+            Login
+          </button>
         </form>
       </div>
     </div>
   );
 }
 
-function initGoogleSignIn() {
+function handleGoogleSignIn() {
   return new Promise((resolve, reject) => {
     gapi.load("auth2", () => {
       gapi.auth2
@@ -73,7 +77,7 @@ function initGoogleSignIn() {
   });
 }
 
-initGoogleSignIn()
+handleGoogleSignIn()
   .then((authInstance: any) => {
     // Authentication successful, you can now use `authInstance` for further actions
     console.log("Authentication successful");
@@ -82,3 +86,13 @@ initGoogleSignIn()
     // Handle initialization/authentication errors
     console.error("Error initializing Google Sign-In:", error);
   });
+
+// Event listener for the login button
+const loginButton = document.getElementById(
+  "intern-submit"
+) as HTMLButtonElement; // Replace 'yourLoginButtonId' with your actual button ID
+if (loginButton) {
+  loginButton.addEventListener("click", () => {
+    handleGoogleSignIn();
+  });
+}

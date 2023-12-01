@@ -1,3 +1,13 @@
 .submit {
-  color: blue;
+  color: green;
 }
+.intern-submit {
+  color: pink;
+}
+.intern-submit {
+  color: red;
+}
+/**
+* trying to make sure that the button ids are associated correctly, but when changing all colors, the outline
+* remains blue. assuming it's the hover color that's done in index.css
+*/
