@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/LoginPage.css";
 import "../styles/RegistrationForm.css";
+import { GoogleAuth, GoogleUser } from "gapi.auth2";
 
 export default function LoginPage() {
   return (
@@ -24,13 +25,14 @@ export default function LoginPage() {
             aria-label="You can enter your password here"
             placeholder="Enter password here"
           />
-          <button type="submit">Submit</button>
+          <button type="submit">Login</button>
         </form>
 
         <form
           className="renter-login-form"
           aria-label="You can login as a renter here"
         >
+          git
           <h2>Renter</h2>
           <label>
             <input
@@ -46,9 +48,38 @@ export default function LoginPage() {
               placeholder="Enter password here"
             />
           </label>
-          <button type="submit">Submit</button>
+          <button type="submit">Login</button>
         </form>
       </div>
     </div>
   );
 }
+
+function initGoogleSignIn() {
+  return new Promise((resolve, reject) => {
+    gapi.load("auth2", () => {
+      gapi.auth2
+        .init({
+          client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // Replace with your client ID
+          scope: "profile email", // Specify the scopes you need
+        })
+        .then(() => {
+          const authInstance = gapi.auth2.getAuthInstance();
+          resolve(authInstance);
+        })
+        .catch((error: any) => {
+          reject(error);
+        });
+    });
+  });
+}
+
+initGoogleSignIn()
+  .then((authInstance: any) => {
+    // Authentication successful, you can now use `authInstance` for further actions
+    console.log("Authentication successful");
+  })
+  .catch((error: any) => {
+    // Handle initialization/authentication errors
+    console.error("Error initializing Google Sign-In:", error);
+  });
