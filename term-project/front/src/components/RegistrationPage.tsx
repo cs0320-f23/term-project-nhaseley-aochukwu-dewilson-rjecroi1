@@ -24,9 +24,16 @@ interface RegistrationProps {
   setRenterPhone: Dispatch<SetStateAction<string>>;
   renterError: string;
   setRenterError: Dispatch<SetStateAction<string>>;
+  adminEmail: string;
+  setAdminEmail: Dispatch<SetStateAction<string>>;
+  adminPass: string;
+  setAdminPass: Dispatch<SetStateAction<string>>;
+  adminError: string;
+  setAdminError: Dispatch<SetStateAction<string>>;
 }
 
 export default function RegistrationPage(props: RegistrationProps) {
+
   async function handleStudentRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 
@@ -78,7 +85,7 @@ export default function RegistrationPage(props: RegistrationProps) {
 
     // check if user with this email already in db
     const emailExists = await props.db
-      .collection("renters")
+      .collection("landlords")
       .where("email", "==", props.renterEmail)
       .get()
       .then((querySnapshot) => !querySnapshot.empty);
@@ -96,12 +103,13 @@ export default function RegistrationPage(props: RegistrationProps) {
     } else {
       // register successfully
       props.db
-        .collection("renters")
+        .collection("landlords")
         .add({
           name: props.renterName,
           email: props.renterEmail,
           password: props.renterPass,
           phone: props.renterPhone,
+          verified: false,
         })
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
@@ -114,6 +122,43 @@ export default function RegistrationPage(props: RegistrationProps) {
         props.setRenterPass("")
         props.setRenterName("")
         props.setRenterError("")
+      }
+  }
+  async function handleAdminRegistration(event: React.FormEvent) {
+    event.preventDefault(); // prevents page from re-rendering
+
+    // check if user with this email already in db
+    const emailExists = await props.db
+      .collection("admin")
+      .where("email", "==", props.adminEmail)
+      .get()
+      .then((querySnapshot) => !querySnapshot.empty);
+
+    if (emailExists) {
+      props.setAdminError("User with this email already exists.");
+    } else if (
+      !props.adminEmail ||
+      !props.adminPass
+    ) {
+      // missing input
+      props.setAdminError("Please be sure to input all fields.");
+    } else {
+      // register successfully
+      props.db
+        .collection("admin")
+        .add({
+          email: props.adminEmail,
+          password: props.adminPass,
+        })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+        props.setAdminEmail("")
+        props.setAdminPass("")
+        props.setAdminError("")
       }
   }
 
@@ -181,8 +226,8 @@ export default function RegistrationPage(props: RegistrationProps) {
           className="renter-registration-form"
           aria-label="You can registration as a renter here"
         >
-          <h2>Renter </h2>
-          <label></label>
+          <h2>Landlord </h2>
+          <label>Landlord Registration </label>
           <input
             className="renter-name"
             aria-label="You can enter your name here"
@@ -227,6 +272,47 @@ export default function RegistrationPage(props: RegistrationProps) {
               props.setRenterPhone("123456789");
               props.setRenterEmail("john@gmail.com");
               props.setRenterPass("password");
+            }}
+          >
+            Demo Registration
+          </button>
+        </form>
+
+        <form
+          className="admin-registration-form"
+          aria-label="You can registration as an admin here"
+        >
+          <h2> Admin</h2>
+          <label> Admin Registration </label>
+          <input
+            className="admin-email"
+            aria-label="You can enter your email here (must be Brown)"
+            placeholder="Enter your Brown email here"
+            value={props.adminEmail}
+            onChange={(ev) => props.setAdminEmail(ev.target.value)}
+          ></input>
+          <input
+            className="admin-password"
+            aria-label="You can enter your password here"
+            placeholder="Enter your password here"
+            value={props.adminPass}
+            type="password"
+            onChange={(ev) => props.setAdminPass(ev.target.value)}
+          ></input>
+
+          <h3> {props.adminError} </h3>
+          <button
+            className="admin-register-button"
+            onClick={(ev) => handleAdminRegistration(ev)}
+          >
+            Register
+          </button>
+          <button
+            className="demo-admin-registration"
+            onClick={(ev) => {
+              ev.preventDefault();
+              props.setAdminEmail("nya_haseley-ayende@brown.edu");
+              props.setAdminPass("password");
             }}
           >
             Demo Registration
