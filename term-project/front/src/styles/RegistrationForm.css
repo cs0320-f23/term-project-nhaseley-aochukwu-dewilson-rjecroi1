@@ -1,9 +1,17 @@
-.registration-forms, .login-forms {
-  display:flex;
-  flex-direction:row;
-  justify-content: space-around;;
+.registration-forms,
+.login-forms {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
+<<<<<<< HEAD
+.student-registration-form,
+.renter-registration-form,
+.login-form,
+.renter-login-form {
+=======
 .student-registration-form, .renter-registration-form, .admin-registration-form, .login-form, .renter-login-form, .admin-login-form {
+>>>>>>> main
   display: flex;
   flex-direction: column;
 }
