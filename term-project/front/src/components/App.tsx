@@ -8,6 +8,7 @@ import RegistrationPage from "./RegistrationPage";
 import ListingsPage from "./Listings";
 import firebase from "firebase/compat/app"; // Use 'compat' for compatibility mode
 import "firebase/compat/firestore";
+import AdminPage from "./AdminPage";
 // import { addDoc, collection, getDocs } from "firebase/compat/firestore";
 
 const firebaseConfig = {
@@ -40,36 +41,9 @@ function App() {
   const [renterPass, setRenterPass] = useState<string>("");
   const [renterPhone, setRenterPhone] = useState<string>("");
   const [renterError, setRenterError] = useState<string>("");
-
-  // async function addToDB() {
-  //   const now = new Date();
-  //   // adding:
-  //   db.collection("test-users")
-  //     .add({
-  //       first: "Test",
-  //       last: "Entry",
-  //       born: 100,
-  //       entryTime: now,
-  //     })
-  //     .then((docRef) => {
-  //       console.log("Document written with ID: ", docRef.id);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error adding document: ", error);
-  //     });
-  // }
-  // async function readingFromDB() {
-  //   // reading
-  //   db.collection("test-users")
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         console.log(
-  //           `${doc.id} => ${doc.data().first} ${doc.data().entryTime}`
-  //         );
-  //       });
-  //     });
-  // }
+  const [adminEmail, setAdminEmail] = useState<string>("");
+  const [adminPass, setAdminPass] = useState<string>("");
+  const [adminError, setAdminError] = useState<string>("");
 
   return (
     <div className="app">
@@ -79,7 +53,38 @@ function App() {
         <button onClick={readingFromDB}> Test reading from database </button> */}
         <Routes>
           <Route path="/" element={<HomePage></HomePage>}></Route>
-          <Route path="/login" element={<LoginPage></LoginPage>}></Route>
+          <Route 
+            path="/login" 
+            element={
+              <LoginPage
+                studentName={studentName}
+                setStudentName={setStudentName}
+                studentPass={studentPass}
+                setStudentPass={setStudentPass}
+                studentEmail={studentEmail}
+                setStudentEmail={setStudentEmail}
+                studentAddress={studentAddress}
+                setStudentAddress={setStudentAddress}
+                db={db}
+                error={error}
+                setError={setError}
+                renterName={renterName}
+                setRenterName={setRenterName}
+                renterPass={renterPass}
+                setRenterPass={setRenterPass}
+                renterEmail={renterEmail}
+                setRenterEmail={setRenterEmail}
+                renterPhone={renterPhone}
+                setRenterPhone={setRenterPhone}
+                renterError={renterError}
+                setRenterError={setRenterError}
+                adminEmail={adminEmail}
+                setAdminEmail={setAdminEmail}
+                adminPass={adminPass}
+                setAdminPass={setAdminPass}
+                adminError={adminError}
+                setAdminError={setAdminError}  
+            ></LoginPage>}></Route>
           <Route
             path="/register"
             element={
@@ -105,11 +110,20 @@ function App() {
                 setRenterPhone={setRenterPhone}
                 renterError={renterError}
                 setRenterError={setRenterError}
+                adminEmail={adminEmail}
+                setAdminEmail={setAdminEmail}
+                adminPass={adminPass}
+                setAdminPass={setAdminPass}
+                adminError={adminError}
+                setAdminError={setAdminError}
               ></RegistrationPage>
             }
-          >
-          </Route>
-          <Route path="/listings" element={<ListingsPage></ListingsPage>}>
+          ></Route>
+          <Route
+            path="/listings"
+            element={<ListingsPage></ListingsPage>}
+          ></Route>
+          <Route path="/admin" element={<AdminPage db={db}></AdminPage>}>
           </Route>
         </Routes>
       </BrowserRouter>
