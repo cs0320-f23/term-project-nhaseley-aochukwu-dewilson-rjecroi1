@@ -75,16 +75,31 @@ export default function LoginPage(props: LoginProps) {
             className="student-email"
             aria-label="You can enter your email here (must be Brown)"
             placeholder="Enter Brown email here"
+            value={props.studentEmail}
+            onChange={(ev) => props.setStudentEmail(ev.target.value)}
           ></input>
 
           <input
             className="student-password"
             aria-label="You can enter your password here"
             placeholder="Enter password here"
+            type="password"
+            value={props.studentPass}
+            onChange={(ev) => props.setStudentPass(ev.target.value)}
           ></input>
 
           <button type="submit" id="intern-submit">
             Login
+          </button>
+          <button
+            className="demo-student-login"
+            onClick={(ev) => {
+              ev.preventDefault();
+              props.setStudentEmail("nya_haseley-ayende@brown.edu");
+              props.setStudentPass("password");
+            }}
+          >
+            Demo Login
           </button>
 
         </form>
@@ -100,14 +115,29 @@ export default function LoginPage(props: LoginProps) {
             className="renter-email"
             aria-label="You can enter your email here"
             placeholder="Enter email here"
+            value={props.renterEmail}
+            onChange={(ev) => props.setRenterEmail(ev.target.value)}
           ></input>
           <input
             className="renter-password"
             aria-label="You can enter your password here"
             placeholder="Enter password here"
+            type="password"
+            value={props.renterPass}
+            onChange={(ev) => props.setRenterPass(ev.target.value)}
           ></input>
          <button type="submit" id="landlord-submit">
             Login
+          </button>
+          <button
+            className="demo-landlord-login"
+            onClick={(ev) => {
+              ev.preventDefault();
+              props.setRenterEmail("john@gmail.com");
+              props.setRenterPass("password");
+            }}
+          >
+            Demo Login
           </button>
         </form>
 
@@ -128,6 +158,7 @@ export default function LoginPage(props: LoginProps) {
             className="admin-password"
             aria-label="You can enter your password here"
             placeholder="Enter password here"
+            type="password"
             value={props.adminPass}
             onChange={(ev) => props.setAdminPass(ev.target.value)}
           ></input>
@@ -135,7 +166,7 @@ export default function LoginPage(props: LoginProps) {
             className="admin-login-button"
             onClick={(ev) => handleAdminLogin(ev)}
           >
-            Register
+            Login
           </button>
           <button
             className="demo-admin-login"
@@ -145,7 +176,7 @@ export default function LoginPage(props: LoginProps) {
               props.setAdminPass("password");
             }}
           >
-            Demo Registration
+            Demo Login
           </button>
         </form>
       </div>

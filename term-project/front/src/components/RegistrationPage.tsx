@@ -248,6 +248,7 @@ export default function RegistrationPage(props: RegistrationProps) {
             aria-label="You can enter your password here"
             placeholder="Enter your password here"
             value={props.renterPass}
+            type="password"
             onChange={(ev) => props.setRenterPass(ev.target.value)}
           ></input>
           <input
