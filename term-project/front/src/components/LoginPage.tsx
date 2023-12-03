@@ -28,7 +28,10 @@ export default function LoginPage() {
             aria-label="You can enter your password here"
             placeholder="Enter password here"
           />
-          <button type="submit" id="intern-submit">
+          <button type="submit" id="intern-submit"
+          onClick={(ev) => checkRecordsforLandlord(ev)
+          }
+          >
             Login
           </button>
         </form>
