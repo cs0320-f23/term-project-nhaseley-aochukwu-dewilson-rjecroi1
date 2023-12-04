@@ -10,6 +10,9 @@ import firebase from "firebase/compat/app"; // Use 'compat' for compatibility mo
 import "firebase/compat/firestore";
 import AdminPage from "./AdminPage";
 // import { addDoc, collection, getDocs } from "firebase/compat/firestore";
+import "firebase/firestore";
+import RentersHomePage from "./LandLordsHomepage";
+import LandLordsHomePage from "./LandLordsHomepage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB9n45pzHpWOXhKQeFxStBn2GJyJsPdXIE",
@@ -53,6 +56,8 @@ function App() {
         {/* <button onClick={addToDB}> Test add to database </button>
         <button onClick={readingFromDB}> Test reading from database </button> */}
         <Routes>
+
+          <Route path= "/LandLordsHomepage" element={<LandLordsHomePage></LandLordsHomePage>}> </Route>
           <Route path="/" element={<HomePage></HomePage>}></Route>
           <Route 
             path="/login" 
@@ -128,6 +133,7 @@ function App() {
           ></Route>
           <Route path="/admin" element={<AdminPage db={db}></AdminPage>}>
           </Route>
+
         </Routes>
       </BrowserRouter>
     </div>

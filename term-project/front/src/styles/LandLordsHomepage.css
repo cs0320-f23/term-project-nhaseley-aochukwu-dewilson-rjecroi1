@@ -1,0 +1,71 @@
+/* LandLords HomePage component styles */
+
+.LandLords-HomePage {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px; /* Sets a maximum width for the component */
+  margin: 0 auto; /* Centers the component on the page */
+  padding: 20px;
+}
+
+.listings-section,
+.post-listing-section {
+  width: 48%; /* width */
+  margin-bottom: 500px; /* creates space between the sections */
+}
+
+/* Style for each section the listing section and the post listing section */
+.listings-section {
+  background-color: #888;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.post-listing-section {
+  background-color: #242424;
+  padding: 10px;
+  border-radius: 5px;
+  
+
+}
+
+/* Additional styling for headings and other elements if needed color : #242424 */
+.post-listing-section h2 {
+    margin-bottom: 150px;
+}
+
+
+/*style for the form */
+.listings-form{
+  display: flex;
+  flex-direction: column;
+
+}
+/*style for the listing boxes section */
+.listing-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px; /* Adjust the gap between boxes as needed */
+}
+
+.listing-box {
+  background-color: #997272;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+  flex-basis: calc(50% - 16px); /* Set the initial size for two boxes in each row */
+  box-sizing: border-box; /* Include padding and border in the width */
+}
+
+/* styles for the individual listing boxes*/
+/* .listing-box {
+  background-color: #997272;
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+  /* width: calc(50% - 8px); /* Adjusts the width and account for gap */
+  /* margin: 9px; */ 
+/* } */ 
+
