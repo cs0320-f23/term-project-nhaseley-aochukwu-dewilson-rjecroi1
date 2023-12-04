@@ -9,6 +9,7 @@ interface AdminProps {
 interface User {
   name: string;
   email: string;
+  verified?: boolean;
 }
 
 export default function AdminPage(props: AdminProps) {
@@ -47,7 +48,7 @@ export default function AdminPage(props: AdminProps) {
           const landlordData: User = {
             name: doc.data().name,
             email: doc.data().email,
-            // not adding password
+            verified: doc.data().verified,
           };
           landlordsArray.push(landlordData);
         });
@@ -71,12 +72,36 @@ export default function AdminPage(props: AdminProps) {
         setAdmins(adminsArray);
       });
   }
+  console.log("landlords; ", landlords);
+
+function verifyLandlord(email: string) {
+    const adminRef = props.db.collection("landlords");
+  
+    adminRef
+      .where("email", "==", email)
+      .get()
+      .then((adminSnapshot) => {
+        const updatePromises = adminSnapshot.docs.map(async (doc) => {
+          await adminRef.doc(doc.id).update({
+            verified: true,
+          });
+        });
+  
+        return Promise.all(updatePromises);
+      })
+      .then(() => {
+        location.reload();
+      })
+      .catch((error) => {
+        console.error("Error updating email: ", error);
+      });
+  }
   return (
     <div className="admin-page">
       this is the admin page!
       <div className="all-interns">
         {interns.map((intern) => (
-          <div key={intern.name}>
+          <div key={intern.email}>
             <strong>Name:</strong> {intern.name}, <strong>Email:</strong>
             {intern.email}
           </div>
@@ -84,15 +109,22 @@ export default function AdminPage(props: AdminProps) {
       </div>
       <div className="all-landlords">
         {landlords.map((landlord) => (
-          <div key={landlord.name}>
+          <div key={landlord.email}>
             <strong>Name:</strong> {landlord.name}, <strong>Email:</strong>
-            {landlord.email}
+            {landlord.email}, <strong>Verification Status: </strong>{" "}
+            {landlord.verified ? "Verified" : "Not Verified"}
+            {landlord.verified !== true && (
+              <button onClick={() => {verifyLandlord(landlord.email);}
+              }>
+                Verify
+              </button>
+            )}
           </div>
         ))}
       </div>
       <div className="all-admins">
         {admins.map((admin) => (
-          <div key={admin.name}>
+          <div key={admin.email}>
             <strong>Name:</strong> {admin.name}, <strong>Email:</strong>
             {admin.email}
           </div>
