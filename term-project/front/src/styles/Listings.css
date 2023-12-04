@@ -136,26 +136,17 @@
   margin: 0 auto;
 } */
 
-#content {
-  /* background-color: #a7a7a7; */
-  /* opacity: 40%; */
+.row {
+  display:flex;
+  box-sizing: border-box;
+  margin: 0 5px; /* Add margin for spacing */
   width: 100%;
   height: 450px;
   width: calc(100% - 180px); /* Adjust width to accommodate the sidenav */
-  /* height: 700px; */
   margin-left: 250px; /* Set margin-left to the width of the sidenav */
   position: relative;
   top: 50px;
-  /* overflow-y: auto; */
-  display: flex;
   justify-content: center;
-  /* Add other styling as needed */
-}
-
-.row {
-  width: 31%; /* Adjust the width as needed */
-  box-sizing: border-box;
-  margin: 0 5px; /* Add margin for spacing */
 }
 
 .row img {
