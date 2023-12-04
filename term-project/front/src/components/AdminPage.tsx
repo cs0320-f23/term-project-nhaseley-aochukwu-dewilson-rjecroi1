@@ -72,7 +72,6 @@ export default function AdminPage(props: AdminProps) {
         setAdmins(adminsArray);
       });
   }
-  console.log("landlords; ", landlords);
 
 function verifyLandlord(email: string) {
     const adminRef = props.db.collection("landlords");
