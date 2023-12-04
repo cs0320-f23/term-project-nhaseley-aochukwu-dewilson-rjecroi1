@@ -23,6 +23,13 @@ export default function LandLordsHomePage() {
           bedrooms: 1,
           details: "Duis aute irure dolor in reprehenderit ",
         },
+        {
+          id: 4,
+          title: "Small Apartment",
+          address: "790 Flatturn Ave",
+          bedrooms: 1,
+          details: "Duis aute irure dolor in reprehenderit ",
+        },
       ];
 
   return (
