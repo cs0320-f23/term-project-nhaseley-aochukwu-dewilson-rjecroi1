@@ -30,6 +30,8 @@ interface RegistrationProps {
   setAdminPass: Dispatch<SetStateAction<string>>;
   adminError: string;
   setAdminError: Dispatch<SetStateAction<string>>;
+  adminName: string;
+  setAdminName: Dispatch<SetStateAction<string>>;
 }
 
 export default function RegistrationPage(props: RegistrationProps) {
@@ -129,7 +131,7 @@ export default function RegistrationPage(props: RegistrationProps) {
 
     // check if user with this email already in db
     const emailExists = await props.db
-      .collection("admin")
+      .collection("admins")
       .where("email", "==", props.adminEmail)
       .get()
       .then((querySnapshot) => !querySnapshot.empty);
@@ -145,8 +147,9 @@ export default function RegistrationPage(props: RegistrationProps) {
     } else {
       // register successfully
       props.db
-        .collection("admin")
+        .collection("admins")
         .add({
+          name: props.adminName,
           email: props.adminEmail,
           password: props.adminPass,
         })
@@ -156,6 +159,7 @@ export default function RegistrationPage(props: RegistrationProps) {
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
+        props.setAdminName("")
         props.setAdminEmail("")
         props.setAdminPass("")
         props.setAdminError("")
@@ -234,7 +238,6 @@ export default function RegistrationPage(props: RegistrationProps) {
             placeholder="Enter your name here"
             value={props.renterName}
             onChange={(ev) => props.setRenterName(ev.target.value)}
-
           ></input>
           <input
             className="renter-email"
@@ -248,6 +251,7 @@ export default function RegistrationPage(props: RegistrationProps) {
             aria-label="You can enter your password here"
             placeholder="Enter your password here"
             value={props.renterPass}
+            type="password"
             onChange={(ev) => props.setRenterPass(ev.target.value)}
           ></input>
           <input
@@ -285,6 +289,13 @@ export default function RegistrationPage(props: RegistrationProps) {
           <h2> Admin</h2>
           <label> Admin Registration </label>
           <input
+            className="admin-name"
+            aria-label="You can enter your name here"
+            placeholder="Enter your name here"
+            value={props.adminName}
+            onChange={(ev) => props.setAdminName(ev.target.value)}
+          ></input>
+          <input
             className="admin-email"
             aria-label="You can enter your email here (must be Brown)"
             placeholder="Enter your Brown email here"
@@ -311,6 +322,7 @@ export default function RegistrationPage(props: RegistrationProps) {
             className="demo-admin-registration"
             onClick={(ev) => {
               ev.preventDefault();
+              props.setAdminName("Nya");
               props.setAdminEmail("nya_haseley-ayende@brown.edu");
               props.setAdminPass("password");
             }}

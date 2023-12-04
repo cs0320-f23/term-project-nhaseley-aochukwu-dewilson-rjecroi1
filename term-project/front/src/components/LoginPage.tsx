@@ -5,6 +5,62 @@ import { GoogleAuth, GoogleUser } from "gapi.auth2";
 import RegistrationProps, { RegistrationProps } from "./RegistrationPage";
 import AdminPage from "./AdminPage"
 import readUsersFromDB from "./AdminPage"
+import { useNavigate } from "react-router-dom";
+
+interface LoginProps {
+  studentName: string;
+  setStudentName: Dispatch<SetStateAction<string>>;
+  studentEmail: string;
+  setStudentEmail: Dispatch<SetStateAction<string>>;
+  studentPass: string;
+  setStudentPass: Dispatch<SetStateAction<string>>;
+  studentAddress: string; // work addr coordinates
+  setStudentAddress: Dispatch<SetStateAction<string>>;
+  db: firebase.firestore.Firestore;
+  error: string;
+  setError: Dispatch<SetStateAction<string>>;
+  renterName: string;
+  setRenterName: Dispatch<SetStateAction<string>>;
+  renterEmail: string;
+  setRenterEmail: Dispatch<SetStateAction<string>>;
+  renterPass: string;
+  setRenterPass: Dispatch<SetStateAction<string>>;
+  renterPhone: string;
+  setRenterPhone: Dispatch<SetStateAction<string>>;
+  renterError: string;
+  setRenterError: Dispatch<SetStateAction<string>>;
+  adminEmail: string;
+  setAdminEmail: Dispatch<SetStateAction<string>>;
+  adminPass: string;
+  setAdminPass: Dispatch<SetStateAction<string>>;
+  adminError: string;
+  setAdminError: Dispatch<SetStateAction<string>>;
+}
+
+export default function LoginPage(props: LoginProps) {
+  const navigate = useNavigate();
+
+  async function handleAdminLogin(event: React.FormEvent) {
+    event.preventDefault(); // prevents page from re-rendering
+    // check if user with this email already in db
+
+    const emailExists = await props.db
+      .collection("admins")
+      .where("email", "==", props.adminEmail)
+      .get()
+      .then((querySnapshot) => !querySnapshot.empty);
+
+    if (emailExists) {
+      // login successfully
+      navigate("/admin");
+    } else if (!props.adminEmail || !props.adminPass) {
+      // missing input
+      props.setAdminError("Please be sure to input all fields.");
+    } else {
+      props.setAdminError("Invalid credentials.");
+    }
+  }
+
 
 export default function LoginPage() {
   return (
@@ -23,16 +79,37 @@ export default function LoginPage() {
               placeholder="Enter Brown email here"
             />
           </label>
+          <h2> Intern </h2>
+          <label></label>
+          <input
+            className="student-email"
+            aria-label="You can enter your email here (must be Brown)"
+            placeholder="Enter Brown email here"
+            value={props.studentEmail}
+            onChange={(ev) => props.setStudentEmail(ev.target.value)}
+          ></input>
           <input
             className="student-password"
             aria-label="You can enter your password here"
             placeholder="Enter password here"
-          />
-          <button type="submit" id="intern-submit"
-          onClick={(ev) => checkRecordsforLandlord(ev)
+
+            type="password"
+            value={props.studentPass}
+            onChange={(ev) => props.setStudentPass(ev.target.value)}
+          ></input>
+
+         <button type="submit" id="intern-submit"
+          onClick={(ev) => checkRecordsforIntern(ev)
           }
+          <button
+            className="demo-student-login"
+            onClick={(ev) => {
+              ev.preventDefault();
+              props.setStudentEmail("nya_haseley-ayende@brown.edu");
+              props.setStudentPass("password");
+            }}
           >
-            Login
+            Demo Login
           </button>
         </form>
 
@@ -40,26 +117,80 @@ export default function LoginPage() {
           className="renter-login-form"
           aria-label="You can login as a renter here"
         >
-          <h2>Renter</h2>
-          <label>
-            <input
-              className="renter-email"
-              aria-label="You can enter your email here"
-              placeholder="Enter email here"
-            />
-          </label>
-          <label>
-            <input
-              className="renter-password"
-              aria-label="You can enter your password here"
-              placeholder="Enter password here"
-            />
-          </label>
-          <button type="submit" id="landlord-submit"
+         
+
+          <h2> Renter </h2>
+          <label></label>
+          <input
+            className="renter-email"
+            aria-label="You can enter your email here"
+            placeholder="Enter email here"
+            value={props.renterEmail}
+            onChange={(ev) => props.setRenterEmail(ev.target.value)}
+          ></input>
+          <input
+            className="renter-password"
+            aria-label="You can enter your password here"
+            placeholder="Enter password here"
+            type="password"
+            value={props.renterPass}
+            onChange={(ev) => props.setRenterPass(ev.target.value)}
+          ></input>
+         <button type="submit" id="landlord-submit"
           onClick={(ev) => checkRecordsforLandlord(ev)
           }
           >
             Login
+          </button>
+          <button
+            className="demo-landlord-login"
+            onClick={(ev) => {
+              ev.preventDefault();
+              props.setRenterEmail("john@gmail.com");
+              props.setRenterPass("password");
+            }}
+          >
+            Demo Login
+          </button>
+        </form>
+
+        <form
+          className="admin-login-form"
+          aria-label="You can login as an admin here"
+        >
+          <h2> Admin </h2>
+          <label></label>
+          <input
+            className="admin-email"
+            aria-label="You can enter your email here (must be Brown)"
+            placeholder="Enter email here"
+            value={props.adminEmail}
+            onChange={(ev) => props.setAdminEmail(ev.target.value)}
+          ></input>
+          <input
+            className="admin-password"
+            aria-label="You can enter your password here"
+            placeholder="Enter password here"
+            type="password"
+            value={props.adminPass}
+            onChange={(ev) => props.setAdminPass(ev.target.value)}
+          ></input>
+          <button
+            className="admin-login-button"
+            onClick={(ev) => handleAdminLogin(ev)}
+          >
+            Login
+          </button>
+          <button
+            className="demo-admin-login"
+            onClick={(ev) => {
+              ev.preventDefault();
+              props.setAdminEmail("nya_haseley-ayende@brown.edu");
+              props.setAdminPass("password");
+            }}
+          >
+            Demo Login
+
           </button>
         </form>
       </div>
