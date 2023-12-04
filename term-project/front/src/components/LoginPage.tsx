@@ -3,8 +3,8 @@ import "../styles/LoginPage.css";
 import "../styles/RegistrationForm.css";
 import { GoogleAuth, GoogleUser } from "gapi.auth2";
 import RegistrationProps, { RegistrationProps } from "./RegistrationPage";
-import AdminPage from "./AdminPage"
-import readUsersFromDB from "./AdminPage"
+import AdminPage from "./AdminPage";
+import readUsersFromDB from "./AdminPage";
 import { useNavigate } from "react-router-dom";
 
 interface LoginProps {
@@ -61,228 +61,228 @@ export default function LoginPage(props: LoginProps) {
     }
   }
 
-
-export default function LoginPage() {
-  return (
-    <div className="login-page">
-      <h2>This is the login form!</h2>
-      <div className="login-forms">
-        <form
-          className="login-form"
-          aria-label="You can login as a student here"
-        >
-          <h2>Intern</h2>
-          <label>
+  export default function LoginPage() {
+    return (
+      <div className="login-page">
+        <h2>This is the login form!</h2>
+        <div className="login-forms">
+          <form
+            className="login-form"
+            aria-label="You can login as a student here"
+          >
+            <h2>Intern</h2>
+            <label>
+              <input
+                className="student-email"
+                aria-label="You can enter your email here (must be Brown)"
+                placeholder="Enter Brown email here"
+              />
+            </label>
+            <h2> Intern </h2>
+            <label></label>
             <input
               className="student-email"
               aria-label="You can enter your email here (must be Brown)"
               placeholder="Enter Brown email here"
-            />
-          </label>
-          <h2> Intern </h2>
-          <label></label>
-          <input
-            className="student-email"
-            aria-label="You can enter your email here (must be Brown)"
-            placeholder="Enter Brown email here"
-            value={props.studentEmail}
-            onChange={(ev) => props.setStudentEmail(ev.target.value)}
-          ></input>
-          <input
-            className="student-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
+              value={props.studentEmail}
+              onChange={(ev) => props.setStudentEmail(ev.target.value)}
+            ></input>
+            <input
+              className="student-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.studentPass}
+              onChange={(ev) => props.setStudentPass(ev.target.value)}
+            ></input>
 
-            type="password"
-            value={props.studentPass}
-            onChange={(ev) => props.setStudentPass(ev.target.value)}
-          ></input>
+            <button
+              type="submit"
+              id="intern-submit"
+              onClick={(ev) => checkRecordsforIntern(props)}
+            >
+              {" "}
+              Submit{" "}
+            </button>
+            <button
+              className="demo-student-login"
+              onClick={(ev) => {
+                ev.preventDefault();
+                props.setStudentEmail("nya_haseley-ayende@brown.edu");
+                props.setStudentPass("password");
+              }}
+            >
+              Demo Login
+            </button>
+          </form>
 
-         <button type="submit" id="intern-submit"
-          onClick={(ev) => checkRecordsforIntern(ev)
-          }
-          <button
-            className="demo-student-login"
-            onClick={(ev) => {
-              ev.preventDefault();
-              props.setStudentEmail("nya_haseley-ayende@brown.edu");
-              props.setStudentPass("password");
-            }}
+          <form
+            className="renter-login-form"
+            aria-label="You can login as a renter here"
           >
-            Demo Login
-          </button>
-        </form>
+            <h2> Renter </h2>
+            <label></label>
+            <input
+              className="renter-email"
+              aria-label="You can enter your email here"
+              placeholder="Enter email here"
+              value={props.renterEmail}
+              onChange={(ev) => props.setRenterEmail(ev.target.value)}
+            ></input>
+            <input
+              className="renter-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.renterPass}
+              onChange={(ev) => props.setRenterPass(ev.target.value)}
+            ></input>
+            <button
+              type="submit"
+              id="landlord-submit"
+              onClick={(ev) => checkRecordsforLandlord(ev)}
+            >
+              Login
+            </button>
+            <button
+              className="demo-landlord-login"
+              onClick={(ev) => {
+                ev.preventDefault();
+                props.setRenterEmail("john@gmail.com");
+                props.setRenterPass("password");
+              }}
+            >
+              Demo Login
+            </button>
+          </form>
 
-        <form
-          className="renter-login-form"
-          aria-label="You can login as a renter here"
-        >
-         
-
-          <h2> Renter </h2>
-          <label></label>
-          <input
-            className="renter-email"
-            aria-label="You can enter your email here"
-            placeholder="Enter email here"
-            value={props.renterEmail}
-            onChange={(ev) => props.setRenterEmail(ev.target.value)}
-          ></input>
-          <input
-            className="renter-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
-            type="password"
-            value={props.renterPass}
-            onChange={(ev) => props.setRenterPass(ev.target.value)}
-          ></input>
-         <button type="submit" id="landlord-submit"
-          onClick={(ev) => checkRecordsforLandlord(ev)
-          }
+          <form
+            className="admin-login-form"
+            aria-label="You can login as an admin here"
           >
-            Login
-          </button>
-          <button
-            className="demo-landlord-login"
-            onClick={(ev) => {
-              ev.preventDefault();
-              props.setRenterEmail("john@gmail.com");
-              props.setRenterPass("password");
-            }}
-          >
-            Demo Login
-          </button>
-        </form>
-
-        <form
-          className="admin-login-form"
-          aria-label="You can login as an admin here"
-        >
-          <h2> Admin </h2>
-          <label></label>
-          <input
-            className="admin-email"
-            aria-label="You can enter your email here (must be Brown)"
-            placeholder="Enter email here"
-            value={props.adminEmail}
-            onChange={(ev) => props.setAdminEmail(ev.target.value)}
-          ></input>
-          <input
-            className="admin-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
-            type="password"
-            value={props.adminPass}
-            onChange={(ev) => props.setAdminPass(ev.target.value)}
-          ></input>
-          <button
-            className="admin-login-button"
-            onClick={(ev) => handleAdminLogin(ev)}
-          >
-            Login
-          </button>
-          <button
-            className="demo-admin-login"
-            onClick={(ev) => {
-              ev.preventDefault();
-              props.setAdminEmail("nya_haseley-ayende@brown.edu");
-              props.setAdminPass("password");
-            }}
-          >
-            Demo Login
-
-          </button>
-        </form>
+            <h2> Admin </h2>
+            <label></label>
+            <input
+              className="admin-email"
+              aria-label="You can enter your email here (must be Brown)"
+              placeholder="Enter email here"
+              value={props.adminEmail}
+              onChange={(ev) => props.setAdminEmail(ev.target.value)}
+            ></input>
+            <input
+              className="admin-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.adminPass}
+              onChange={(ev) => props.setAdminPass(ev.target.value)}
+            ></input>
+            <button
+              className="admin-login-button"
+              onClick={(ev) => handleAdminLogin(ev)}
+            >
+              Login
+            </button>
+            <button
+              className="demo-admin-login"
+              onClick={(ev) => {
+                ev.preventDefault();
+                props.setAdminEmail("nya_haseley-ayende@brown.edu");
+                props.setAdminPass("password");
+              }}
+            >
+              Demo Login
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-/**
- * can't use Registration Props unless I use "typeOf"
- */
+  /**
+   * can't use Registration Props unless I use "typeOf"
+   */
 
-async function checkRecordsforIntern(event: React.FormEvent, props: RegistrationProps){
-  event.preventDefault();
-  const emailExists = await props.db
+  async function checkRecordsforIntern(props: LoginProps) {
+    // event.preventDefault();
+    const emailExists = await props.db
       .collection("interns")
       .where("email", "==", props.studentEmail)
       .get()
       .then((querySnapshot) => !querySnapshot.empty);
 
-      if (!emailExists) {
-        props.setError("User with this email does not exist.");
-      } else if(
-        !props.studentEmail ||
-        !props.studentPass ||
-      ) {
-        // missing input
+    if (!emailExists) {
+      props.setError("User with this email does not exist.");
+    } else if (!props.studentEmail || !props.studentPass) {
+      // missing input
       props.setError("Please be sure to input all fields.");
-      } else if (!props.studentEmail.includes("@brown.edu")){
-        props.setError("You must provide your Brown email address.")
-      } else{
-        // successful login
-      }
+    } else if (!props.studentEmail.includes("@brown.edu")) {
+      props.setError("You must provide your Brown email address.");
+    }
 
-      
+    const passwordRight = await props.db
+      .collection("interns")
+      .where("password", "==", props.studentPass)
+      .get()
+      .then((querySnapshot) => !querySnapshot.empty);
 
-  const passwordRight = await props.db
+    if (!passwordRight) {
+      props.setError("Please enter correct password.");
+    } else if (!props.studentEmail || !props.studentPass) {
+      props.setError("Please be sure to input all fields.");
+    } else {
+      handleGoogleSignIn();
+    }
+  }
 
-
-}
-
-
-async function checkRecordsforLandlord(props: RegistrationProps){
-  const emailExists = await props.db
+  async function checkRecordsforLandlord(props: RegistrationProps) {
+    const emailExists = await props.db
       .collection("renters")
       .where("email", "==", props.studentEmail)
       .get()
       .then((querySnapshot) => !querySnapshot.empty);
 
-      if (!emailExists) {
-        props.setError("User with this email does not exist.");
-      }
+    if (!emailExists) {
+      props.setError("User with this email does not exist.");
+    }
+  }
 
-
-
-
-}
-
-function handleGoogleSignIn() {
-  return new Promise((resolve, reject) => {
-    gapi.load("auth2", () => {
-      gapi.auth2
-        .init({
-          client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // Replace with your client ID
-          scope: "profile email", // Specify the scopes you need
-        })
-        .then(() => {
-          const authInstance = gapi.auth2.getAuthInstance();
-          resolve(authInstance);
-        })
-        .catch((error: any) => {
-          reject(error);
-        });
+  function handleGoogleSignIn() {
+    return new Promise((resolve, reject) => {
+      gapi.load("auth2", () => {
+        gapi.auth2
+          .init({
+            client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
+            scope: "profile email", // specify the scopes you need.
+          })
+          .then(() => {
+            const authInstance = gapi.auth2.getAuthInstance();
+            resolve(authInstance);
+          })
+          .catch((error: any) => {
+            reject(error);
+          });
+      });
     });
-  });
-}
+  }
 
-handleGoogleSignIn()
-  .then((authInstance: any) => {
-    // Authentication successful, you can now use `authInstance` for further actions
-    console.log("Authentication successful");
-  })
-  .catch((error: any) => {
-    // Handle initialization/authentication errors
-    console.error("Error initializing Google Sign-In:", error);
-  });
+  handleGoogleSignIn()
+    .then((authInstance: any) => {
+      // Authentication successful, you can now use `authInstance` for further actions
+      console.log("Authentication successful");
+    })
+    .catch((error: any) => {
+      // Handle initialization/authentication errors
+      console.error("Error initializing Google Sign-In:", error);
+    });
 
-// Event listener for the login button
-const loginButton = document.getElementById(
-  "intern-submit"
-) as HTMLButtonElement; // Replace 'yourLoginButtonId' with your actual button ID
-if (loginButton) {
-  loginButton.addEventListener("click", () => {
-    handleGoogleSignIn();
-  });
+  // Event listener for the login button
+  const loginButton = document.getElementById(
+    "intern-submit"
+  ) as HTMLButtonElement; // Replace 'yourLoginButtonId' with your actual button ID
+  if (loginButton) {
+    loginButton.addEventListener("click", () => {
+      handleGoogleSignIn();
+    });
+  }
 }
