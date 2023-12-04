@@ -44,6 +44,7 @@ function App() {
   const [adminEmail, setAdminEmail] = useState<string>("");
   const [adminPass, setAdminPass] = useState<string>("");
   const [adminError, setAdminError] = useState<string>("");
+  const [adminName, setAdminName] = useState<string>("");
 
   return (
     <div className="app">
@@ -83,7 +84,7 @@ function App() {
                 adminPass={adminPass}
                 setAdminPass={setAdminPass}
                 adminError={adminError}
-                setAdminError={setAdminError}  
+                setAdminError={setAdminError}
             ></LoginPage>}></Route>
           <Route
             path="/register"
@@ -116,6 +117,8 @@ function App() {
                 setAdminPass={setAdminPass}
                 adminError={adminError}
                 setAdminError={setAdminError}
+                adminName={adminName}
+                setAdminName={setAdminName}
               ></RegistrationPage>
             }
           ></Route>

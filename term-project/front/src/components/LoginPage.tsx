@@ -44,7 +44,7 @@ export default function LoginPage(props: LoginProps) {
     // check if user with this email already in db
 
     const emailExists = await props.db
-      .collection("admin")
+      .collection("admins")
       .where("email", "==", props.adminEmail)
       .get()
       .then((querySnapshot) => !querySnapshot.empty);
