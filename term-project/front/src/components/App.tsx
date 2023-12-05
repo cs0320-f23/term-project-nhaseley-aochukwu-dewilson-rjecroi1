@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../styles/App.css";
+import "firebase/compat/firestore";
+import firebase from "firebase/compat/app"; // Use 'compat' for compatibility mode
 import Navbar from "./Navbar";
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 import RegistrationPage from "./RegistrationPage";
 import ListingsPage from "./Listings";
-import firebase from "firebase/compat/app"; // Use 'compat' for compatibility mode
-import "firebase/compat/firestore";
 import AdminPage from "./AdminPage";
-// import { addDoc, collection, getDocs } from "firebase/compat/firestore";
-import "firebase/compat/firestore";
-import RentersHomePage from "./LandLordsHomepage";
 import LandLordsHomePage from "./LandLordsHomepage";
+import RentalInfoPage from "./RentalInfoPage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB9n45pzHpWOXhKQeFxStBn2GJyJsPdXIE",
@@ -60,7 +58,6 @@ function App() {
             path="/LandLordsHomepage"
             element={<LandLordsHomePage></LandLordsHomePage>}
           >
-            {" "}
           </Route>
           <Route path="/" element={<HomePage></HomePage>}></Route>
           <Route
@@ -140,6 +137,10 @@ function App() {
           <Route
             path="/admin"
             element={<AdminPage db={db}></AdminPage>}
+          ></Route>
+          <Route
+            path="/info/:id"
+            element={<RentalInfoPage></RentalInfoPage>}
           ></Route>
         </Routes>
       </BrowserRouter>

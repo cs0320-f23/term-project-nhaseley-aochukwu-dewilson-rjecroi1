@@ -2,8 +2,6 @@ import React from "react";
 import "../styles/LoginPage.css";
 import "../styles/RegistrationForm.css";
 import { GoogleAuth, GoogleUser } from "gapi.auth2";
-import AdminPage from "./AdminPage";
-import readUsersFromDB from "./AdminPage";
 import { useNavigate } from "react-router-dom";
 
 import firebase from "firebase/compat/app";
@@ -46,18 +44,18 @@ export default function LoginPage(props: LoginProps) {
     event.preventDefault(); // prevents page from re-rendering
     // check if user with this email already in db
 
-    const emailExists = await props.db
+    const querySnapshot = await props.db
       .collection("admins")
       .where("email", "==", props.adminEmail)
       .get()
-      .then((querySnapshot) => !querySnapshot.empty);
-
-    if (emailExists) {
-      // login successfully
-      navigate("/admin");
-    } else if (!props.adminEmail || !props.adminPass) {
+    if (!props.adminEmail || !props.adminPass) {
       // missing input
       props.setAdminError("Please be sure to input all fields.");
+    } else if (querySnapshot.empty) {
+      props.setAdminError("This admin email does not exist in database.");
+    } else if (props.adminPass === querySnapshot.docs[0].data().password) {
+      // login successfully
+      navigate("/admin");
     } else {
       props.setAdminError("Invalid credentials.");
     }
@@ -71,14 +69,6 @@ export default function LoginPage(props: LoginProps) {
           aria-label="You can login as a student here"
         >
           <h2>Intern</h2>
-          <label>
-            <input
-              className="student-email"
-              aria-label="You can enter your email here (must be Brown)"
-              placeholder="Enter Brown email here"
-            />
-          </label>
-          <h2> Intern </h2>
           <label></label>
           <input
             className="student-email"
@@ -101,8 +91,7 @@ export default function LoginPage(props: LoginProps) {
             id="intern-submit"
             onClick={(ev) => checkRecordsforIntern(ev, props)}
           >
-            {" "}
-            Submit{" "}
+            Login
           </button>
           <button
             className="demo-student-login"
@@ -273,22 +262,22 @@ function handleGoogleSignIn() {
   });
 }
 
-handleGoogleSignIn()
-  .then((authInstance: any) => {
-    // Authentication successful, you can now use `authInstance` for further actions
-    console.log("Authentication successful");
-  })
-  .catch((error: any) => {
-    // Handle initialization/authentication errors
-    console.error("Error initializing Google Sign-In:", error);
-  });
+// handleGoogleSignIn()
+//   .then((authInstance: any) => {
+//     // Authentication successful, you can now use `authInstance` for further actions
+//     console.log("Authentication successful");
+//   })
+//   .catch((error: any) => {
+//     // Handle initialization/authentication errors
+//     console.error("Error initializing Google Sign-In:", error);
+//   });
 
 // Event listener for the login button
-const loginButton = document.getElementById(
-  "intern-submit"
-) as HTMLButtonElement; // Replace 'yourLoginButtonId' with your actual button ID
-if (loginButton) {
-  loginButton.addEventListener("click", () => {
-    handleGoogleSignIn();
-  });
-}
+// const loginButton = document.getElementById(
+//   "intern-submit"
+// ) as HTMLButtonElement; // Replace 'yourLoginButtonId' with your actual button ID
+// if (loginButton) {
+//   loginButton.addEventListener("click", () => {
+//     handleGoogleSignIn();
+//   });
+// }

@@ -63,6 +63,7 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.db
         .collection("interns")
         .add({
+          id: props.db.collection("interns").doc().id, 
           name: props.studentName,
           email: props.studentEmail,
           password: props.studentPass,
@@ -84,7 +85,6 @@ export default function RegistrationPage(props: RegistrationProps) {
 
   async function handleRenterRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
-
     // check if user with this email already in db
     const emailExists = await props.db
       .collection("landlords")
@@ -93,7 +93,7 @@ export default function RegistrationPage(props: RegistrationProps) {
       .then((querySnapshot) => !querySnapshot.empty);
 
     if (emailExists) {
-      props.setError("User with this email already exists.");
+      props.setRenterError("User with this email already exists.");
     } else if (
       !props.renterName ||
       !props.renterEmail ||
@@ -107,11 +107,13 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.db
         .collection("landlords")
         .add({
+          id: props.db.collection("landlords").doc().id, // add a unique id
           name: props.renterName,
           email: props.renterEmail,
           password: props.renterPass,
           phone: props.renterPhone,
           verified: false,
+          listings: []
         })
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
@@ -149,6 +151,7 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.db
         .collection("admins")
         .add({
+          id: props.db.collection("admins").doc().id, 
           name: props.adminName,
           email: props.adminEmail,
           password: props.adminPass,
