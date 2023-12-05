@@ -1,5 +1,7 @@
 import React from "react";
 import "../styles/Listings.css";
+import { Link } from "react-router-dom";
+
 
 export default function ListingsPage() {
   const mockListingInfo = [
@@ -24,21 +26,20 @@ export default function ListingsPage() {
   ];
 
   return (
+    
     <div id="listings-page">
-      {/* First Row */}
-      {/* <div id="content"> */}
         <div className="row">
           {mockListingInfo.map(
-            (listingImage) => (
-              <div key={listingImage.id} className="listing-info">
-                <img src={listingImage.url} alt="Example Listing 1" />
-                <p>Address: {listingImage.address}</p>
-                <p>Date Posted: {listingImage.datePosted}</p>
+            (listing) => (
+              <div key={listing.id} className="listing-info">
+                  <Link to={`/info/${listing.id}`}>
+                    <img src={listing.url} alt={`Listing for ${listing.id}`} />
+                  </Link>
+                <p>Address: {listing.address}</p>
+                <p>Date Posted: {listing.datePosted}</p>
               </div>
             )
-            // )
           )}
-        {/* </div> */}
       </div>
 
       {/* Side Control */}

@@ -3,7 +3,7 @@
 .LandLords-HomePage {
   display: flex;
   justify-content: space-between;
-  max-width: 800px; /* Sets a maximum width for the component */
+  max-width: 100%; /* Sets a maximum width for the component */
   margin: 0 auto; /* Centers the component on the page */
   padding: 20px;
 }

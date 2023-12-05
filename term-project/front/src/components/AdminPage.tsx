@@ -10,6 +10,7 @@ interface User {
   name: string;
   email: string;
   verified?: boolean;
+  numListings?:number;
 }
 
 export default function AdminPage(props: AdminProps) {
@@ -49,6 +50,7 @@ export default function AdminPage(props: AdminProps) {
             name: doc.data().name,
             email: doc.data().email,
             verified: doc.data().verified,
+            numListings: doc.data().listings.length
           };
           landlordsArray.push(landlordData);
         });
