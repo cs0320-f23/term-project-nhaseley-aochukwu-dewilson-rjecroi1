@@ -1,6 +1,4 @@
 package edu.brown.cs.student.main.DistanceData;
-//package handlers.DistanceData;
-import java.util.List;
 
 public interface DistanceData {
     /**

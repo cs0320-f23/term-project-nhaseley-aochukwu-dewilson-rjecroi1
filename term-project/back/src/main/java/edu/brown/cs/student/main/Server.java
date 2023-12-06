@@ -8,6 +8,8 @@ import static spark.Spark.after;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
+import edu.brown.cs.student.main.CoordinateData.CoordinateData;
+import edu.brown.cs.student.main.CoordinateData.CoordinateDataSource;
 import edu.brown.cs.student.main.DistanceData.DistanceData;
 import edu.brown.cs.student.main.DistanceData.DistanceDataSource;
 import edu.brown.cs.student.main.DistanceHandler.FilterHandler;
@@ -26,34 +28,18 @@ public class Server {
 
   // dependency injected DistanceData state
   private final DistanceData dist;
-
-  /**
-   * Main method that starts the server.
-   *
-   * @param args command line arguments. Not used in this server.
-   */
-//  public static void main(String[] args) {
-//    System.out.println("starting up server...");
-//    // At time of creation, we decide on a specific DistanceData class:
-//    Spark.port(port);
-//    after(
-//            (request, response) -> {
-//              response.header("Access-Control-Allow-Origin", "*");
-//              response.header("Access-Control-Allow-Methods", "*");
-//            });
-//    // listen on filter endpoint
-//    Spark.get("/filter", new FilterHandler(dist));
-//    Spark.awaitInitialization();
-//  }
+  private final CoordinateData coord;
 
         /**
          * Constructor for the server, starting it with Spark Java.
          *
-         * @param toUse the DistanceData to dependency inject into the distance filter handler.
+         * @param toUseDist the DistanceData to dependency inject into the distance filter handler.
+         * @param toUseCoord the CoordinateData to dependency inject into the distance filter handler.
          */
-        public Server(DistanceData toUse) {
+        public Server(DistanceData toUseDist, CoordinateData toUseCoord) {
             // Use whatever was dependency-injected into this constructor
-            this.dist = toUse;
+            this.dist = toUseDist;
+            this.coord = toUseCoord;
 
             // Set up our SparkJava server:
             Spark.port(port);
@@ -64,7 +50,7 @@ public class Server {
                     });
 
             // listen on filter endpoints
-            Spark.get("/filter", new FilterHandler(this.dist));
+            Spark.get("/filter", new FilterHandler(this.dist, this.coord));
 
             // moshi building
             Moshi moshi = new Moshi.Builder().build();
@@ -104,7 +90,7 @@ public class Server {
         public static void main(String[] args) {
             // At time of creation, we decide on a specific CensusData class:
             edu.brown.cs.student.main.Server server =
-                    new edu.brown.cs.student.main.Server(new DistanceDataSource());
+                    new edu.brown.cs.student.main.Server(new DistanceDataSource(), new CoordinateDataSource());
         }
 
 }
