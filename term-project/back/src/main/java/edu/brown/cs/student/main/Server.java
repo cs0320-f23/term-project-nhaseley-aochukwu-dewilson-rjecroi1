@@ -49,8 +49,7 @@ public class Server {
         /**
          * Constructor for the server, starting it with Spark Java.
          *
-         * @param toUse the CensusData to dependency inject into the broadband handler.
-         * @param filterState the FilterGeoData object to dependency inject into the filter handler.
+         * @param toUse the DistanceData to dependency inject into the distance filter handler.
          */
         public Server(DistanceData toUse) {
             // Use whatever was dependency-injected into this constructor

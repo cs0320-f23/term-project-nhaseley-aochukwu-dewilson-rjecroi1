@@ -13,5 +13,5 @@ public interface DistanceData {
 
      * @return the data received from the distance API
      */
-  List<List<String>> getDistanceData(String selectedLat, String selectedLong, String workLat, String workLong);
+    DistanceApiResponse getDistanceData(String selectedLat, String selectedLong, String workLat, String workLong);
 }

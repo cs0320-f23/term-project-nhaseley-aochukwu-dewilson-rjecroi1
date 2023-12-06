@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# private folder for API keys
+back/src/main/java/edu/brown/cs/student/main/DistanceData/apiKeys
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
