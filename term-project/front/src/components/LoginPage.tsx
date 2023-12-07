@@ -1,11 +1,10 @@
 import React from "react";
 import "../styles/LoginPage.css";
 import "../styles/RegistrationForm.css";
-import { GoogleAuth, GoogleUser } from "gapi.auth2";
 import { useNavigate } from "react-router-dom";
-
 import firebase from "firebase/compat/app";
 import { Dispatch, SetStateAction } from "react";
+
 
 interface LoginProps {
   studentName: string;
@@ -188,10 +187,6 @@ export default function LoginPage(props: LoginProps) {
   );
 }
 
-/**
- * can't use Registration Props unless I use "typeOf"
- */
-
 async function checkRecordsforIntern(
   event: React.FormEvent,
   props: LoginProps
@@ -244,40 +239,20 @@ async function checkRecordsforLandlord(
 }
 
 function handleGoogleSignIn() {
-  return new Promise((resolve, reject) => {
-    gapi.load("auth2", () => {
-      gapi.auth2
-        .init({
-          client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
-          scope: "profile email", // specify the scopes you need.
-        })
-        .then(() => {
-          const authInstance = gapi.auth2.getAuthInstance();
-          resolve(authInstance);
-        })
-        .catch((error: any) => {
-          reject(error);
-        });
-    });
-  });
+  // return new Promise((resolve, reject) => {
+  //   gapi.load("auth2", () => {
+  //     gapi.auth2
+  //       .init({
+  //         client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
+  //         scope: "profile email", // specify the scopes you need.
+  //       })
+  //       .then(() => {
+  //         const authInstance = gapi.auth2.getAuthInstance();
+  //         resolve(authInstance);
+  //       })
+  //       .catch((error: any) => {
+  //         reject(error);
+  //       });
+  //   });
+  // });
 }
-
-// handleGoogleSignIn()
-//   .then((authInstance: any) => {
-//     // Authentication successful, you can now use `authInstance` for further actions
-//     console.log("Authentication successful");
-//   })
-//   .catch((error: any) => {
-//     // Handle initialization/authentication errors
-//     console.error("Error initializing Google Sign-In:", error);
-//   });
-
-// Event listener for the login button
-// const loginButton = document.getElementById(
-//   "intern-submit"
-// ) as HTMLButtonElement; // Replace 'yourLoginButtonId' with your actual button ID
-// if (loginButton) {
-//   loginButton.addEventListener("click", () => {
-//     handleGoogleSignIn();
-//   });
-// }
