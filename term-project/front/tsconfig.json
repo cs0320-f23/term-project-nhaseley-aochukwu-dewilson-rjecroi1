@@ -22,8 +22,5 @@
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }],
-  "node_modules/@types"
-  /**
-  * may have to remove node modules types
-  */
+  "types": ["node"]
 }
