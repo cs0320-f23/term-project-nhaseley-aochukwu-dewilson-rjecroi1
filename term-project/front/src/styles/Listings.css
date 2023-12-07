@@ -17,7 +17,7 @@
   padding-top: 350px;
 }
 
-.range {
+/* .range {
   height: 80px;
   width: 250px;
   background: red;
@@ -117,7 +117,7 @@
   background: #664aff;
   border: 1px solid #664aff;
   cursor: pointer;
-}
+} */
 
 /* .container {
   
@@ -181,4 +181,19 @@
   height: 450px;
   margin-left: 300px;
   display: flex;
+}
+
+.mapboxgl-popup {
+  max-width: 400px;
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: black;
+  line-break: 1;
+}
+
+.slider {
+  position: relative;
+  justify-content: center;
+}
+.link {
+  color: black;
 }

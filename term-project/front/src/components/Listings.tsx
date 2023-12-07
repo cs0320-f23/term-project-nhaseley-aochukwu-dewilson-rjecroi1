@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import { ACCESS_TOKEN } from "../private/MapboxToken.tsx";
 import "mapbox-gl/dist/mapbox-gl.css";
+import Box from "@mui/material/Box";
 
+import Slider from "@mui/material/Slider";
+function valuetext(value: number) {
+  return `${value}°C`;
+}
 export default function ListingsPage() {
   const mockListingInfo = [
     {
@@ -40,8 +45,17 @@ export default function ListingsPage() {
     });
 
     mockListingInfo.forEach((listing) => {
+      const popupContent = `
+      <div>
+        <h3>${listing.address}</h3>
+        <p>Date Posted: ${listing.datePosted}</p>
+        <a href="/info/${listing.id}">See More</a>
+      </div>`;
+      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+
       new mapboxgl.Marker()
         .setLngLat([listing.latlong[1], listing.latlong[0]])
+        .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
         .addTo(map);
     });
 
@@ -64,19 +78,33 @@ export default function ListingsPage() {
           ))}
         </div>
       </div>
+
       {/* Side Control */}
       <div className="sidenav">
         <label>Distance</label>
-        <div className="distance-slider">
-          <div className="sliderValue">
-            <span>100</span>
-          </div>
-          <div className="field">
-            <div className="value left">0</div>
-            <input type="range" min="10" max="100" step="1" />
-            <div className="value-right">100</div>
-          </div>
-        </div>
+        <Box
+          className="slider"
+          sx={{ width: 250, margin: "10px 0", color: "grey" }}
+        >
+          <Slider
+            aria-label="Distance"
+            defaultValue={30}
+            getAriaValueText={valuetext}
+            valueLabelDisplay="auto"
+            step={10}
+            marks
+            min={10}
+            max={100}
+          />
+          {/* <Slider
+            defaultValue={30}
+            step={10}
+            marks
+            min={10}
+            max={110}
+            disabled
+          /> */}
+        </Box>
       </div>
     </div>
   );
