@@ -47,7 +47,7 @@ export default function LoginPage(props: LoginProps) {
     const querySnapshot = await props.db
       .collection("admins")
       .where("email", "==", props.adminEmail)
-      .get()
+      .get();
     if (!props.adminEmail || !props.adminPass) {
       // missing input
       props.setAdminError("Please be sure to input all fields.");
@@ -59,6 +59,25 @@ export default function LoginPage(props: LoginProps) {
     } else {
       props.setAdminError("Invalid credentials.");
     }
+  }
+
+  function handleGoogleSignIn() {
+    return new Promise((resolve, reject) => {
+      gapi.load("auth2", () => {
+        gapi.auth2
+          .init({
+            client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
+            scope: "profile email", // specify the scopes you need. what does this mean
+          })
+          .then(() => {
+            const authInstance = gapi.auth2.getAuthInstance();
+            resolve(authInstance);
+          })
+          .catch((error: any) => {
+            reject(error);
+          });
+      });
+    });
   }
   return (
     <div className="login-page">
@@ -186,80 +205,80 @@ export default function LoginPage(props: LoginProps) {
       </div>
     </div>
   );
-}
 
-/**
- * can't use Registration Props unless I use "typeOf"
- */
+  async function checkRecordsforIntern(
+    event: React.FormEvent,
+    props: LoginProps
+  ) {
+    event.preventDefault();
 
-async function checkRecordsforIntern(
-  event: React.FormEvent,
-  props: LoginProps
-) {
-  event.preventDefault();
-  const emailExists = await props.db
-    .collection("interns")
-    .where("email", "==", props.studentEmail)
-    .get()
-    .then((querySnapshot) => !querySnapshot.empty);
-
-  if (!emailExists) {
-    props.setError("User with this email does not exist.");
-  } else if (!props.studentEmail || !props.studentPass) {
-    // missing input
-    props.setError("Please be sure to input all fields.");
-  } else if (!props.studentEmail.includes("@brown.edu")) {
-    props.setError("You must provide your Brown email address.");
+    const querySnapshot = await props.db
+      .collection("interns")
+      .where("email", "==", props.studentEmail)
+      .get();
+    if (!props.studentEmail || !props.studentPass) {
+      props.setError("Please be sure to input all fields.");
+    } else if (querySnapshot.empty) {
+      props.setError("This intern does not exist in our database.");
+    } else if (props.studentPass === querySnapshot.docs[0].data().password) {
+      // allow successful login
+      handleGoogleSignIn();
+      // navigate("/listings");
+    } else {
+      // wrong user or password
+      props.setError("Invalid login credentials.");
+    }
   }
 
-  const passwordRight = await props.db
-    .collection("interns")
-    .where("password", "==", props.studentPass)
-    .get()
-    .then((querySnapshot) => !querySnapshot.empty);
+  async function checkRecordsforLandlord(
+    event: React.FormEvent,
+    props: LoginProps
+  ) {
+    event.preventDefault();
 
-  if (!passwordRight) {
-    props.setError("Please enter correct password.");
-  } else if (!props.studentEmail || !props.studentPass) {
-    props.setError("Please be sure to input all fields.");
-  } else {
-    handleGoogleSignIn();
+    // which is correct?
+    const querySnapshot = await props.db
+      .collection("renters")
+      .where("email", "==", props.adminEmail)
+      .get();
+    if (!props.renterEmail || !props.renterPass) {
+      props.setError("Please be sure to input all fields.");
+    } else if (querySnapshot.empty) {
+      props.setError("This renter does not exist in our database.");
+    } // FIGURE OUT LANDLORD VERIFICATION
+    else if ("false" === querySnapshot.docs[0].data().verified) {
+      props.setError("This landlord is not verified in our database.");
+    } else if (props.renterPass === querySnapshot.docs[0].data().password) {
+      // allow successful login
+      // WHAT IS NAME OF PATH?
+      navigate("/LandLordsHomepage");
+    } else {
+      // wrong user or password
+      props.setError("Invalid login credentials.");
+    }
+    // old shit
+
+    // which is correct?
+    const emailExists = await props.db
+      .collection("renters")
+      .where("email", "==", props.renterEmail)
+      .get()
+      .then((querySnapshot) => !querySnapshot.empty);
+
+    const passwordRight = await props.db
+      .collection("renters")
+      .where("email", "==", props.renterEmail)
+      .where("password", "==", props.renterPass)
+      .get()
+      .then((querySnapshot) => !querySnapshot.empty);
+
+    // is this actually getting the user's input and comparing it to the password in the system for the email?
+    if (!passwordRight) {
+      props.setError("Please enter correct password.");
+    } else if (!props.renterEmail || !props.renterPass) {
+      props.setError("Please be sure to input all fields.");
+    } //else if (props.adminPass === querySnapshot.docs[0].data().password)
   }
-}
-
-async function checkRecordsforLandlord(
-  event: React.FormEvent,
-  props: LoginProps
-) {
-  event.preventDefault();
-  const emailExists = await props.db
-    .collection("renters")
-    .where("email", "==", props.studentEmail)
-    .get()
-    .then((querySnapshot) => !querySnapshot.empty);
-
-  if (!emailExists) {
-    props.setError("User with this email does not exist.");
-  }
-}
-
-function handleGoogleSignIn() {
-  return new Promise((resolve, reject) => {
-    gapi.load("auth2", () => {
-      gapi.auth2
-        .init({
-          client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
-          scope: "profile email", // specify the scopes you need.
-        })
-        .then(() => {
-          const authInstance = gapi.auth2.getAuthInstance();
-          resolve(authInstance);
-        })
-        .catch((error: any) => {
-          reject(error);
-        });
-    });
-  });
 }
 
 // handleGoogleSignIn()
