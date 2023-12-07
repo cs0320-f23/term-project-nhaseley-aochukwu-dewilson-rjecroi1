@@ -250,7 +250,6 @@ export default function LoginPage(props: LoginProps) {
       props.setError("This landlord is not verified in our database.");
     } else if (props.renterPass === querySnapshot.docs[0].data().password) {
       // allow successful login
-      // WHAT IS NAME OF PATH?
       navigate("/LandLordsHomepage");
     } else {
       // wrong user or password
