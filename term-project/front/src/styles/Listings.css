@@ -8,7 +8,7 @@
   flex-direction: column;
   display: flex;
   justify-content: flex-start;
-  background: #ffffff66;
+  background: #aba8a8;
   /* margin-left: -30px; Adjust the value as needed */
   /* z-index: 1; Adjust the z-index to make sure it's above the container */
   position: fixed;
@@ -17,7 +17,7 @@
   padding-top: 350px;
 }
 
-.range {
+/* .range {
   height: 80px;
   width: 250px;
   background: red;
@@ -117,7 +117,7 @@
   background: #664aff;
   border: 1px solid #664aff;
   cursor: pointer;
-}
+} */
 
 /* .container {
   
@@ -137,20 +137,21 @@
 } */
 
 .row {
-  display:flex;
+  display: flex;
   box-sizing: border-box;
-  margin: 0 5px; /* Add margin for spacing */
-  width: 100%;
+  /* margin: 0 5px; Add margin for spacing */
+  /* width: 60%; */
   height: 450px;
-  width: calc(100% - 180px); /* Adjust width to accommodate the sidenav */
+  width: calc(100% - 200px); /* Adjust width to accommodate the sidenav */
   margin-left: 250px; /* Set margin-left to the width of the sidenav */
   position: relative;
-  top: 50px;
+  top: 150px;
   justify-content: center;
+  overflow-x: hidden;
 }
 
 .row img {
-  width: 80%;
+  width: 75%;
   height: auto;
 }
 
@@ -170,4 +171,29 @@
 
 .listing-info {
   line-height: 1;
+}
+
+.map {
+  position: relative;
+  top: 50px;
+  width: 800;
+  /* bottom: 150; */
+  height: 450px;
+  margin-left: 300px;
+  display: flex;
+}
+
+.mapboxgl-popup {
+  max-width: 400px;
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: black;
+  line-break: 1;
+}
+
+.slider {
+  position: relative;
+  justify-content: center;
+}
+.link {
+  color: black;
 }
