@@ -50,15 +50,14 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
-        <Navbar> </Navbar>
+        <Navbar></Navbar>
         {/* <button onClick={addToDB}> Test add to database </button>
         <button onClick={readingFromDB}> Test reading from database </button> */}
         <Routes>
           <Route
             path="/LandLordsHomepage"
             element={<LandLordsHomePage></LandLordsHomePage>}
-          >
-          </Route>
+          ></Route>
           <Route path="/" element={<HomePage></HomePage>}></Route>
           <Route
             path="/login"
