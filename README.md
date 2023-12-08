@@ -11,3 +11,5 @@ cd into term-project, then front, then run npm run dev
 To find distance between selected location on map and intern's work address: [Distance Matrix API](https://distancematrix.ai/distance-matrix-api)
 
 To convert intern's work address and rental addresses to coordinates in order to use that API: [Geocoding API](https://distancematrix.ai/geocoding-api)
+
+
