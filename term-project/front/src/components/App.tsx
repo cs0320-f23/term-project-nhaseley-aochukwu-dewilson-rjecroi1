@@ -37,22 +37,21 @@ function App() {
   const [studentPass, setStudentPass] = useState<string>("");
   const [studentAddress, setStudentAddress] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [renterName, setRenterName] = useState<string>("");
-  const [renterEmail, setRenterEmail] = useState<string>("");
-  const [renterPass, setRenterPass] = useState<string>("");
-  const [renterPhone, setRenterPhone] = useState<string>("");
-  const [renterError, setRenterError] = useState<string>("");
+  const [landlordName, setLandlordName] = useState<string>("");
+  const [landlordEmail, setLandlordEmail] = useState<string>("");
+  const [landlordPass, setLandlordPass] = useState<string>("");
+  const [landlordPhone, setLandlordPhone] = useState<string>("");
+  const [landlordError, setLandlordError] = useState<string>("");
   const [adminEmail, setAdminEmail] = useState<string>("");
   const [adminPass, setAdminPass] = useState<string>("");
   const [adminError, setAdminError] = useState<string>("");
   const [adminName, setAdminName] = useState<string>("");
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
 
   return (
     <div className="app">
       <BrowserRouter>
-        <Navbar></Navbar>
-        {/* <button onClick={addToDB}> Test add to database </button>
-        <button onClick={readingFromDB}> Test reading from database </button> */}
+        <Navbar userLoggedIn ={userLoggedIn} setUserLoggedIn={setUserLoggedIn}></Navbar>
         <Routes>
           <Route
             path="/LandLordsHomepage"
@@ -74,22 +73,24 @@ function App() {
                 db={db}
                 error={error}
                 setError={setError}
-                renterName={renterName}
-                setRenterName={setRenterName}
-                renterPass={renterPass}
-                setRenterPass={setRenterPass}
-                renterEmail={renterEmail}
-                setRenterEmail={setRenterEmail}
-                renterPhone={renterPhone}
-                setRenterPhone={setRenterPhone}
-                renterError={renterError}
-                setRenterError={setRenterError}
+                landlordName={landlordName}
+                setLandlordName={setLandlordName}
+                landlordPass={landlordPass}
+                setLandlordPass={setLandlordPass}
+                landlordEmail={landlordEmail}
+                setLandlordEmail={setLandlordEmail}
+                landlordPhone={landlordPhone}
+                setLandlordPhone={setLandlordPhone}
+                landlordError={landlordError}
+                setLandlordError={setLandlordError}
                 adminEmail={adminEmail}
                 setAdminEmail={setAdminEmail}
                 adminPass={adminPass}
                 setAdminPass={setAdminPass}
                 adminError={adminError}
                 setAdminError={setAdminError}
+                userLoggedIn={userLoggedIn}
+                setUserLoggedIn={setUserLoggedIn}
               ></LoginPage>
             }
           ></Route>
@@ -108,16 +109,16 @@ function App() {
                 db={db}
                 error={error}
                 setError={setError}
-                renterName={renterName}
-                setRenterName={setRenterName}
-                renterPass={renterPass}
-                setRenterPass={setRenterPass}
-                renterEmail={renterEmail}
-                setRenterEmail={setRenterEmail}
-                renterPhone={renterPhone}
-                setRenterPhone={setRenterPhone}
-                renterError={renterError}
-                setRenterError={setRenterError}
+                landlordName={landlordName}
+                setLandlordName={setLandlordName}
+                landlordPass={landlordPass}
+                setLandlordPass={setLandlordPass}
+                landlordEmail={landlordEmail}
+                setLandlordEmail={setLandlordEmail}
+                landlordPhone={landlordPhone}
+                setLandlordPhone={setLandlordPhone}
+                landlordError={landlordError}
+                setLandlordError={setLandlordError}
                 adminEmail={adminEmail}
                 setAdminEmail={setAdminEmail}
                 adminPass={adminPass}
@@ -131,7 +132,7 @@ function App() {
           ></Route>
           <Route
             path="/listings"
-            element={<ListingsPage></ListingsPage>}
+            element={<ListingsPage studentAddress={studentAddress} db={db}></ListingsPage>}
           ></Route>
           <Route
             path="/admin"
