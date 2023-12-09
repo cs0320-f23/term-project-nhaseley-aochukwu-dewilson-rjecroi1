@@ -220,7 +220,7 @@ export default function RegistrationPage(props: RegistrationProps) {
             onClick={(ev) => {
               ev.preventDefault();
               props.setStudentName("nya");
-              props.setStudentAddress("sci li coords");
+              props.setStudentAddress("3155 Cedar Lane Boston MA");
               props.setStudentEmail("nya_haseley-ayende@brown.edu");
               props.setStudentPass("password");
             }}

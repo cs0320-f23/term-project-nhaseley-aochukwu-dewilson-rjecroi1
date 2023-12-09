@@ -1,6 +1,9 @@
 import "../styles/LandLordsHomepage.css"; // Import the CSS file
-
-export default function LandLordsHomePage() {
+interface LandLordsHomePageProps {
+  userLoggedIn: boolean;
+  landlordEmail: string;
+}
+export default function LandLordsHomePage(props: LandLordsHomePageProps) {
       const mockListings = [
         {
           id: 1,
@@ -32,7 +35,13 @@ export default function LandLordsHomePage() {
         },
       ];
 
-  return (
+  return !props.userLoggedIn ? (
+    <h2> Please log in. </h2>
+  ) : !props.landlordEmail ? (
+    <h2>
+      Only landlords can have acess to this page. Please log in as a landlord.
+    </h2>
+  ) : (
     <div className="LandLords-HomePage">
       <div className="listings-section">
         <h2>My Listings</h2>
@@ -77,5 +86,5 @@ export default function LandLordsHomePage() {
         </form>
       </div>
     </div>
-  );
+  )
 }

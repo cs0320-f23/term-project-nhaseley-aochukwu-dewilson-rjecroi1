@@ -14,11 +14,12 @@ function valuetext(value: number) {
 interface ListingPageProps {
   db: firebase.firestore.Firestore;
   studentAddress: string;
+  userLoggedIn: boolean;
+  studentEmail: string;
 }
 interface Landlord {
   listings: Listing[];
 }
-
 interface Listing {
   address: string;
   bedrooms: string; // TODO: CHANGE TO INT
@@ -27,8 +28,13 @@ interface Listing {
   imgUrl: string;
   price: string; // TODO: CHANGE TO INT
   title: string;
-
+  // TODO: add date posted on postNewListing?
 }
+interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
+
 export default function ListingsPage(props: ListingPageProps) {
   const [allListings, setAllListings] = useState<Listing[]>([]);
 
@@ -55,9 +61,8 @@ export default function ListingsPage(props: ListingPageProps) {
     fetchListings();
   }, []);
 
-  console.log("ALL LISTINGS: ", allListings)
+  console.log("ALL LISTINGS: ", allListings);
 
-  
   const mockListingInfo = [
     {
       id: 1,
@@ -91,77 +96,116 @@ export default function ListingsPage(props: ListingPageProps) {
       zoom: 12,
     });
 
-    mockListingInfo.forEach((listing) => {
+    const markersPromises = allListings.map(async (listing) => {
       const popupContent = `
-      <div>
-        <h3>${listing.address}</h3>
-        <p>Date Posted: ${listing.datePosted}</p>
-        <a href="/info/${listing.id}">See More</a>
-      </div>`;
+        <div>
+          <h3>${listing.address}</h3>
+          <p> ${listing.title} </p>
+          <a href="/info/${listing.id}">See More</a>
+        </div>`;
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
 
-      new mapboxgl.Marker()
-        .setLngLat([listing.latlong[1], listing.latlong[0]])
-        .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
-        .addTo(map);
+      try {
+        const coordinateConverted = await getDistance(listing.address);
+        console.log("API RES: ", coordinateConverted);
+        if (coordinateConverted.latitude && coordinateConverted.longitude) {
+          console.log(
+            "found coords!",
+            coordinateConverted.latitude,
+            coordinateConverted.longitude
+          );
+          return new mapboxgl.Marker()
+            .setLngLat([
+              coordinateConverted.latitude,
+              coordinateConverted.longitude,
+            ])
+            .setPopup(popup)
+            .addTo(map);
+        } else {
+          console.log("NO LAT/LONG FIELDS FOUND");
+        }
+      } catch (error) {
+        console.error("Error creating marker:", error);
+      }
     });
 
+    Promise.all(markersPromises)
+      .then(() => console.log("All markers added to the map"))
+      .catch((error) => console.error("Error adding markers:", error));
+
     return () => map.remove();
-  }, [mockListingInfo]);
-  
+  }, [allListings]);
+
   // call server backend to get distance between selected address and student's work address
-  async function getDistance(selectedAddress: string){
-    fetch("http://localhost:4500/filter?workAddress=" + selectedAddress + "&address=" + props.studentAddress)
-      .then((r) => {
-        console.log("OVERLAY: ", r.json());
-      })
-      .catch((e) => console.log("exception" + e));
+  async function getDistance(selectedAddress: string): Promise<Coordinate> {
+    try {
+      const response = await fetch(
+        "http://localhost:4500/filter?address=" +
+          selectedAddress +
+          "&workAddress=" +
+          props.studentAddress
+      );
+      const result = await response.json();
+      console.log("API: ", selectedAddress, props.studentAddress, result);
+
+      if (
+        result.converted_selected_latitude &&
+        result.converted_selected_longitude
+      ) {
+        return {
+          latitude: result.converted_selected_latitude,
+          longitude: result.converted_selected_longitude,
+        };
+      } else {
+        throw new Error("Latitude and longitude not found in the response"); // throw?
+      }
+    } catch (error) {
+      console.error("Error fetching distance: ", error);
+      throw error; // throw?
+    }
   }
 
-
-  return (
+  return !props.userLoggedIn ? (
+    <h2> Please log in. </h2>
+  ) : !props.studentEmail ? (
+    <h2>
+      Only students can have acess to this page. Please log in as a student.
+    </h2>
+  ) : (
     <div>
-      <div id="mapbox" className="map"></div>
       <div id="listings-page">
+        <div id="mapbox" className="map"></div>
         <div className="row">
-          {mockListingInfo.map((listing) => (
+          {allListings.map((listing) => (
             <div key={listing.id} className="listing-info">
               <Link to={`/info/${listing.id}`}>
-                <img src={listing.url} alt={`Listing for ${listing.id}`} />
+                <img src={listing.imgUrl} alt={`Listing for ${listing.id}`} />
               </Link>
               <p>Address: {listing.address}</p>
-              <p>Date Posted: {listing.datePosted}</p>
+              {/* <p>Date Posted: {listing.datePosted}</p> */}
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Side Control */}
-      <div className="sidenav">
-        <label>Distance</label>
-        <Box
-          className="slider"
-          sx={{ width: 250, margin: "10px 0", color: "grey" }}
-        >
-          <Slider
-            aria-label="Distance"
-            defaultValue={30}
-            getAriaValueText={valuetext}
-            valueLabelDisplay="auto"
-            step={10}
-            marks
-            min={10}
-            max={100}
-          />
-          {/* <Slider
-            defaultValue={30}
-            step={10}
-            marks
-            min={10}
-            max={110}
-            disabled
-          /> */}
-        </Box>
+        {/* SideBar */}
+        <div className="sidenav">
+          <label>Distance</label>
+          <Box
+            className="slider"
+            sx={{ width: 250, margin: "10px 0", color: "grey" }}
+          >
+            <Slider
+              aria-label="Distance"
+              defaultValue={30}
+              getAriaValueText={valuetext}
+              valueLabelDisplay="auto"
+              step={10}
+              marks
+              min={10}
+              max={100}
+            />
+          </Box>
+        </div>
       </div>
     </div>
   );

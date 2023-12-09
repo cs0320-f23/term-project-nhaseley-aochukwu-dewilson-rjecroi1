@@ -55,7 +55,7 @@ function App() {
         <Routes>
           <Route
             path="/LandLordsHomepage"
-            element={<LandLordsHomePage></LandLordsHomePage>}
+            element={<LandLordsHomePage userLoggedIn={userLoggedIn} landlordEmail={landlordEmail}></LandLordsHomePage>}
           ></Route>
           <Route path="/" element={<HomePage></HomePage>}></Route>
           <Route
@@ -132,7 +132,7 @@ function App() {
           ></Route>
           <Route
             path="/listings"
-            element={<ListingsPage studentAddress={studentAddress} db={db}></ListingsPage>}
+            element={<ListingsPage userLoggedIn={userLoggedIn} studentAddress={studentAddress} db={db} studentEmail={studentEmail}></ListingsPage>}
           ></Route>
           <Route
             path="/admin"

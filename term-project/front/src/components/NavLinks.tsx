@@ -26,6 +26,7 @@ export default function NavLinks(props: NavLinksProps) {
       <Link className="nav-landlords-homepage" to="/LandLordsHomepage">
         My Listings
       </Link>
+      {/* TODO: add link for admin page? */}
     </div>
   );
 }

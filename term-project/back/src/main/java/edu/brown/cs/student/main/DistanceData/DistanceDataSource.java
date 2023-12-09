@@ -72,7 +72,7 @@ public class DistanceDataSource implements DistanceData {
         return body;
       } catch (Exception e) {
         e.printStackTrace();
-        System.out.println("error: "+ e);
+        System.out.println("error with distance api: "+ e);
         return null;
       }
 

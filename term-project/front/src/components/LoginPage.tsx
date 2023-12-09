@@ -146,7 +146,7 @@ export default function LoginPage(props: LoginProps) {
             className="demo-landlord-login"
             onClick={(ev) => {
               ev.preventDefault();
-              props.setLandlordEmail("john@gmail.com");
+              props.setLandlordEmail("tessa@gmail.com");
               props.setLandlordPass("password");
             }}
           >
@@ -213,8 +213,10 @@ export default function LoginPage(props: LoginProps) {
     } else if (props.studentPass === querySnapshot.docs[0].data().password) {
       // allow successful login
       handleGoogleSignIn();
-      // navigate("/listings");
+      props.setStudentAddress(querySnapshot.docs[0].data().address)
+      props.setStudentName(querySnapshot.docs[0].data().name)
       props.setUserLoggedIn(true)
+      navigate("/listings");
     } else {
       // wrong user or password
       props.setError("Invalid login credentials.");
@@ -239,8 +241,10 @@ export default function LoginPage(props: LoginProps) {
     } else if (props.landlordPass === querySnapshot.docs[0].data().password) {
       // allow successful login
       handleGoogleSignIn();
-      // navigate("/LandLordsHomepage");
       props.setUserLoggedIn(true)
+      props.setLandlordName(querySnapshot.docs[0].data().name)
+      props.setLandlordPhone(querySnapshot.docs[0].data().phone)
+      navigate("/LandLordsHomepage");
     } else {
       // wrong user or password
       props.setLandlordError("Invalid login credentials.");
