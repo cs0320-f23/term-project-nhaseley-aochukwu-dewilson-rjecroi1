@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Listings.css";
 import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import { ACCESS_TOKEN } from "../private/MapboxToken.tsx";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
-
 import Slider from "@mui/material/Slider";
+import Typography from "@mui/material/Typography";
+
 function valuetext(value: number) {
   return `${value}°C`;
 }
@@ -35,6 +36,12 @@ export default function ListingsPage() {
     },
   ];
 
+  const [mapInitialized, setMapInitialized] = useState(false);
+  const [sliderValue, setSliderValue] = useState(30);
+  const handleSliderChange = (event, newValue) => {
+    setSliderValue(newValue);
+  };
+
   useEffect(() => {
     mapboxgl.accessToken = ACCESS_TOKEN;
     const map = new mapboxgl.Map({
@@ -60,7 +67,7 @@ export default function ListingsPage() {
     });
 
     return () => map.remove();
-  }, [mockListingInfo]);
+  }, [mapInitialized]);
 
   return (
     <div>
@@ -81,7 +88,7 @@ export default function ListingsPage() {
 
       {/* Side Control */}
       <div className="sidenav">
-        <label>Distance</label>
+        <Typography variant="slider-value">Distance: {sliderValue}</Typography>
         <Box
           className="slider"
           sx={{ width: 250, margin: "10px 0", color: "grey" }}
@@ -90,7 +97,8 @@ export default function ListingsPage() {
             aria-label="Distance"
             defaultValue={30}
             getAriaValueText={valuetext}
-            valueLabelDisplay="auto"
+            onChange={handleSliderChange}
+            // valueLabelDisplay="auto"
             step={10}
             marks
             min={10}

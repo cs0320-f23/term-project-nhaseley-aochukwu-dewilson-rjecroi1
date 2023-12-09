@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="74e9fbe8-59c9-42fd-a3c4-45a858817a21" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/term-project/front/src/components/Listings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/components/Listings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/term-project/front/src/styles/Listings.css" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/styles/Listings.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/term-project/front/src/styles/Navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/styles/Navbar.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/term-project/front/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,30 +31,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/nylevenya/Desktop/CS0320/Term-Project/term-project-nhaseley-aochukwu-dewilson-rjecroi1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.30751175",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/nylevenya/Desktop/CS0320/Term-Project/term-project-nhaseley-aochukwu-dewilson-rjecroi1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.30751175&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -68,6 +65,7 @@
       <updated>1701638353038</updated>
       <workItem from="1701638361562" duration="331000" />
       <workItem from="1701917138372" duration="1542000" />
+      <workItem from="1702141876734" duration="61000" />
     </task>
     <servers />
   </component>
