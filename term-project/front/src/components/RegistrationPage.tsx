@@ -5,6 +5,7 @@ import firebase from "firebase/compat/app";
 interface RegistrationProps {
   studentName: string;
   setStudentName: Dispatch<SetStateAction<string>>;
+  
   studentEmail: string;
   setStudentEmail: Dispatch<SetStateAction<string>>;
   studentPass: string;
@@ -282,6 +283,19 @@ export default function RegistrationPage(props: RegistrationProps) {
             }}
           >
             Demo Registration
+          </button>
+          <button
+            className="demo-landlord-registration-for-listing-test"
+            onClick={(ev) => {
+              console.log("Button clicked!");
+              ev.preventDefault();
+              props.setRenterName("tessa");
+              props.setRenterPhone("98765432");
+              props.setRenterEmail("tessa@gmail.com");
+              props.setRenterPass("strongPassword");
+            }}
+          >
+            Demo Registration #2
           </button>
         </form>
 

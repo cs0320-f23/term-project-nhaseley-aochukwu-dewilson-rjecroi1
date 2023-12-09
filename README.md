@@ -17,3 +17,4 @@ http://localhost:4500/filter?workAddress=69%20Brown%20St%20Providence%20RI&addre
 
 Result:
 {"converted_work_latitude":41.8275262,"converted_work_longitude":-71.4027859,"duration":"2 hour 44 mins","distance":"161.1 mi","origin":"40.908732400000005,-73.8118781","destination":"41.8275262,-71.4027859","converted_selected_longitude":-73.8118781,"converted_selected_latitude":40.908732400000005,"formatted_work_address":"69 Brown St, Providence, RI 02912, USA","status":"OK"}
+
