@@ -1,7 +1,6 @@
 import React from "react";
 import "../styles/LoginPage.css";
 import "../styles/RegistrationForm.css";
-import { GoogleAuth, GoogleUser } from "gapi.auth2";
 import { useNavigate } from "react-router-dom";
 
 import firebase from "firebase/compat/app";
@@ -19,22 +18,24 @@ interface LoginProps {
   db: firebase.firestore.Firestore;
   error: string;
   setError: Dispatch<SetStateAction<string>>;
-  renterName: string;
-  setRenterName: Dispatch<SetStateAction<string>>;
-  renterEmail: string;
-  setRenterEmail: Dispatch<SetStateAction<string>>;
-  renterPass: string;
-  setRenterPass: Dispatch<SetStateAction<string>>;
-  renterPhone: string;
-  setRenterPhone: Dispatch<SetStateAction<string>>;
-  renterError: string;
-  setRenterError: Dispatch<SetStateAction<string>>;
+  landlordName: string;
+  setLandlordName: Dispatch<SetStateAction<string>>;
+  landlordEmail: string;
+  setLandlordEmail: Dispatch<SetStateAction<string>>;
+  landlordPass: string;
+  setLandlordPass: Dispatch<SetStateAction<string>>;
+  landlordPhone: string;
+  setLandlordPhone: Dispatch<SetStateAction<string>>;
+  landlordError: string;
+  setLandlordError: Dispatch<SetStateAction<string>>;
   adminEmail: string;
   setAdminEmail: Dispatch<SetStateAction<string>>;
   adminPass: string;
   setAdminPass: Dispatch<SetStateAction<string>>;
   adminError: string;
   setAdminError: Dispatch<SetStateAction<string>>;
+  userLoggedIn: boolean;
+  setUserLoggedIn: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function LoginPage(props: LoginProps) {
@@ -43,7 +44,6 @@ export default function LoginPage(props: LoginProps) {
   async function handleAdminLogin(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
     // check if user with this email already in db
-
     const querySnapshot = await props.db
       .collection("admins")
       .where("email", "==", props.adminEmail)
@@ -55,6 +55,7 @@ export default function LoginPage(props: LoginProps) {
       props.setAdminError("This admin email does not exist in database.");
     } else if (props.adminPass === querySnapshot.docs[0].data().password) {
       // login successfully
+      props.setUserLoggedIn(true)
       navigate("/admin");
     } else {
       props.setAdminError("Invalid credentials.");
@@ -62,24 +63,13 @@ export default function LoginPage(props: LoginProps) {
   }
 
   function handleGoogleSignIn() {
-    return new Promise((resolve, reject) => {
-      gapi.load("auth2", () => {
-        gapi.auth2
-          .init({
-            client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
-            scope: "profile email", // specify the scopes you need. what does this mean
-          })
-          .then(() => {
-            const authInstance = gapi.auth2.getAuthInstance();
-            resolve(authInstance);
-          })
-          .catch((error: any) => {
-            reject(error);
-          });
-      });
-    });
+    console.log("logging in...")
   }
+
   return (
+    props.userLoggedIn? (
+        <h2> You are already logged in!</h2>
+    ) :
     <div className="login-page">
       <h2>This is the login form!</h2>
       <div className="login-forms">
@@ -108,7 +98,7 @@ export default function LoginPage(props: LoginProps) {
           <button
             type="submit"
             id="intern-submit"
-            onClick={(ev) => checkRecordsforIntern(ev, props)}
+            onClick={(ev) => checkRecordsforIntern(ev)}
           >
             Login
           </button>
@@ -125,30 +115,30 @@ export default function LoginPage(props: LoginProps) {
         </form>
 
         <form
-          className="renter-login-form"
-          aria-label="You can login as a renter here"
+          className="landlord-login-form"
+          aria-label="You can login as a landlord here"
         >
-          <h2> Renter </h2>
+          <h2> Landlord </h2>
           <label></label>
           <input
-            className="renter-email"
-            aria-label="You can enter your email here"
+            className="landlord-email"
+            aria-label="You can enter your email here (Must be a Google account)"
             placeholder="Enter email here"
-            value={props.renterEmail}
-            onChange={(ev) => props.setRenterEmail(ev.target.value)}
+            value={props.landlordEmail}
+            onChange={(ev) => props.setLandlordEmail(ev.target.value)}
           ></input>
           <input
-            className="renter-password"
+            className="landlord-password"
             aria-label="You can enter your password here"
             placeholder="Enter password here"
             type="password"
-            value={props.renterPass}
-            onChange={(ev) => props.setRenterPass(ev.target.value)}
+            value={props.landlordPass}
+            onChange={(ev) => props.setLandlordPass(ev.target.value)}
           ></input>
           <button
             type="submit"
             id="landlord-submit"
-            onClick={(ev) => checkRecordsforLandlord(ev, props)}
+            onClick={(ev) => checkRecordsforLandlord(ev)}
           >
             Login
           </button>
@@ -156,8 +146,8 @@ export default function LoginPage(props: LoginProps) {
             className="demo-landlord-login"
             onClick={(ev) => {
               ev.preventDefault();
-              props.setRenterEmail("john@gmail.com");
-              props.setRenterPass("password");
+              props.setLandlordEmail("john@gmail.com");
+              props.setLandlordPass("password");
             }}
           >
             Demo Login
@@ -204,11 +194,11 @@ export default function LoginPage(props: LoginProps) {
         </form>
       </div>
     </div>
+  
   );
 
   async function checkRecordsforIntern(
     event: React.FormEvent,
-    props: LoginProps
   ) {
     event.preventDefault();
 
@@ -224,6 +214,7 @@ export default function LoginPage(props: LoginProps) {
       // allow successful login
       handleGoogleSignIn();
       // navigate("/listings");
+      props.setUserLoggedIn(true)
     } else {
       // wrong user or password
       props.setError("Invalid login credentials.");
@@ -232,71 +223,27 @@ export default function LoginPage(props: LoginProps) {
 
   async function checkRecordsforLandlord(
     event: React.FormEvent,
-    props: LoginProps
   ) {
     event.preventDefault();
-
-    // which is correct?
     const querySnapshot = await props.db
-      .collection("renters")
+      .collection("landlords")
       .where("email", "==", props.adminEmail)
       .get();
-    if (!props.renterEmail || !props.renterPass) {
-      props.setError("Please be sure to input all fields.");
+    if (!props.landlordEmail || !props.landlordPass) {
+      props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {
-      props.setError("This renter does not exist in our database.");
+      props.setLandlordError("This landlord does not exist in our database.");
     } // FIGURE OUT LANDLORD VERIFICATION
-    else if ("false" === querySnapshot.docs[0].data().verified) {
-      props.setError("This landlord is not verified in our database.");
-    } else if (props.renterPass === querySnapshot.docs[0].data().password) {
+    else if (querySnapshot.docs[0].data().verified == "false") {
+      props.setLandlordError("This landlord is not yet verified in our database.");
+    } else if (props.landlordPass === querySnapshot.docs[0].data().password) {
       // allow successful login
-      // WHAT IS NAME OF PATH?
-      navigate("/LandLordsHomepage");
+      handleGoogleSignIn();
+      // navigate("/LandLordsHomepage");
+      props.setUserLoggedIn(true)
     } else {
       // wrong user or password
-      props.setError("Invalid login credentials.");
+      props.setLandlordError("Invalid login credentials.");
     }
-    // old shit
-
-    // which is correct?
-    const emailExists = await props.db
-      .collection("renters")
-      .where("email", "==", props.renterEmail)
-      .get()
-      .then((querySnapshot) => !querySnapshot.empty);
-
-    const passwordRight = await props.db
-      .collection("renters")
-      .where("email", "==", props.renterEmail)
-      .where("password", "==", props.renterPass)
-      .get()
-      .then((querySnapshot) => !querySnapshot.empty);
-
-    // is this actually getting the user's input and comparing it to the password in the system for the email?
-    if (!passwordRight) {
-      props.setError("Please enter correct password.");
-    } else if (!props.renterEmail || !props.renterPass) {
-      props.setError("Please be sure to input all fields.");
-    } //else if (props.adminPass === querySnapshot.docs[0].data().password)
   }
 }
-
-// handleGoogleSignIn()
-//   .then((authInstance: any) => {
-//     // Authentication successful, you can now use `authInstance` for further actions
-//     console.log("Authentication successful");
-//   })
-//   .catch((error: any) => {
-//     // Handle initialization/authentication errors
-//     console.error("Error initializing Google Sign-In:", error);
-//   });
-
-// Event listener for the login button
-// const loginButton = document.getElementById(
-//   "intern-submit"
-// ) as HTMLButtonElement; // Replace 'yourLoginButtonId' with your actual button ID
-// if (loginButton) {
-//   loginButton.addEventListener("click", () => {
-//     handleGoogleSignIn();
-//   });
-// }

@@ -1,17 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Listings.css";
 import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import { ACCESS_TOKEN } from "../private/MapboxToken.tsx";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
+import firebase from "firebase/compat/app";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 
 function valuetext(value: number) {
   return `${value}°C`;
 }
-export default function ListingsPage() {
+interface ListingPageProps {
+  db: firebase.firestore.Firestore;
+  studentAddress: string;
+}
+interface Landlord {
+  listings: Listing[];
+}
+
+interface Listing {
+  address: string;
+  bedrooms: string; // TODO: CHANGE TO INT
+  details: string;
+  id: string;
+  imgUrl: string;
+  price: string; // TODO: CHANGE TO INT
+  title: string;
+}
+export default function ListingsPage(props: ListingPageProps) {
+  const [allListings, setAllListings] = useState<Listing[]>([]);
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const landlordSnapshot = await props.db.collection("landlords").get();
+
+        const allListingsArray: Listing[] = [];
+
+        landlordSnapshot.forEach((landlordDoc) => {
+          const landlordData = landlordDoc.data() as Landlord;
+          const landlordListings = landlordData.listings || [];
+
+          allListingsArray.push(...landlordListings);
+        });
+
+        setAllListings(allListingsArray);
+      } catch (error) {
+        console.error("Error fetching listings:", error);
+      }
+    };
+
+    fetchListings();
+  }, []);
+
+  console.log("ALL LISTINGS: ", allListings);
+
   const mockListingInfo = [
     {
       id: 1,
@@ -68,6 +113,20 @@ export default function ListingsPage() {
 
     return () => map.remove();
   }, [mapInitialized]);
+
+  // call server backend to get distance between selected address and student's work address
+  async function getDistance(selectedAddress: string) {
+    fetch(
+      "http://localhost:4500/filter?workAddress=" +
+        selectedAddress +
+        "&address=" +
+        props.studentAddress
+    )
+      .then((r) => {
+        console.log("OVERLAY: ", r.json());
+      })
+      .catch((e) => console.log("exception" + e));
+  }
 
   return (
     <div>
