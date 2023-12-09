@@ -48,6 +48,25 @@ function App() {
   const [adminName, setAdminName] = useState<string>("");
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
 
+  //consts for listing page 
+  const [listingTitle, setListingTitle] = useState<string>("");
+  const [listingURL, setListingURL] = useState<string>("");
+  const [listingAddress, setListingAddress] = useState<string>("");
+  const [listingBedrooms, setListingBedrooms] = useState<string>("");
+  const [listingPrice, setListingPrice] = useState<string>("");
+  const [listingDetails, setListingDetails] = useState<string>("");
+  const [listingError, setListingError] = useState<string>("");
+
+  
+
+
+
+
+
+
+
+
+
   return (
     <div className="app">
       <BrowserRouter>
@@ -55,8 +74,28 @@ function App() {
         <Routes>
           <Route
             path="/LandLordsHomepage"
-            element={<LandLordsHomePage></LandLordsHomePage>}
-          ></Route>
+            element={
+            <LandLordsHomePage
+            listingTitle= {listingTitle}
+            setListingTitle= {setListingTitle}
+            listingURL= {listingURL}
+            setListingURL={setListingURL}
+            listingAddress={listingAddress}
+            setListingAddress={setListingAddress}
+            listingBedrooms= {listingBedrooms}
+            setListingBedrooms={setListingBedrooms}
+            listingPrice={listingPrice}
+            setListingPrice={setListingPrice}
+            listingDetails={listingDetails}
+            setListingDetails={setListingDetails}
+            db ={db}
+            listingError={listingError}
+            setListingError={setListingError}
+            landlordEmail={renterEmail}
+            ></LandLordsHomePage>}
+          >
+          </Route>
+
           <Route path="/" element={<HomePage></HomePage>}></Route>
           <Route
             path="/login"
