@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="74e9fbe8-59c9-42fd-a3c4-45a858817a21" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/open-react-template" beforeDir="false" afterPath="$PROJECT_DIR$/open-react-template" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-react-template/app/(default)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/open-react-template/app/(default)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-react-template/components/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/open-react-template/components/hero.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-react-template/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-react-template/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-react-template/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-react-template/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/front/src/components/Listings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/components/Listings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/front/src/styles/Listings.css" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/styles/Listings.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/front/src/styles/Navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/styles/Navbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/front/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +44,18 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.30751175",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external"
+  },
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
+    ]
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -57,6 +67,7 @@
       <option name="presentableId" value="Default" />
       <updated>1701638353038</updated>
       <workItem from="1701638361562" duration="331000" />
+      <workItem from="1701917138372" duration="1542000" />
     </task>
     <servers />
   </component>

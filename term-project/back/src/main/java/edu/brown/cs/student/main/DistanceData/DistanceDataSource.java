@@ -25,7 +25,7 @@ public class DistanceDataSource implements DistanceData {
       return null;
     }
 //    urlConnection.setRequestMethod("GET");
-    urlConnection.setRequestProperty("Authorization", "prj_live_sk_1372f831005166889c9bf372c3a33e5bbc3ef230");
+//    urlConnection.setRequestProperty("Authorization", "prj_live_sk_1372f831005166889c9bf372c3a33e5bbc3ef230");
 
     HttpURLConnection clientConnection = (HttpURLConnection) urlConnection;
     clientConnection.connect(); // GET
@@ -49,8 +49,6 @@ public class DistanceDataSource implements DistanceData {
   @Override
   public DistanceApiResponse getDistanceData(
       String selectedLat, String selectedLong, String workLat, String workLong) {
-    // TODO: add conversion of address to coordinates
-    // using additional api => https://api.distancematrix.ai/maps/api/geocode/json?address=196+Sparks+Ave,+Pelham,+NY&key=ZekmasVpQTcj6zGXeIGgn6VlPeQpZ00kUq1vMBVW8a3QFpoDL70IRdvuH5XXTpaj
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<DistanceApiResponse> distanceAdapter = moshi.adapter(DistanceApiResponse.class);
 

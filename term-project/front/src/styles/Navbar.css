@@ -1,11 +1,11 @@
 .navbar {
-  width: 100%;
+  top: 0px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
 
-.navLinks{
+.navLinks {
   display: flex;
   gap: 15%;
 }

@@ -15,16 +15,16 @@ interface RegistrationProps {
   db: firebase.firestore.Firestore;
   error: string;
   setError: Dispatch<SetStateAction<string>>;
-  renterName: string;
-  setRenterName: Dispatch<SetStateAction<string>>;
-  renterEmail: string;
-  setRenterEmail: Dispatch<SetStateAction<string>>;
-  renterPass: string;
-  setRenterPass: Dispatch<SetStateAction<string>>;
-  renterPhone: string;
-  setRenterPhone: Dispatch<SetStateAction<string>>;
-  renterError: string;
-  setRenterError: Dispatch<SetStateAction<string>>;
+  landlordName: string;
+  setLandlordName: Dispatch<SetStateAction<string>>;
+  landlordEmail: string;
+  setLandlordEmail: Dispatch<SetStateAction<string>>;
+  landlordPass: string;
+  setLandlordPass: Dispatch<SetStateAction<string>>;
+  landlordPhone: string;
+  setLandlordPhone: Dispatch<SetStateAction<string>>;
+  landlordError: string;
+  setLandlordError: Dispatch<SetStateAction<string>>;
   adminEmail: string;
   setAdminEmail: Dispatch<SetStateAction<string>>;
   adminPass: string;
@@ -84,35 +84,35 @@ export default function RegistrationPage(props: RegistrationProps) {
       }
   }
 
-  async function handleRenterRegistration(event: React.FormEvent) {
+  async function handleLandlordRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
     // check if user with this email already in db
     const emailExists = await props.db
       .collection("landlords")
-      .where("email", "==", props.renterEmail)
+      .where("email", "==", props.landlordEmail)
       .get()
       .then((querySnapshot) => !querySnapshot.empty);
 
     if (emailExists) {
-      props.setRenterError("User with this email already exists.");
+      props.setLandlordError("User with this email already exists.");
     } else if (
-      !props.renterName ||
-      !props.renterEmail ||
-      !props.renterPass ||
-      !props.renterPhone
+      !props.landlordName ||
+      !props.landlordEmail ||
+      !props.landlordPass ||
+      !props.landlordPhone
     ) {
       // missing input
-      props.setRenterError("Please be sure to input all fields.");
+      props.setLandlordError("Please be sure to input all fields.");
     } else {
       // register successfully
       props.db
         .collection("landlords")
         .add({
           id: props.db.collection("landlords").doc().id, // add a unique id
-          name: props.renterName,
-          email: props.renterEmail,
-          password: props.renterPass,
-          phone: props.renterPhone,
+          name: props.landlordName,
+          email: props.landlordEmail,
+          password: props.landlordPass,
+          phone: props.landlordPhone,
           verified: false,
           listings: []
         })
@@ -122,11 +122,11 @@ export default function RegistrationPage(props: RegistrationProps) {
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
-        props.setRenterPhone("")
-        props.setRenterEmail("")
-        props.setRenterPass("")
-        props.setRenterName("")
-        props.setRenterError("")
+        props.setLandlordPhone("")
+        props.setLandlordEmail("")
+        props.setLandlordPass("")
+        props.setLandlordName("")
+        props.setLandlordError("")
       }
   }
   async function handleAdminRegistration(event: React.FormEvent) {
@@ -231,55 +231,55 @@ export default function RegistrationPage(props: RegistrationProps) {
         </form>
 
         <form
-          className="renter-registration-form"
-          aria-label="You can registration as a renter here"
+          className="landlord-registration-form"
+          aria-label="You can registration as a landlord here"
         >
           <h2>Landlord </h2>
           <label>Landlord Registration </label>
           <input
-            className="renter-name"
+            className="landlord-name"
             aria-label="You can enter your name here"
             placeholder="Enter your name here"
-            value={props.renterName}
-            onChange={(ev) => props.setRenterName(ev.target.value)}
+            value={props.landlordName}
+            onChange={(ev) => props.setLandlordName(ev.target.value)}
           ></input>
           <input
-            className="renter-email"
+            className="landlord-email"
             aria-label="You can enter your email here"
             placeholder="Enter your email here"
-            value={props.renterEmail}
-            onChange={(ev) => props.setRenterEmail(ev.target.value)}
+            value={props.landlordEmail}
+            onChange={(ev) => props.setLandlordEmail(ev.target.value)}
           ></input>
           <input
-            className="renter-password"
+            className="landlord-password"
             aria-label="You can enter your password here"
             placeholder="Enter your password here"
-            value={props.renterPass}
+            value={props.landlordPass}
             type="password"
-            onChange={(ev) => props.setRenterPass(ev.target.value)}
+            onChange={(ev) => props.setLandlordPass(ev.target.value)}
           ></input>
           <input
-            className="renter-phone"
+            className="landlord-phone"
             aria-label="You can enter your phone number here"
             placeholder="Enter your phone number here"
-            value={props.renterPhone}
-            onChange={(ev) => props.setRenterPhone(ev.target.value)}
+            value={props.landlordPhone}
+            onChange={(ev) => props.setLandlordPhone(ev.target.value)}
           ></input>
-          <h3> {props.renterError} </h3>
+          <h3> {props.landlordError} </h3>
           <button
-            className="renter-register-button"
-            onClick={(ev) => handleRenterRegistration(ev)}
+            className="landlord-register-button"
+            onClick={(ev) => handleLandlordRegistration(ev)}
           >
             Register
           </button>
           <button
-            className="demo-renter-registration"
+            className="demo-landlord-registration"
             onClick={(ev) => {
               ev.preventDefault();
-              props.setRenterName("jamari");
-              props.setRenterPhone("123456789");
-              props.setRenterEmail("john@gmail.com");
-              props.setRenterPass("password");
+              props.setLandlordName("jamari");
+              props.setLandlordPhone("123456789");
+              props.setLandlordEmail("john@gmail.com");
+              props.setLandlordPass("password");
             }}
           >
             Demo Registration
