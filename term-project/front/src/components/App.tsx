@@ -60,13 +60,6 @@ function App() {
   
 
 
-
-
-
-
-
-
-
   return (
     <div className="app">
       <BrowserRouter>
@@ -91,7 +84,7 @@ function App() {
             db ={db}
             listingError={listingError}
             setListingError={setListingError}
-            landlordEmail={renterEmail}
+            landlordEmail={landlordEmail}
             ></LandLordsHomePage>}
           >
           </Route>
