@@ -66,22 +66,22 @@ export default function ListingsPage(props: ListingPageProps) {
   const mockListingInfo = [
     {
       id: 1,
-      address: "78 Brown St.",
-      latlong: [42.3355, -71.0457],
+      address: "69 Brown St Providence RI",
+      latlong: [41.826820, -71.402931],
       datePosted: "May 5, 2023",
       url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg",
     },
-    {
-      id: 2,
-      address: "34 Brown St.",
-      latlong: [42.3787, -71.0616],
-      datePosted: "September 5, 2023",
-      url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA4L2pvYjk1MC0xMDctdi5qcGc.jpg",
-    },
+    // {
+    //   id: 2,
+    //   address: "315 Thayer St Providence RI",
+    //   latlong: [42.3787, -71.0616],
+    //   datePosted: "September 5, 2023",
+    //   url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA4L2pvYjk1MC0xMDctdi5qcGc.jpg",
+    // },
     {
       id: 3,
-      address: "46 Caliente Rd.",
-      latlong: [42.3407, -71.0706],
+      address: "200 Meeting St Providence RI",
+      latlong: [41.8274129, -71.3993247],
       datePosted: "January 5, 2023",
       url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcxNy0wNTItdi5qcGc.jpg",
     },
@@ -95,46 +95,69 @@ export default function ListingsPage(props: ListingPageProps) {
       center: [-71.057083, 42.361145],
       zoom: 12,
     });
-
-    const markersPromises = allListings.map(async (listing) => {
-      const popupContent = `
-        <div>
-          <h3>${listing.address}</h3>
-          <p> ${listing.title} </p>
-          <a href="/info/${listing.id}">See More</a>
-        </div>`;
-      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
-
-      try {
-        const coordinateConverted = await getDistance(listing.address);
-        console.log("API RES: ", coordinateConverted);
-        if (coordinateConverted.latitude && coordinateConverted.longitude) {
-          console.log(
-            "found coords!",
-            coordinateConverted.latitude,
-            coordinateConverted.longitude
-          );
-          return new mapboxgl.Marker()
-            .setLngLat([
-              coordinateConverted.latitude,
-              coordinateConverted.longitude,
-            ])
-            .setPopup(popup)
-            .addTo(map);
-        } else {
-          console.log("NO LAT/LONG FIELDS FOUND");
+    // Use the load event to ensure the map is ready
+    map.on("load", () => {
+      allListings.forEach(async (listing) => {
+        const popupContent = `
+          <div>
+            <h3>${listing.address}</h3>
+            <p> ${listing.title} </p>
+            <a href="/info/${listing.id}">See More</a>
+          </div>`;
+        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+  
+        try {
+          const coordinateConverted = await getDistance(listing.address);
+          console.log("API RES: ", coordinateConverted);
+          if (coordinateConverted.latitude && coordinateConverted.longitude) {
+            new mapboxgl.Marker()
+              .setLngLat([
+                coordinateConverted.latitude,
+                coordinateConverted.longitude,
+              ])
+              .setPopup(popup)
+              .addTo(map);
+          } else {
+            console.log("NO LAT/LONG FIELDS FOUND");
+          }
+        } catch (error) {
+          console.error("Error creating marker:", error);
         }
-      } catch (error) {
-        console.error("Error creating marker:", error);
-      }
+      });
+  
+      // Remove the map when the component is unmounted
+      return () => map.remove();
     });
-
-    Promise.all(markersPromises)
-      .then(() => console.log("All markers added to the map"))
-      .catch((error) => console.error("Error adding markers:", error));
-
-    return () => map.remove();
   }, [allListings]);
+
+  // using mock data:
+  // useEffect(() => {
+  //   mapboxgl.accessToken = ACCESS_TOKEN;
+  //   const map = new mapboxgl.Map({
+  //     container: "mapbox",
+  //     style: "mapbox://styles/mapbox/streets-v11",
+  //     center: [-71.057083, 42.361145],
+  //     zoom: 12,
+  //   });
+
+  //   mockListingInfo.forEach((listing) => {
+  //     const popupContent = `
+  //     <div>
+  //       <h3>${listing.address}</h3>
+  //       <p>Date Posted: ${listing.datePosted}</p>
+  //       <a href="/info/${listing.id}">See More</a>
+  //     </div>`;
+  //     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+
+  //     new mapboxgl.Marker()
+  //       .setLngLat([listing.latlong[1], listing.latlong[0]])
+  //       .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
+  //       .addTo(map);
+  //   });
+
+  //   return () => map.remove();
+  // }, [mockListingInfo])
+  
 
   // call server backend to get distance between selected address and student's work address
   async function getDistance(selectedAddress: string): Promise<Coordinate> {

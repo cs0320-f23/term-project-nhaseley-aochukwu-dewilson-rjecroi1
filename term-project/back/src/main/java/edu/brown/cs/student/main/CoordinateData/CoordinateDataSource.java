@@ -55,7 +55,6 @@ public class CoordinateDataSource implements CoordinateData {
                 // Construct the Address-Coordinate Conversion API URL with the given address
                 String apiKey = apiKeys.CONVERSION_API_KEY;
                 String apiUrl = "https://api.distancematrix.ai/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
-
                 requestUrl = new URL(apiUrl);
 //                System.out.println("API URL: "+ requestUrl);
 
