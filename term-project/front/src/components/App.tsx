@@ -84,11 +84,9 @@ function App() {
             db ={db}
             listingError={listingError}
             setListingError={setListingError}
-            landlordEmail={landlordEmail}
+            userLoggedIn={userLoggedIn} landlordEmail={landlordEmail}
             ></LandLordsHomePage>}
-          >
-          </Route>
-
+          ></Route>
           <Route path="/" element={<HomePage></HomePage>}></Route>
           <Route
             path="/login"
@@ -164,7 +162,7 @@ function App() {
           ></Route>
           <Route
             path="/listings"
-            element={<ListingsPage studentAddress={studentAddress} db={db}></ListingsPage>}
+            element={<ListingsPage userLoggedIn={userLoggedIn} studentAddress={studentAddress} db={db} studentEmail={studentEmail}></ListingsPage>}
           ></Route>
           <Route
             path="/admin"
@@ -177,7 +175,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
 export default App;

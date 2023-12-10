@@ -221,7 +221,7 @@ export default function RegistrationPage(props: RegistrationProps) {
             onClick={(ev) => {
               ev.preventDefault();
               props.setStudentName("nya");
-              props.setStudentAddress("sci li coords");
+              props.setStudentAddress("3155 Cedar Lane Boston MA");
               props.setStudentEmail("nya_haseley-ayende@brown.edu");
               props.setStudentPass("password");
             }}
@@ -289,10 +289,10 @@ export default function RegistrationPage(props: RegistrationProps) {
             onClick={(ev) => {
               console.log("Button clicked!");
               ev.preventDefault();
-              props.setRenterName("tessa");
-              props.setRenterPhone("98765432");
-              props.setRenterEmail("tessa@gmail.com");
-              props.setRenterPass("strongPassword");
+              props.setLandlordName("tessa");
+              props.setLandlordPhone("98765432");
+              props.setLandlordEmail("tessa@gmail.com");
+              props.setLandlordPass("strongPassword");
             }}
           >
             Demo Registration #2
