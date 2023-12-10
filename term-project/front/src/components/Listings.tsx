@@ -9,7 +9,7 @@ import firebase from "firebase/compat/app";
 
 import Slider from "@mui/material/Slider";
 function valuetext(value: number) {
-  return `${value}°C`;
+  return `${value} miles`;
 }
 interface ListingPageProps {
   db: firebase.firestore.Firestore;
@@ -33,10 +33,12 @@ interface Listing {
 interface Coordinate {
   latitude: number;
   longitude: number;
+  distance: number;
 }
 
 export default function ListingsPage(props: ListingPageProps) {
   const [allListings, setAllListings] = useState<Listing[]>([]);
+  const [distance, setDistance] = useState<number>(10); // Initial distance value
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -67,7 +69,7 @@ export default function ListingsPage(props: ListingPageProps) {
     {
       id: 1,
       address: "69 Brown St Providence RI",
-      latlong: [41.826820, -71.402931],
+      latlong: [41.82682, -71.402931],
       datePosted: "May 5, 2023",
       url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg",
     },
@@ -105,11 +107,15 @@ export default function ListingsPage(props: ListingPageProps) {
             <a href="/info/${listing.id}">See More</a>
           </div>`;
         const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
-  
+
         try {
           const coordinateConverted = await getDistance(listing.address);
           console.log("API RES: ", coordinateConverted);
-          if (coordinateConverted.latitude && coordinateConverted.longitude) {
+          if (
+            coordinateConverted.latitude &&
+            coordinateConverted.longitude &&
+            coordinateConverted.distance <= distance
+          ) {
             new mapboxgl.Marker()
               .setLngLat([
                 coordinateConverted.latitude,
@@ -124,7 +130,7 @@ export default function ListingsPage(props: ListingPageProps) {
           console.error("Error creating marker:", error);
         }
       });
-  
+
       // Remove the map when the component is unmounted
       return () => map.remove();
     });
@@ -157,7 +163,6 @@ export default function ListingsPage(props: ListingPageProps) {
 
   //   return () => map.remove();
   // }, [mockListingInfo])
-  
 
   // call server backend to get distance between selected address and student's work address
   async function getDistance(selectedAddress: string): Promise<Coordinate> {
@@ -173,14 +178,18 @@ export default function ListingsPage(props: ListingPageProps) {
 
       if (
         result.converted_selected_latitude &&
-        result.converted_selected_longitude
+        result.converted_selected_longitude &&
+        result.distance
       ) {
         return {
           latitude: result.converted_selected_latitude,
           longitude: result.converted_selected_longitude,
+          distance: parseFloat(result.distance),
         };
       } else {
-        throw new Error("Latitude and longitude not found in the response"); // throw?
+        throw new Error(
+          "Could not find distance between selected address and student's work address"
+        ); // throw?
       }
     } catch (error) {
       console.error("Error fetching distance: ", error);
@@ -220,12 +229,14 @@ export default function ListingsPage(props: ListingPageProps) {
             <Slider
               aria-label="Distance"
               defaultValue={30}
+              value={distance}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
               step={10}
               marks
               min={10}
               max={100}
+              onChange={(event, newValue) => setDistance(newValue as number)}
             />
           </Box>
         </div>
