@@ -93,7 +93,7 @@ function App() {
             setListingError={setListingError}
             userLoggedIn={userLoggedIn} landlordEmail={landlordEmail}
             ></LandLordsHomePage>}
-          >
+          ></Route>
           <Route path="/" element={<HomePage></HomePage>}></Route>
           <Route
             path="/login"
@@ -182,7 +182,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
 export default App;

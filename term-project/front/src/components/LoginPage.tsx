@@ -94,6 +94,7 @@ export default function LoginPage(props: LoginProps) {
             value={props.studentPass}
             onChange={(ev) => props.setStudentPass(ev.target.value)}
           ></input>
+          <h3> {props.error} </h3>
 
           <button
             type="submit"
@@ -135,6 +136,8 @@ export default function LoginPage(props: LoginProps) {
             value={props.landlordPass}
             onChange={(ev) => props.setLandlordPass(ev.target.value)}
           ></input>
+          <h3> {props.landlordError} </h3>
+
           <button
             type="submit"
             id="landlord-submit"
@@ -147,7 +150,7 @@ export default function LoginPage(props: LoginProps) {
             onClick={(ev) => {
               ev.preventDefault();
               props.setLandlordEmail("tessa@gmail.com");
-              props.setLandlordPass("password");
+              props.setLandlordPass("strongPassword");
             }}
           >
             Demo Login
@@ -175,6 +178,7 @@ export default function LoginPage(props: LoginProps) {
             value={props.adminPass}
             onChange={(ev) => props.setAdminPass(ev.target.value)}
           ></input>
+          <h3> {props.adminError} </h3>
           <button
             className="admin-login-button"
             onClick={(ev) => handleAdminLogin(ev)}
@@ -229,24 +233,31 @@ export default function LoginPage(props: LoginProps) {
     event.preventDefault();
     const querySnapshot = await props.db
       .collection("landlords")
-      .where("email", "==", props.adminEmail)
+      .where("email", "==", props.landlordEmail)
       .get();
+    console.log("SNAP: ", querySnapshot)
     if (!props.landlordEmail || !props.landlordPass) {
+      console.log("ERROR 1")
       props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {
+      console.log("ERROR 2")
       props.setLandlordError("This landlord does not exist in our database.");
     } // FIGURE OUT LANDLORD VERIFICATION
     else if (querySnapshot.docs[0].data().verified == "false") {
+      console.log("ERROR 3")
       props.setLandlordError("This landlord is not yet verified in our database.");
     } else if (props.landlordPass === querySnapshot.docs[0].data().password) {
       // allow successful login
+      console.log("SUCCESS")
       handleGoogleSignIn();
       props.setUserLoggedIn(true)
+      console.log("props: ", props)
       props.setLandlordName(querySnapshot.docs[0].data().name)
       props.setLandlordPhone(querySnapshot.docs[0].data().phone)
       navigate("/LandLordsHomepage");
     } else {
       // wrong user or password
+      console.log("ERROR 4")
       props.setLandlordError("Invalid login credentials.");
     }
   }

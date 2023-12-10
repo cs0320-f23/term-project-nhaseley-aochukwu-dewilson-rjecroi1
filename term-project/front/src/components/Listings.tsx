@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/Listings.css";
 import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";

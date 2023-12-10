@@ -9,7 +9,10 @@ export default function NavLinks(props: NavLinksProps) {
   return (
     <div className="navLinks">
       {props.userLoggedIn == true ? (
-        <Link className="nav-login" to="/login" onClick={() => props.setUserLoggedIn(false)}>
+        <Link className="nav-login" to="/login" onClick={() => 
+        props.setUserLoggedIn(false)
+        // TODO: set all other fields to their default values
+        }>
         Sign Out
       </Link>
       ) : (
