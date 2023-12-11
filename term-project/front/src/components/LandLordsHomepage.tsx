@@ -27,6 +27,7 @@ interface LandLordsHomepageProps {
   setListingDetails: Dispatch<SetStateAction<string>>;
 
   landlordEmail: string;
+  userLoggedIn: boolean;
 
 }
 
@@ -137,7 +138,14 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
   }
   console.log(postedListings);
 
-  return (
+
+  return !props.userLoggedIn ? (
+    <h2> Please log in. </h2>
+  ) : !props.landlordEmail ? (
+    <h2>
+      Only landlords can have acess to this page. Please log in as a landlord.
+    </h2>
+  ) : (
     <div className="LandLords-HomePage">
       <div className="listings-section">
         <h2>My Listings</h2>
@@ -216,8 +224,8 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
               console.log("Button clicked!");
               ev.preventDefault();
               props.setListingTitle("Modern house");
-              props.setListingURL("someurl/.com");
-              props.setListingAddress("98 poise point ave");
+              props.setListingURL("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg");
+              props.setListingAddress("1 INTERNATIONAL PL STE P110 BOSTON MA");
               props.setListingBedrooms("3");
               props.setListingPrice("5000");
               props.setListingDetails("very strong very sturdy house");
@@ -228,5 +236,5 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
         </form>
       </div>
     </div>
-  );
+  )
 }

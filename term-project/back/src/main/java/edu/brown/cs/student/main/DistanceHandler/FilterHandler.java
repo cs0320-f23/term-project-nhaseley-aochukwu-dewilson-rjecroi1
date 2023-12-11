@@ -59,49 +59,54 @@ public class FilterHandler implements Route {
 
       // Convert address to coordinates in order to use distance API
       CoordinateApiResponse conversionRes = this.coord.getCoordinateData(address);
-      if (conversionRes != null && conversionRes.status.equals("OK")){
-        for (CoordinateApiResponse.Result res : conversionRes.result){
-          if (res.formatted_address.equals("")){
-            responseMap.put("formatted_address", res.formatted_address);
-          }
-          if (res.geometry != null){
-            if (res.geometry.location != null){
-              selectedLat = Double.toString(res.geometry.location.lat);
-              responseMap.put("converted_selected_latitude", res.geometry.location.lat);
-              selectedLong = Double.toString(res.geometry.location.lng);
-              responseMap.put("converted_selected_longitude", res.geometry.location.lng);
+      if (conversionRes != null) {
+        if (conversionRes.status.equals("OK")) {
+          for (CoordinateApiResponse.Result res : conversionRes.result) {
+            if (res.formatted_address.equals("")) {
+              responseMap.put("formatted_address", res.formatted_address);
             }
-          }
+            if (res.geometry != null) {
+              if (res.geometry.location != null) {
+                selectedLat = Double.toString(res.geometry.location.lat);
+                responseMap.put("converted_selected_latitude", res.geometry.location.lat);
+                selectedLong = Double.toString(res.geometry.location.lng);
+                responseMap.put("converted_selected_longitude", res.geometry.location.lng);
+              }
+            }
 
+          }
+        } else if (conversionRes.status.equals("ZERO_RESULTS")) {
+          responseMap.put("error", "GeoCodeAPI failure for selected address: The geocode was successful but returned no results. This may occur if the geocoder was passed a non-existent address.");
+          return mapAdapter.toJson(responseMap); // don't call to the DistanceAPI
+        } else if (conversionRes.status.equals("OVER_DAILY_LIMIT")) {
+          responseMap.put("error", "GeoCodeAPI failure for selected address, either:\n" +
+                  "The API key is missing or invalid.\n" +
+                  "\n" +
+                  "Billing has not been enabled on your account.\n" +
+                  "\n" +
+                  "A self-imposed usage cap has been exceeded.");
+          return mapAdapter.toJson(responseMap);
+        } else if (conversionRes.status.equals("OVER_QUERY_LIMIT")) {
+          responseMap.put("error", "GeoCodeAPI failure for selected address: You are over your quota.");
+          return mapAdapter.toJson(responseMap);
+        } else if (conversionRes.status.equals("REQUEST_DENIED")) {
+          responseMap.put("error", "GeoCodeAPI failure for selected address: Your request was denied.");
+          return mapAdapter.toJson(responseMap);
+        } else if (conversionRes.status.equals("INVALID_REQUEST")) {
+          responseMap.put("error", "GeoCodeAPI failure for selected address: The query (address, components or latlng) is missing.");
+          return mapAdapter.toJson(responseMap);
+        } else if (conversionRes.status.equals("UNKNOWN_ERROR")) {
+          responseMap.put("error", "GeoCodeAPI failure for selected address: The request could not be processed due to a server error. The request may succeed if you try again.");
+          return mapAdapter.toJson(responseMap);
+        } else if (conversionRes.error_message != null) {
+          responseMap.put("error", conversionRes.error_message);
+          return mapAdapter.toJson(responseMap);
+        } else {
+          responseMap.put("error", conversionRes.status + ": Call to GeoCodeAPI failure for selected address. Please check inputs again.");
+          return mapAdapter.toJson(responseMap);
         }
-      } else if (conversionRes.status.equals("ZERO_RESULTS")) {
-        responseMap.put("error", "GeoCodeAPI failure for selected address: The geocode was successful but returned no results. This may occur if the geocoder was passed a non-existent address.");
-        return mapAdapter.toJson(responseMap); // don't call to the DistanceAPI
-      } else if (conversionRes.status.equals("OVER_DAILY_LIMIT")) {
-        responseMap.put("error", "GeoCodeAPI failure for selected address, either:\n" +
-                "The API key is missing or invalid.\n" +
-                "\n" +
-                "Billing has not been enabled on your account.\n" +
-                "\n" +
-                "A self-imposed usage cap has been exceeded.");
-        return mapAdapter.toJson(responseMap);
-      } else if (conversionRes.status.equals("OVER_QUERY_LIMIT")) {
-        responseMap.put("error", "GeoCodeAPI failure for selected address: You are over your quota.");
-        return mapAdapter.toJson(responseMap);
-      } else if (conversionRes.status.equals("REQUEST_DENIED")) {
-        responseMap.put("error", "GeoCodeAPI failure for selected address: Your request was denied.");
-        return mapAdapter.toJson(responseMap);
-      } else if (conversionRes.status.equals("INVALID_REQUEST")) {
-        responseMap.put("error", "GeoCodeAPI failure for selected address: The query (address, components or latlng) is missing.");
-        return mapAdapter.toJson(responseMap);
-      } else if (conversionRes.status.equals("UNKNOWN_ERROR")) {
-        responseMap.put("error", "GeoCodeAPI failure for selected address: The request could not be processed due to a server error. The request may succeed if you try again.");
-        return mapAdapter.toJson(responseMap);
-      } else if (conversionRes.error_message != null){
-        responseMap.put("error", conversionRes.error_message);
-        return mapAdapter.toJson(responseMap);
       } else {
-        responseMap.put("error", conversionRes.status + ": Call to GeoCodeAPI failure for selected address. Please check inputs again.");
+        responseMap.put("error", "Call to GeoCodeAPI failure for selected address. Please check inputs again.");
         return mapAdapter.toJson(responseMap);
       }
 
@@ -116,50 +121,55 @@ public class FilterHandler implements Route {
 
       // Convert work address to coordinates in order to use distance API
       CoordinateApiResponse workConversionRes = this.coord.getCoordinateData(workAddress);
-      if (workConversionRes != null && "OK".equals(workConversionRes.status)){
+      if (workConversionRes != null) {
+        if ("OK".equals(workConversionRes.status)) {
 
-        for (CoordinateApiResponse.Result res : workConversionRes.result){
-          if (res.formatted_address != null){
-            responseMap.put("formatted_work_address", res.formatted_address);
-          }
-          if (res.geometry != null){
-            if (res.geometry.location != null){
-              workLat = Double.toString(res.geometry.location.lat);
-              responseMap.put("converted_work_latitude", res.geometry.location.lat);
-              workLong = Double.toString(res.geometry.location.lng); // TODO: change to double?
-              responseMap.put("converted_work_longitude", res.geometry.location.lng);
+          for (CoordinateApiResponse.Result res : workConversionRes.result) {
+            if (res.formatted_address != null) {
+              responseMap.put("formatted_work_address", res.formatted_address);
             }
-          }
+            if (res.geometry != null) {
+              if (res.geometry.location != null) {
+                workLat = Double.toString(res.geometry.location.lat);
+                responseMap.put("converted_work_latitude", res.geometry.location.lat);
+                workLong = Double.toString(res.geometry.location.lng); // TODO: change to double?
+                responseMap.put("converted_work_longitude", res.geometry.location.lng);
+              }
+            }
 
+          }
+        } else if (workConversionRes.status.equals("ZERO_RESULTS")) {
+          responseMap.put("error", "GeoCodeAPI failure for work address: The geocode was successful but returned no results. This may occur if the geocoder was passed a non-existent address.");
+          return mapAdapter.toJson(responseMap); // don't call to the DistanceAPI
+        } else if (workConversionRes.status.equals("OVER_DAILY_LIMIT")) {
+          responseMap.put("error", "GeoCodeAPI failure for work address, either:\n" +
+                  "The API key is missing or invalid.\n" +
+                  "\n" +
+                  "Billing has not been enabled on your account.\n" +
+                  "\n" +
+                  "A self-imposed usage cap has been exceeded.");
+          return mapAdapter.toJson(responseMap);
+        } else if (workConversionRes.status.equals("OVER_QUERY_LIMIT")) {
+          responseMap.put("error", "GeoCodeAPI failure for work address: You are over your quota.");
+          return mapAdapter.toJson(responseMap);
+        } else if (workConversionRes.status.equals("REQUEST_DENIED")) {
+          responseMap.put("error", "GeoCodeAPI failure for work address: Your request was denied.");
+          return mapAdapter.toJson(responseMap);
+        } else if (workConversionRes.status.equals("INVALID_REQUEST")) {
+          responseMap.put("error", "GeoCodeAPI failure for work address: The query (address, components or latlng) is missing.");
+          return mapAdapter.toJson(responseMap);
+        } else if (workConversionRes.status.equals("UNKNOWN_ERROR")) {
+          responseMap.put("error", "GeoCodeAPI failure for work address: The request could not be processed due to a server error. The request may succeed if you try again.");
+          return mapAdapter.toJson(responseMap);
+        } else if (workConversionRes.error_message != null) {
+          responseMap.put("error", "Call to GeoCodeAPI failure for work address: " + workConversionRes.error_message);
+          return mapAdapter.toJson(responseMap);
+        } else {
+          responseMap.put("error", workConversionRes.status + ": Call to GeoCodeAPI failure for work address. Please check inputs again.");
+          return mapAdapter.toJson(responseMap);
         }
-      } else if (workConversionRes.status.equals("ZERO_RESULTS")) {
-        responseMap.put("error", "GeoCodeAPI failure for work address: The geocode was successful but returned no results. This may occur if the geocoder was passed a non-existent address.");
-        return mapAdapter.toJson(responseMap); // don't call to the DistanceAPI
-      } else if (workConversionRes.status.equals("OVER_DAILY_LIMIT")) {
-        responseMap.put("error", "GeoCodeAPI failure for work address, either:\n" +
-                "The API key is missing or invalid.\n" +
-                "\n" +
-                "Billing has not been enabled on your account.\n" +
-                "\n" +
-                "A self-imposed usage cap has been exceeded.");
-        return mapAdapter.toJson(responseMap);
-      } else if (workConversionRes.status.equals("OVER_QUERY_LIMIT")) {
-        responseMap.put("error", "GeoCodeAPI failure for work address: You are over your quota.");
-        return mapAdapter.toJson(responseMap);
-      } else if (workConversionRes.status.equals("REQUEST_DENIED")) {
-        responseMap.put("error", "GeoCodeAPI failure for work address: Your request was denied.");
-        return mapAdapter.toJson(responseMap);
-      } else if (workConversionRes.status.equals("INVALID_REQUEST")) {
-        responseMap.put("error", "GeoCodeAPI failure for work address: The query (address, components or latlng) is missing.");
-        return mapAdapter.toJson(responseMap);
-      } else if (workConversionRes.status.equals("UNKNOWN_ERROR")) {
-        responseMap.put("error", "GeoCodeAPI failure for work address: The request could not be processed due to a server error. The request may succeed if you try again.");
-        return mapAdapter.toJson(responseMap);
-      } else if (workConversionRes.error_message != null){
-        responseMap.put("error", "Call to GeoCodeAPI failure for work address: " + workConversionRes.error_message);
-        return mapAdapter.toJson(responseMap);
       } else {
-        responseMap.put("error", workConversionRes.status + ": Call to GeoCodeAPI failure for work address. Please check inputs again.");
+        responseMap.put("error", "Call to GeoCodeAPI failure for work address. Please check inputs again.");
         return mapAdapter.toJson(responseMap);
       }
 
