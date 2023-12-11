@@ -1,8 +1,7 @@
-export default function HomePage(){
-    return (
-        <div className="HomePage">
-        <h1>Project Name</h1>
-        </div>
-
-    )
+export default function HomePage() {
+  return (
+    <div className="HomePage">
+      <h1>Brown Intern Summer Housing - Boston</h1>
+    </div>
+  );
 }
