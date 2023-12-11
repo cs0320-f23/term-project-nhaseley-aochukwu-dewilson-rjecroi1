@@ -66,14 +66,14 @@ export default function LoginPage(props: LoginProps) {
       gapi.load("auth2", () => {
         gapi.auth2
           .init({
-            client_id: "Y642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
-            scope: "profile email", // specify the scopes you need. what does this mean
+            client_id: "642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
+            scope: "https://www.googleapis.com/auth/cloud-platform.read-only", // specify the scopes you need
           })
           .then(() => {
             const authInstance = gapi.auth2.getAuthInstance();
             resolve(authInstance);
           })
-          .catch((error: any) => {
+          .catch((error) => {
             reject(error);
           });
       });
