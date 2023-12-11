@@ -63,7 +63,7 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
-        <Navbar userLoggedIn ={userLoggedIn} setUserLoggedIn={setUserLoggedIn}></Navbar>
+        <Navbar userLoggedIn ={userLoggedIn} setUserLoggedIn={setUserLoggedIn} adminEmail={adminEmail}></Navbar>
         <Routes>
           <Route
             path="/LandLordsHomepage"
@@ -166,7 +166,7 @@ function App() {
           ></Route>
           <Route
             path="/admin"
-            element={<AdminPage db={db}></AdminPage>}
+            element={<AdminPage db={db} userLoggedIn={userLoggedIn} adminEmail={adminEmail}></AdminPage>}
           ></Route>
           <Route
             path="/info/:id"

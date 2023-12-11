@@ -235,29 +235,22 @@ export default function LoginPage(props: LoginProps) {
       .collection("landlords")
       .where("email", "==", props.landlordEmail)
       .get();
-    console.log("SNAP: ", querySnapshot)
     if (!props.landlordEmail || !props.landlordPass) {
-      console.log("ERROR 1")
       props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {
-      console.log("ERROR 2")
       props.setLandlordError("This landlord does not exist in our database.");
     } // FIGURE OUT LANDLORD VERIFICATION
     else if (querySnapshot.docs[0].data().verified == "false") {
-      console.log("ERROR 3")
       props.setLandlordError("This landlord is not yet verified in our database.");
     } else if (props.landlordPass === querySnapshot.docs[0].data().password) {
       // allow successful login
-      console.log("SUCCESS")
       handleGoogleSignIn();
       props.setUserLoggedIn(true)
-      console.log("props: ", props)
       props.setLandlordName(querySnapshot.docs[0].data().name)
       props.setLandlordPhone(querySnapshot.docs[0].data().phone)
       navigate("/LandLordsHomepage");
     } else {
       // wrong user or password
-      console.log("ERROR 4")
       props.setLandlordError("Invalid login credentials.");
     }
   }

@@ -2,6 +2,6 @@ package edu.brown.cs.student.main.DistanceData.apiKeys;
 
 public class apiKeys {
 
-    public static final String DISTANCE_API_KEY = "drqYDxGybQM2xHitksr5y3JeowjFWQ1JJLbkyAnxmhgLmhySCcMmobz1LWVxnqEd";
-    public static final String CONVERSION_API_KEY = "uEkKuxkkIzENqIvwXYPsFPWpMGXyOe7Kcnq4WOkC1HVjbLDrdKlE37S8wA8fEp22";
+    public static final String DISTANCE_API_KEY = "McWsgWTTLDjeCVr0NECaJkBKhPg59VeALyB88piiK2EvXWzMtxmxbCrLCyVhtu0M";
+    public static final String CONVERSION_API_KEY = "EaxlqLsoOeonrxlqUU843K1vFfdQ18g59zmFf6dNzf0vXC5gqNsqk3qZZBDCvp6z";
 }

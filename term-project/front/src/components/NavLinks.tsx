@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 interface NavLinksProps {
   userLoggedIn: boolean;
   setUserLoggedIn: Dispatch<SetStateAction<boolean>>;
+  adminEmail: string;
 }
 export default function NavLinks(props: NavLinksProps) {
   return (
@@ -29,7 +30,9 @@ export default function NavLinks(props: NavLinksProps) {
       <Link className="nav-landlords-homepage" to="/LandLordsHomepage">
         My Listings
       </Link>
-      {/* TODO: add link for admin page? */}
+      {props.adminEmail ? <Link className="nav-admin-homepage" to="/admin">
+        Admin
+      </Link>: null}
     </div>
   );
 }
