@@ -152,7 +152,8 @@ export default function ListingsPage(props: ListingPageProps) {
       allListings.forEach((listing) => {
         if (
           listing.latitude &&
-          listing.longitude && listing.distance && 
+          listing.longitude &&
+          listing.distance &&
           listing.distance <= distance
         ) {
           const popupContent = `
@@ -177,9 +178,7 @@ export default function ListingsPage(props: ListingPageProps) {
   }, []);
 
   // Call server backend to get distance between selected address and student's work address
-  async function getDistance(
-    selectedAddress: string
-  ): Promise<Coordinate> {
+  async function getDistance(selectedAddress: string): Promise<Coordinate> {
     try {
       const response = await fetch(
         "http://localhost:4500/filter?address=" +
@@ -203,8 +202,8 @@ export default function ListingsPage(props: ListingPageProps) {
       } else {
         return {
           error: result.error,
-          status: result.status
-        }
+          status: result.status,
+        };
       }
     } catch (error) {
       console.error("Error fetching distance: ", error);
