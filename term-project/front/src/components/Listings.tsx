@@ -29,33 +29,69 @@ interface Listing {
   price: string; // TODO: CHANGE TO INT
   title: string;
   // TODO: add date posted on postNewListing?
+  latitude?: number;
+  longitude?: number;
+  distance?: number;
 }
 interface Coordinate {
-  latitude: number;
-  longitude: number;
-  distance: number;
+  latitude?: number;
+  longitude?: number;
+  distance?: number;
+  error?: string;
+  status?: string;
 }
 
 export default function ListingsPage(props: ListingPageProps) {
   const [allListings, setAllListings] = useState<Listing[]>([]);
-  const [distance, setDistance] = useState<number>(50); // Initial distance value
-
+  const [distance, setDistance] = useState<number>(8); // Initial distance value
   useEffect(() => {
     if (!props.studentEmail || !props.userLoggedIn) {
       return;
     }
+
     const fetchListings = async () => {
       try {
         const landlordSnapshot = await props.db.collection("landlords").get();
 
         const allListingsArray: Listing[] = [];
 
-        landlordSnapshot.forEach((landlordDoc) => {
-          const landlordData = landlordDoc.data() as Landlord;
-          const landlordListings = landlordData.listings || [];
+        const fetchDistancePromises = landlordSnapshot.docs.map(
+          async (landlordDoc) => {
+            const landlordData = landlordDoc.data() as Landlord;
+            const landlordListings = landlordData.listings || [];
 
-          allListingsArray.push(...landlordListings);
-        });
+            const listingsWithDistance = await Promise.all(
+              landlordListings.map(async (listing) => {
+                try {
+                  const coordinateConverted = await getDistance(
+                    listing.address
+                  );
+                  if (
+                    coordinateConverted.latitude &&
+                    coordinateConverted.longitude
+                  ) {
+                    return {
+                      ...listing,
+                      latitude: coordinateConverted.latitude,
+                      longitude: coordinateConverted.longitude,
+                      distance: coordinateConverted.distance,
+                    };
+                  } else {
+                    console.log("NO LAT/LONG FIELDS FOUND: ", listing);
+                    return listing; // Keep the original listing if no valid coordinates are found
+                  }
+                } catch (error) {
+                  console.error("Error getting distance for listing:", error);
+                  return listing; // Keep the original listing in case of an error
+                }
+              })
+            );
+
+            allListingsArray.push(...listingsWithDistance);
+          }
+        );
+
+        await Promise.all(fetchDistancePromises);
 
         setAllListings(allListingsArray);
       } catch (error) {
@@ -64,95 +100,43 @@ export default function ListingsPage(props: ListingPageProps) {
     };
 
     fetchListings();
-  }, []);
+  }, [props.db, props.studentEmail, props.userLoggedIn, distance]);
 
   console.log("ALL LISTINGS: ", allListings);
 
   const mockListingInfo = [
     {
       id: 1,
-      address: "69 Brown St Providence RI",
-      lat: 42.3428822,
-      long: -71.0835029,
+      address: "170 TREMONT ST STE 1 BOSTON MA",
+      lat: 42.353656699999995,
+      long: -71.06385039999999,
       datePosted: "May 5, 2023",
-      distance: 100,
+      distance: 1.1,
       imgUrl:
         "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg",
     },
     {
       id: 2,
-      address: "315 Thayer St Providence RI",
-      lat: 42.353656699999995,
-      long: -71.06385039999999,
+      address: "98 SALEM ST BOSTON MA",
+      lat: 42.36402799999999,
+      long: -71.055697,
       datePosted: "September 5, 2023",
-      distance: 2,
+      distance: 0.7,
       imgUrl:
         "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA4L2pvYjk1MC0xMDctdi5qcGc.jpg",
     },
     {
       id: 3,
-      address: "200 Meeting St Providence RI",
-      lat: 42.365689499999995,
-      long: -71.0567858,
+      address: "196 Sparks Ave Pelham NY",
+      lat: 40.908732400000005,
+      long: -73.8118781,
       datePosted: "January 5, 2023",
-      distance: 0.5,
+      distance: 195.4,
       imgUrl:
         "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcxNy0wNTItdi5qcGc.jpg",
     },
   ];
 
-  // useEffect(() => {
-  //   if (!props.studentEmail || !props.userLoggedIn){
-  //     return
-  //   }
-  //   mapboxgl.accessToken = ACCESS_TOKEN;
-  //   const map = new mapboxgl.Map({
-  //     container: "mapbox",
-  //     style: "mapbox://styles/mapbox/streets-v11",
-  //     center: [-71.057083, 42.361145],
-  //     zoom: 12,
-  //   });
-  //   // Use the load event to ensure the map is ready - hard code coordinates once sent from backend
-  //   map.on("load", () => {
-  //     allListings.forEach(async (listing) => {
-  //       const popupContent = `
-  //         <div>
-  //           <h3>${listing.address}</h3>
-  //           <p> ${listing.title} </p>
-  //           <a href="/info/${listing.id}">See More</a>
-  //         </div>`;
-  //       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
-
-  //       try {
-  //         const coordinateConverted = await getDistance(listing.address);
-  //         console.log("API RES: ", coordinateConverted);
-  //         if (
-  //           coordinateConverted.latitude &&
-  //           coordinateConverted.longitude &&
-  //           coordinateConverted.distance <= distance
-  //         ) {
-  //           new mapboxgl.Marker()
-  //             .setLngLat([
-  //               coordinateConverted.latitude,
-  //               coordinateConverted.longitude,
-  //             ])
-
-  //             .setPopup(popup)
-  //             .addTo(map);
-  //         } else {
-  //           console.log("NO LAT/LONG FIELDS FOUND");
-  //         }
-  //       } catch (error) {
-  //         console.error("Error creating marker:", error);
-  //       }
-  //     });
-
-  //     // Remove the map when the component is unmounted
-  //     return () => map.remove();
-  //   });
-  // }, [allListings, distance]);
-
-  // using mock data:
   useEffect(() => {
     if (!props.studentEmail || !props.userLoggedIn) {
       return;
@@ -164,29 +148,38 @@ export default function ListingsPage(props: ListingPageProps) {
       center: [-71.057083, 42.361145],
       zoom: 12,
     });
+    map.on("load", () => {
+      allListings.forEach((listing) => {
+        if (
+          listing.latitude &&
+          listing.longitude && listing.distance && 
+          listing.distance <= distance
+        ) {
+          const popupContent = `
+        <div>
+             <h3>${listing.address}</h3>
+              <p> ${listing.title} </p>
+              <a href="/info/${listing.id}">See More</a>
+        </div>`;
+          const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+            popupContent
+          );
 
-    mockListingInfo.forEach((listing) => {
-      if (listing.lat && listing.long && listing.distance <= distance) {
-        const popupContent = `
-      <div>
-        <h3>${listing.address}</h3>
-        <p>Date Posted: ${listing.datePosted}</p>
-        <a href="/info/${listing.id}">See More</a>
-      </div>`;
-        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+          new mapboxgl.Marker()
+            .setLngLat([listing.longitude, listing.latitude])
+            .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
+            .addTo(map);
+        }
+      });
 
-        new mapboxgl.Marker()
-          .setLngLat([listing.long, listing.lat])
-          .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
-          .addTo(map);
-      }
+      return () => map.remove();
     });
+  }, []);
 
-    return () => map.remove();
-  }, [mockListingInfo]);
-
-  // call server backend to get distance between selected address and student's work address
-  async function getDistance(selectedAddress: string): Promise<Coordinate> {
+  // Call server backend to get distance between selected address and student's work address
+  async function getDistance(
+    selectedAddress: string
+  ): Promise<Coordinate> {
     try {
       const response = await fetch(
         "http://localhost:4500/filter?address=" +
@@ -208,9 +201,10 @@ export default function ListingsPage(props: ListingPageProps) {
           distance: parseFloat(result.distance),
         };
       } else {
-        throw new Error(
-          "Could not find distance between selected address and student's work address"
-        ); // throw?
+        return {
+          error: result.error,
+          status: result.status
+        }
       }
     } catch (error) {
       console.error("Error fetching distance: ", error);
@@ -229,15 +223,20 @@ export default function ListingsPage(props: ListingPageProps) {
       <div id="listings-page">
         <div id="mapbox" className="map"></div>
         <div className="row">
-          {mockListingInfo.map((listing) =>
-            listing.distance <= distance ? (
-              <div key={listing.id} className="listing-info">
-                <Link to={`/info/${listing.id}`}>
-                  <img src={listing.imgUrl} alt={`Listing for ${listing.id}`} />
-                </Link>
-                <p>Address: {listing.address}</p>
-                {/* <p>Date Posted: {listing.datePosted}</p> */}
-              </div>
+          {allListings.map((listing) =>
+            listing.distance ? (
+              listing.distance <= distance ? (
+                <div key={listing.id} className="listing-info">
+                  <Link to={`/info/${listing.id}`}>
+                    <img
+                      src={listing.imgUrl}
+                      alt={`Listing for ${listing.id}`}
+                    />
+                  </Link>
+                  <p>Address: {listing.address}</p>
+                  {/* <p>Date Posted: {listing.datePosted}</p> */}
+                </div>
+              ) : null
             ) : null
           )}
         </div>
@@ -251,14 +250,13 @@ export default function ListingsPage(props: ListingPageProps) {
           >
             <Slider
               aria-label="Distance"
-              defaultValue={30}
               value={distance}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
-              step={10}
+              step={3}
               marks
-              min={10}
-              max={100}
+              min={0}
+              max={20}
               onChange={(event, newValue) => setDistance(newValue as number)}
             />
           </Box>
