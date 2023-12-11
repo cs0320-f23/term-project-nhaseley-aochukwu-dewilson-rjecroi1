@@ -287,7 +287,6 @@ export default function RegistrationPage(props: RegistrationProps) {
           <button
             className="demo-landlord-registration-for-listing-test"
             onClick={(ev) => {
-              console.log("Button clicked!");
               ev.preventDefault();
               props.setLandlordName("tessa");
               props.setLandlordPhone("98765432");

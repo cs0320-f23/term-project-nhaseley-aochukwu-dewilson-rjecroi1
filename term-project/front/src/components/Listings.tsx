@@ -38,9 +38,12 @@ interface Coordinate {
 
 export default function ListingsPage(props: ListingPageProps) {
   const [allListings, setAllListings] = useState<Listing[]>([]);
-  const [distance, setDistance] = useState<number>(10); // Initial distance value
+  const [distance, setDistance] = useState<number>(50); // Initial distance value
 
   useEffect(() => {
+    if (!props.studentEmail || !props.userLoggedIn) {
+      return;
+    }
     const fetchListings = async () => {
       try {
         const landlordSnapshot = await props.db.collection("landlords").get();
@@ -69,75 +72,39 @@ export default function ListingsPage(props: ListingPageProps) {
     {
       id: 1,
       address: "69 Brown St Providence RI",
-      latlong: [41.82682, -71.402931],
+      lat: 42.3428822,
+      long: -71.0835029,
       datePosted: "May 5, 2023",
-      url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg",
+      distance: 100,
+      imgUrl:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg",
     },
-    // {
-    //   id: 2,
-    //   address: "315 Thayer St Providence RI",
-    //   latlong: [42.3787, -71.0616],
-    //   datePosted: "September 5, 2023",
-    //   url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA4L2pvYjk1MC0xMDctdi5qcGc.jpg",
-    // },
+    {
+      id: 2,
+      address: "315 Thayer St Providence RI",
+      lat: 42.353656699999995,
+      long: -71.06385039999999,
+      datePosted: "September 5, 2023",
+      distance: 2,
+      imgUrl:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA4L2pvYjk1MC0xMDctdi5qcGc.jpg",
+    },
     {
       id: 3,
       address: "200 Meeting St Providence RI",
-      latlong: [41.8274129, -71.3993247],
+      lat: 42.365689499999995,
+      long: -71.0567858,
       datePosted: "January 5, 2023",
-      url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcxNy0wNTItdi5qcGc.jpg",
+      distance: 0.5,
+      imgUrl:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcxNy0wNTItdi5qcGc.jpg",
     },
   ];
 
-  useEffect(() => {
-    mapboxgl.accessToken = ACCESS_TOKEN;
-    const map = new mapboxgl.Map({
-      container: "mapbox",
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [-71.057083, 42.361145],
-      zoom: 12,
-    });
-    // Use the load event to ensure the map is ready
-    map.on("load", () => {
-      allListings.forEach(async (listing) => {
-        const popupContent = `
-          <div>
-            <h3>${listing.address}</h3>
-            <p> ${listing.title} </p>
-            <a href="/info/${listing.id}">See More</a>
-          </div>`;
-        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
-
-        try {
-          const coordinateConverted = await getDistance(listing.address);
-          console.log("API RES: ", coordinateConverted);
-          if (
-            coordinateConverted.latitude &&
-            coordinateConverted.longitude &&
-            coordinateConverted.distance <= distance
-          ) {
-            new mapboxgl.Marker()
-              .setLngLat([
-                coordinateConverted.latitude,
-                coordinateConverted.longitude,
-              ])
-              .setPopup(popup)
-              .addTo(map);
-          } else {
-            console.log("NO LAT/LONG FIELDS FOUND");
-          }
-        } catch (error) {
-          console.error("Error creating marker:", error);
-        }
-      });
-
-      // Remove the map when the component is unmounted
-      return () => map.remove();
-    });
-  }, [allListings]);
-
-  // using mock data:
   // useEffect(() => {
+  //   if (!props.studentEmail || !props.userLoggedIn){
+  //     return
+  //   }
   //   mapboxgl.accessToken = ACCESS_TOKEN;
   //   const map = new mapboxgl.Map({
   //     container: "mapbox",
@@ -145,24 +112,78 @@ export default function ListingsPage(props: ListingPageProps) {
   //     center: [-71.057083, 42.361145],
   //     zoom: 12,
   //   });
+  //   // Use the load event to ensure the map is ready - hard code coordinates once sent from backend
+  //   map.on("load", () => {
+  //     allListings.forEach(async (listing) => {
+  //       const popupContent = `
+  //         <div>
+  //           <h3>${listing.address}</h3>
+  //           <p> ${listing.title} </p>
+  //           <a href="/info/${listing.id}">See More</a>
+  //         </div>`;
+  //       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
 
-  //   mockListingInfo.forEach((listing) => {
-  //     const popupContent = `
-  //     <div>
-  //       <h3>${listing.address}</h3>
-  //       <p>Date Posted: ${listing.datePosted}</p>
-  //       <a href="/info/${listing.id}">See More</a>
-  //     </div>`;
-  //     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+  //       try {
+  //         const coordinateConverted = await getDistance(listing.address);
+  //         console.log("API RES: ", coordinateConverted);
+  //         if (
+  //           coordinateConverted.latitude &&
+  //           coordinateConverted.longitude &&
+  //           coordinateConverted.distance <= distance
+  //         ) {
+  //           new mapboxgl.Marker()
+  //             .setLngLat([
+  //               coordinateConverted.latitude,
+  //               coordinateConverted.longitude,
+  //             ])
 
-  //     new mapboxgl.Marker()
-  //       .setLngLat([listing.latlong[1], listing.latlong[0]])
-  //       .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
-  //       .addTo(map);
+  //             .setPopup(popup)
+  //             .addTo(map);
+  //         } else {
+  //           console.log("NO LAT/LONG FIELDS FOUND");
+  //         }
+  //       } catch (error) {
+  //         console.error("Error creating marker:", error);
+  //       }
+  //     });
+
+  //     // Remove the map when the component is unmounted
+  //     return () => map.remove();
   //   });
+  // }, [allListings, distance]);
 
-  //   return () => map.remove();
-  // }, [mockListingInfo])
+  // using mock data:
+  useEffect(() => {
+    if (!props.studentEmail || !props.userLoggedIn) {
+      return;
+    }
+    mapboxgl.accessToken = ACCESS_TOKEN;
+    const map = new mapboxgl.Map({
+      container: "mapbox",
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [-71.057083, 42.361145],
+      zoom: 12,
+    });
+
+    mockListingInfo.forEach((listing) => {
+      if (listing.lat && listing.long && listing.distance <= distance) {
+        const popupContent = `
+      <div>
+        <h3>${listing.address}</h3>
+        <p>Date Posted: ${listing.datePosted}</p>
+        <a href="/info/${listing.id}">See More</a>
+      </div>`;
+        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+
+        new mapboxgl.Marker()
+          .setLngLat([listing.long, listing.lat])
+          .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
+          .addTo(map);
+      }
+    });
+
+    return () => map.remove();
+  }, [mockListingInfo]);
 
   // call server backend to get distance between selected address and student's work address
   async function getDistance(selectedAddress: string): Promise<Coordinate> {
@@ -208,15 +229,17 @@ export default function ListingsPage(props: ListingPageProps) {
       <div id="listings-page">
         <div id="mapbox" className="map"></div>
         <div className="row">
-          {allListings.map((listing) => (
-            <div key={listing.id} className="listing-info">
-              <Link to={`/info/${listing.id}`}>
-                <img src={listing.imgUrl} alt={`Listing for ${listing.id}`} />
-              </Link>
-              <p>Address: {listing.address}</p>
-              {/* <p>Date Posted: {listing.datePosted}</p> */}
-            </div>
-          ))}
+          {mockListingInfo.map((listing) =>
+            listing.distance <= distance ? (
+              <div key={listing.id} className="listing-info">
+                <Link to={`/info/${listing.id}`}>
+                  <img src={listing.imgUrl} alt={`Listing for ${listing.id}`} />
+                </Link>
+                <p>Address: {listing.address}</p>
+                {/* <p>Date Posted: {listing.datePosted}</p> */}
+              </div>
+            ) : null
+          )}
         </div>
 
         {/* SideBar */}
