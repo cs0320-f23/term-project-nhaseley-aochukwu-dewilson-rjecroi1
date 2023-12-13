@@ -5,6 +5,7 @@ import "../styles/Navbar.css";
 interface NavBarProps {
   userLoggedIn: boolean;
   setUserLoggedIn: Dispatch<SetStateAction<boolean>>;
+  adminEmail: string;
 }
 
 export default function Navbar(props: NavBarProps) {
@@ -13,7 +14,7 @@ export default function Navbar(props: NavBarProps) {
       <Link className="nav-home" to="/">
         Home
       </Link>
-      <NavLinks userLoggedIn={props.userLoggedIn} setUserLoggedIn={props.setUserLoggedIn}></NavLinks>
+      <NavLinks userLoggedIn={props.userLoggedIn} setUserLoggedIn={props.setUserLoggedIn} adminEmail={props.adminEmail}></NavLinks>
     </div>
   );
 }

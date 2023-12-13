@@ -10,7 +10,7 @@ import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 
 function valuetext(value: number) {
-  return `${value}°C`;
+  return `${value} miles`;
 }
 interface ListingPageProps {
   db: firebase.firestore.Firestore;
@@ -30,28 +30,69 @@ interface Listing {
   price: string; // TODO: CHANGE TO INT
   title: string;
   // TODO: add date posted on postNewListing?
+  latitude?: number;
+  longitude?: number;
+  distance?: number;
 }
 interface Coordinate {
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
+  distance?: number;
+  error?: string;
+  status?: string;
 }
 
 export default function ListingsPage(props: ListingPageProps) {
   const [allListings, setAllListings] = useState<Listing[]>([]);
-
+  const [distance, setDistance] = useState<number>(8); // Initial distance value
   useEffect(() => {
+    if (!props.studentEmail || !props.userLoggedIn) {
+      return;
+    }
+
     const fetchListings = async () => {
       try {
         const landlordSnapshot = await props.db.collection("landlords").get();
 
         const allListingsArray: Listing[] = [];
 
-        landlordSnapshot.forEach((landlordDoc) => {
-          const landlordData = landlordDoc.data() as Landlord;
-          const landlordListings = landlordData.listings || [];
+        const fetchDistancePromises = landlordSnapshot.docs.map(
+          async (landlordDoc) => {
+            const landlordData = landlordDoc.data() as Landlord;
+            const landlordListings = landlordData.listings || [];
 
-          allListingsArray.push(...landlordListings);
-        });
+            const listingsWithDistance = await Promise.all(
+              landlordListings.map(async (listing) => {
+                try {
+                  const coordinateConverted = await getDistance(
+                    listing.address
+                  );
+                  if (
+                    coordinateConverted.latitude &&
+                    coordinateConverted.longitude
+                  ) {
+                    return {
+                      ...listing,
+                      latitude: coordinateConverted.latitude,
+                      longitude: coordinateConverted.longitude,
+                      distance: coordinateConverted.distance,
+                    };
+                  } else {
+                    console.log("NO LAT/LONG FIELDS FOUND: ", listing);
+                    return listing; // Keep the original listing if no valid coordinates are found
+                  }
+                } catch (error) {
+                  console.error("Error getting distance for listing:", error);
+                  return listing; // Keep the original listing in case of an error
+                }
+              })
+            );
+
+            allListingsArray.push(...listingsWithDistance);
+          }
+        );
+
+        await Promise.all(fetchDistancePromises);
 
         setAllListings(allListingsArray);
       } catch (error) {
@@ -60,31 +101,40 @@ export default function ListingsPage(props: ListingPageProps) {
     };
 
     fetchListings();
-  }, []);
+  }, [props.db, props.studentEmail, props.userLoggedIn, distance]);
 
   console.log("ALL LISTINGS: ", allListings);
 
   const mockListingInfo = [
     {
       id: 1,
-      address: "69 Brown St Providence RI",
-      latlong: [41.82682, -71.402931],
+      address: "170 TREMONT ST STE 1 BOSTON MA",
+      lat: 42.353656699999995,
+      long: -71.06385039999999,
       datePosted: "May 5, 2023",
-      url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg",
+      distance: 1.1,
+      imgUrl:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg",
     },
-    // {
-    //   id: 2,
-    //   address: "315 Thayer St Providence RI",
-    //   latlong: [42.3787, -71.0616],
-    //   datePosted: "September 5, 2023",
-    //   url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA4L2pvYjk1MC0xMDctdi5qcGc.jpg",
-    // },
+    {
+      id: 2,
+      address: "98 SALEM ST BOSTON MA",
+      lat: 42.36402799999999,
+      long: -71.055697,
+      datePosted: "September 5, 2023",
+      distance: 0.7,
+      imgUrl:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA4L2pvYjk1MC0xMDctdi5qcGc.jpg",
+    },
     {
       id: 3,
-      address: "200 Meeting St Providence RI",
-      latlong: [41.8274129, -71.3993247],
+      address: "196 Sparks Ave Pelham NY",
+      lat: 40.908732400000005,
+      long: -73.8118781,
       datePosted: "January 5, 2023",
-      url: "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcxNy0wNTItdi5qcGc.jpg",
+      distance: 195.4,
+      imgUrl:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcxNy0wNTItdi5qcGc.jpg",
     },
   ];
 
@@ -95,6 +145,9 @@ export default function ListingsPage(props: ListingPageProps) {
   };
 
   useEffect(() => {
+    if (!props.studentEmail || !props.userLoggedIn) {
+      return;
+    }
     mapboxgl.accessToken = ACCESS_TOKEN;
     const map = new mapboxgl.Map({
       container: "mapbox",
@@ -102,70 +155,36 @@ export default function ListingsPage(props: ListingPageProps) {
       center: [-71.057083, 42.361145],
       zoom: 12,
     });
-    // Use the load event to ensure the map is ready
     map.on("load", () => {
-      allListings.forEach(async (listing) => {
-        const popupContent = `
-          <div>
-            <h3>${listing.address}</h3>
-            <p> ${listing.title} </p>
-            <a href="/info/${listing.id}">See More</a>
-          </div>`;
-        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+      allListings.forEach((listing) => {
+        if (
+          listing.latitude &&
+          listing.longitude &&
+          listing.distance &&
+          listing.distance <= distance
+        ) {
+          const popupContent = `
+        <div>
+             <h3>${listing.address}</h3>
+              <p> ${listing.title} </p>
+              <a href="/info/${listing.id}">See More</a>
+        </div>`;
+          const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+            popupContent
+          );
 
-        try {
-          const coordinateConverted = await getDistance(listing.address);
-          console.log("API RES: ", coordinateConverted);
-          if (coordinateConverted.latitude && coordinateConverted.longitude) {
-            new mapboxgl.Marker()
-              .setLngLat([
-                coordinateConverted.latitude,
-                coordinateConverted.longitude,
-              ])
-              .setPopup(popup)
-              .addTo(map);
-          } else {
-            console.log("NO LAT/LONG FIELDS FOUND");
-          }
-        } catch (error) {
-          console.error("Error creating marker:", error);
+          new mapboxgl.Marker()
+            .setLngLat([listing.longitude, listing.latitude])
+            .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
+            .addTo(map);
         }
       });
 
-      // Remove the map when the component is unmounted
       return () => map.remove();
     });
-  }, [allListings]);
+  }, []);
 
-  // using mock data:
-  // useEffect(() => {
-  //   mapboxgl.accessToken = ACCESS_TOKEN;
-  //   const map = new mapboxgl.Map({
-  //     container: "mapbox",
-  //     style: "mapbox://styles/mapbox/streets-v11",
-  //     center: [-71.057083, 42.361145],
-  //     zoom: 12,
-  //   });
-
-  //   mockListingInfo.forEach((listing) => {
-  //     const popupContent = `
-  //     <div>
-  //       <h3>${listing.address}</h3>
-  //       <p>Date Posted: ${listing.datePosted}</p>
-  //       <a href="/info/${listing.id}">See More</a>
-  //     </div>`;
-  //     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
-
-  //     new mapboxgl.Marker()
-  //       .setLngLat([listing.latlong[1], listing.latlong[0]])
-  //       .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
-  //       .addTo(map);
-  //   });
-
-  //   return () => map.remove();
-  // }, [mockListingInfo])
-
-  // call server backend to get distance between selected address and student's work address
+  // Call server backend to get distance between selected address and student's work address
   async function getDistance(selectedAddress: string): Promise<Coordinate> {
     try {
       const response = await fetch(
@@ -179,14 +198,19 @@ export default function ListingsPage(props: ListingPageProps) {
 
       if (
         result.converted_selected_latitude &&
-        result.converted_selected_longitude
+        result.converted_selected_longitude &&
+        result.distance
       ) {
         return {
           latitude: result.converted_selected_latitude,
           longitude: result.converted_selected_longitude,
+          distance: parseFloat(result.distance),
         };
       } else {
-        throw new Error("Latitude and longitude not found in the response"); // throw?
+        return {
+          error: result.error,
+          status: result.status,
+        };
       }
     } catch (error) {
       console.error("Error fetching distance: ", error);
@@ -205,15 +229,22 @@ export default function ListingsPage(props: ListingPageProps) {
       <div id="listings-page">
         <div id="mapbox" className="map"></div>
         <div className="row">
-          {allListings.map((listing) => (
-            <div key={listing.id} className="listing-info">
-              <Link to={`/info/${listing.id}`}>
-                <img src={listing.imgUrl} alt={`Listing for ${listing.id}`} />
-              </Link>
-              <p>Address: {listing.address}</p>
-              {/* <p>Date Posted: {listing.datePosted}</p> */}
-            </div>
-          ))}
+          {allListings.map((listing) =>
+            listing.distance ? (
+              listing.distance <= distance ? (
+                <div key={listing.id} className="listing-info">
+                  <Link to={`/info/${listing.id}`}>
+                    <img
+                      src={listing.imgUrl}
+                      alt={`Listing for ${listing.id}`}
+                    />
+                  </Link>
+                  <p>Address: {listing.address}</p>
+                  {/* <p>Date Posted: {listing.datePosted}</p> */}
+                </div>
+              ) : null
+            ) : null
+          )}
         </div>
 
         {/* SideBar */}
@@ -225,13 +256,14 @@ export default function ListingsPage(props: ListingPageProps) {
           >
             <Slider
               aria-label="Distance"
-              defaultValue={30}
+              value={distance}
               getAriaValueText={valuetext}
               valueLabelDisplay="auto"
-              step={10}
+              step={3}
               marks
-              min={10}
-              max={100}
+              min={0}
+              max={20}
+              onChange={(event, newValue) => setDistance(newValue as number)}
             />
           </Box>
         </div>

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 interface AdminProps {
   db: firebase.firestore.Firestore;
+  userLoggedIn: boolean;
+  adminEmail: string;
 }
 
 interface User {
@@ -97,7 +99,13 @@ function verifyLandlord(email: string) {
         console.error("Error updating email: ", error);
       });
   }
-  return (
+  return !props.userLoggedIn ? (
+    <h2> Please log in. </h2>
+  ) : !props.adminEmail ? (
+    <h2>
+      Only admin can have acess to this page. Please log in as an admin.
+    </h2>
+  ) : (
     <div className="admin-page">
       this is the admin page!
       <div className="all-interns">
