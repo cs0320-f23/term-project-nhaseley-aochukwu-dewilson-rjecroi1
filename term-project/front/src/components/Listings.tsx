@@ -44,6 +44,7 @@ interface Coordinate {
 export default function ListingsPage(props: ListingPageProps) {
   const [allListings, setAllListings] = useState<Listing[]>([]);
   const [distance, setDistance] = useState<number>(8); // Initial distance value
+  const [price, setPrice] = useState<number>(1000); // Initial distance value
   useEffect(() => {
     if (!props.studentEmail || !props.userLoggedIn) {
       return;
@@ -165,7 +166,7 @@ export default function ListingsPage(props: ListingPageProps) {
           const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
             popupContent
           );
-
+ 
           new mapboxgl.Marker()
             .setLngLat([listing.longitude, listing.latitude])
             .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
@@ -223,15 +224,15 @@ export default function ListingsPage(props: ListingPageProps) {
         <div id="mapbox" className="map"></div>
         <div className="row">
           {allListings.map((listing) =>
-            listing.distance ? (
-              listing.distance <= distance ? (
+            listing.distance && listing.price ? (
+              listing.distance <= distance && parseFloat(listing.price) <= price ? (
                 <div key={listing.id} className="listing-info">
                   <Link to={`/info/${listing.id}`}>
                     <img
                       src={listing.imgUrl}
                       alt={`Listing for ${listing.id}`}
                     />
-                  </Link>
+                  </Link> 
                   <p>Address: {listing.address}</p>
                   {/* <p>Date Posted: {listing.datePosted}</p> */}
                 </div>
@@ -242,23 +243,44 @@ export default function ListingsPage(props: ListingPageProps) {
 
         {/* SideBar */}
         <div className="sidenav">
-          <label>Distance</label>
-          <Box
-            className="slider"
-            sx={{ width: 250, margin: "10px 0", color: "grey" }}
-          >
-            <Slider
-              aria-label="Distance"
-              value={distance}
-              getAriaValueText={valuetext}
-              valueLabelDisplay="auto"
-              step={3}
-              marks
-              min={0}
-              max={20}
-              onChange={(event, newValue) => setDistance(newValue as number)}
-            />
-          </Box>
+          <div className="distance-slider">
+            <label>Distance</label>
+            <Box
+              className="slider"
+              sx={{ width: 250, margin: "10px 0", color: "grey" }}
+            >
+              <Slider
+                aria-label="Distance"
+                value={distance}
+                getAriaValueText={valuetext}
+                valueLabelDisplay="auto"
+                step={3}
+                marks
+                min={0}
+                max={20}
+                onChange={(event, newValue) => setDistance(newValue as number)}
+              />
+            </Box>
+          </div>
+          <div className="price-slider">
+            <label>Price</label>
+            <Box
+              className="slider"
+              sx={{ width: 250, margin: "10px 0", color: "grey" }}
+            > 
+              <Slider
+                aria-label="Price"
+                value={price}
+                getAriaValueText={valuetext}
+                valueLabelDisplay="auto"
+                step={100}
+                marks
+                min={0}
+                max={3500}
+                onChange={(event, newValue) => setPrice(newValue as number)}
+              />
+            </Box>
+          </div>
         </div>
       </div>
     </div>
