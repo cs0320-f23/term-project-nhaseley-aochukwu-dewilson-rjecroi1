@@ -90,16 +90,61 @@ public class FilterUnitTest {
     }
 
     /**
-     * Unit testing for finding distance between 2 lat/long coordinates with an missing entry
+     * Unit testing for finding distance between 2 lat/long coordinates with a missing latitude entry in selected address
      */
     @Test
-    public void testInvalidInputDistance() {
+    public void testMissingSelectedLatDistance() {
         DistanceDataSource filterer = new DistanceDataSource();
-        DistanceApiResponse body = filterer.getDistanceData("", "-71.0567859", "42.3560387", "-71.052138");
+        DistanceApiResponse body = filterer.getDistanceData("42.3587053", "", "42.3560387", "-71.052138");
         assertEquals(null, body.rows.get(0).elements.get(0).distance);
         assertEquals(null, body.rows.get(0).elements.get(0).duration);
         assertEquals("ZERO_RESULTS", body.rows.get(0).elements.get(0).status);
-        assertEquals(",-71.0567859", body.rows.get(0).elements.get(0).origin);
+        assertEquals("42.3587053,", body.rows.get(0).elements.get(0).origin);
         assertEquals("42.3560387,-71.052138", body.rows.get(0).elements.get(0).destination);
+    }
+
+
+    /**
+     * Unit testing for finding distance between 2 lat/long coordinates with a missing longitude entry in selected address
+     */
+    @Test
+    public void testMissingSelectedLongDistance() {
+        DistanceDataSource filterer = new DistanceDataSource();
+        DistanceApiResponse body = filterer.getDistanceData("42.3587053", "-71.0567859", "", "-71.052138");
+        assertEquals(null, body.rows.get(0).elements.get(0).distance);
+        assertEquals(null, body.rows.get(0).elements.get(0).duration);
+        assertEquals("ZERO_RESULTS", body.rows.get(0).elements.get(0).status);
+        assertEquals("42.3587053,-71.0567859", body.rows.get(0).elements.get(0).origin);
+        assertEquals(",-71.052138", body.rows.get(0).elements.get(0).destination);
+    }
+
+
+    /**
+     * Unit testing for finding distance between 2 lat/long coordinates with a missing latitude entry in work address
+     */
+    @Test
+    public void testInvalidWorkLatDistance() {
+        DistanceDataSource filterer = new DistanceDataSource();
+        DistanceApiResponse body = filterer.getDistanceData("42.3587053", "-71.0567859", "", "-71.052138");
+        assertEquals(null, body.rows.get(0).elements.get(0).distance);
+        assertEquals(null, body.rows.get(0).elements.get(0).duration);
+        assertEquals("ZERO_RESULTS", body.rows.get(0).elements.get(0).status);
+        assertEquals("42.3587053,-71.0567859", body.rows.get(0).elements.get(0).origin);
+        assertEquals(",-71.052138", body.rows.get(0).elements.get(0).destination);
+    }
+
+
+    /**
+     * Unit testing for finding distance between 2 lat/long coordinates with a missing longitude entry in work address
+     */
+    @Test
+    public void testInvalidWorkLongDistance() {
+        DistanceDataSource filterer = new DistanceDataSource();
+        DistanceApiResponse body = filterer.getDistanceData("42.3587053", "-71.0567859", "42.3560387", "");
+        assertEquals(null, body.rows.get(0).elements.get(0).distance);
+        assertEquals(null, body.rows.get(0).elements.get(0).duration);
+        assertEquals("ZERO_RESULTS", body.rows.get(0).elements.get(0).status);
+        assertEquals("42.3587053,-71.0567859", body.rows.get(0).elements.get(0).origin);
+        assertEquals("42.3560387,", body.rows.get(0).elements.get(0).destination);
     }
 }
