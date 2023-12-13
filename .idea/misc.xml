@@ -4,6 +4,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/term-project/back/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/term-project/back/pom.xml" />
       </list>
     </option>
   </component>
