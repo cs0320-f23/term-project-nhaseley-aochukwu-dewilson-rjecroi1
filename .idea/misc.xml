@@ -3,7 +3,7 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/term-project/back/pom.xml" />
+        <option value="$PROJECT_DIR$/term-project/back/target/maven-archiver/pom.properties" />
       </list>
     </option>
   </component>
