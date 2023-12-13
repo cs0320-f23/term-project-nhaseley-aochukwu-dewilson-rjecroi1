@@ -17,18 +17,17 @@ interface LandLordsHomepageProps {
   listingAddress: string;
   setListingAddress: Dispatch<SetStateAction<string>>;
 
-  listingBedrooms: string;
-  setListingBedrooms: Dispatch<SetStateAction<string>>;
+  listingBedrooms: number;
+  setListingBedrooms: Dispatch<SetStateAction<number>>;
 
-  listingPrice: string;
-  setListingPrice: Dispatch<SetStateAction<string>>;
+  listingPrice: number;
+  setListingPrice: Dispatch<SetStateAction<number>>;
 
   listingDetails: string;
   setListingDetails: Dispatch<SetStateAction<string>>;
 
   landlordEmail: string;
   userLoggedIn: boolean;
-
 }
 
 export default function LandLordsHomePage(props: LandLordsHomepageProps) {
@@ -37,9 +36,10 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
     title: string;
     imgUrl: string;
     address: string;
-    bedrooms: string;
-    price: string;
+    bedrooms: number;
+    price: number;
     details: string;
+    datePosted: string;
   }
   const [postedListings, setPostedListings] = useState<theListings[]>([]);
   const [updatedListings, setUpdatedListings] = useState<theListings[]>([]);
@@ -67,8 +67,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
   }, [props.db, props.landlordEmail]);
 
   async function handlePosting(event: React.FormEvent) {
-
-
     function generateUniqueId() {
       const timestamp = new Date().getTime(); // Get current timestamp
       const random = Math.floor(Math.random() * 1000); // Generate a random number between 0 and 999
@@ -92,15 +90,24 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
       props.setListingError("A listing with the same address already exists.");
     } else {
       //post successfully
-
+      const formattedDate = new Date(new Date().getTime()).toLocaleDateString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      );
+      console.log("date: ", formattedDate);
       const newListing = {
-        id: generateUniqueId(), // Generates a random uniqueu id based on time posted 
+        id: generateUniqueId(), // Generates a random uniqueu id based on time posted
         title: props.listingTitle,
         imgUrl: props.listingURL,
         address: props.listingAddress,
         bedrooms: props.listingBedrooms,
         price: props.listingPrice,
         details: props.listingDetails,
+        datePosted: formattedDate,
       };
 
       const querySnapshot = await props.db
@@ -112,8 +119,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
         const currentListings = doc.data().listings || [];
         const updatedListings = [...currentListings, newListing];
         setUpdatedListings(updatedListings);
-
-        console.log("found landlord");
 
         // Update the 'listings' field for the specific landlord in Firestore
         doc.ref
@@ -130,14 +135,13 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
       props.setListingTitle("");
       props.setListingURL("");
       props.setListingAddress("");
-      props.setListingBedrooms("");
-      props.setListingPrice("");
+      props.setListingBedrooms(0);
+      props.setListingPrice(0);
       props.setListingDetails("");
       props.setListingError("");
     }
   }
   console.log(postedListings);
-
 
   return !props.userLoggedIn ? (
     <h2> Please log in. </h2>
@@ -194,14 +198,16 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
             aria-label="You can enter number of bedrooms Here"
             placeholder="Enter number of bedrooms here"
             value={props.listingBedrooms}
-            onChange={(ev) => props.setListingBedrooms(ev.target.value)}
+            type="number"
+            onChange={(ev) => props.setListingBedrooms(parseFloat(ev.target.value))}
           ></input>
           <input
             className="Price"
             aria-label="You can enter the price of the housing option"
             placeholder="Enter the price here"
             value={props.listingPrice}
-            onChange={(ev) => props.setListingPrice(ev.target.value)}
+            type="number"
+            onChange={(ev) => props.setListingPrice(parseFloat(ev.target.value))}
           ></input>
           <input
             className="Details"
@@ -224,10 +230,12 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
               console.log("Button clicked!");
               ev.preventDefault();
               props.setListingTitle("Modern house");
-              props.setListingURL("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg");
+              props.setListingURL(
+                "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyMC0xMTMtdi5qcGc.jpg"
+              );
               props.setListingAddress("1 INTERNATIONAL PL STE P110 BOSTON MA");
-              props.setListingBedrooms("3");
-              props.setListingPrice("5000");
+              props.setListingBedrooms(3);
+              props.setListingPrice(2000);
               props.setListingDetails("very strong very sturdy house");
             }}
           >
@@ -236,5 +244,5 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
         </form>
       </div>
     </div>
-  )
+  );
 }
