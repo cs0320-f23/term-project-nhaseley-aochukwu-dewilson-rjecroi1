@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import firebase from "firebase/compat/app";
 import { Dispatch, SetStateAction } from "react";
+import { getAuth, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
 
 interface LoginProps {
   studentName: string;
@@ -41,7 +42,7 @@ interface LoginProps {
 export default function LoginPage(props: LoginProps) {
   const navigate = useNavigate();
 
-  async function handleAdminLogin(event: React.FormEvent) {
+  async function handleAdminLogin(event: React.FormEvent, props) {
     event.preventDefault(); // prevents page from re-rendering
     // check if user with this email already in db
     const querySnapshot = await props.db
@@ -55,7 +56,7 @@ export default function LoginPage(props: LoginProps) {
       props.setAdminError("This admin email does not exist in database.");
     } else if (props.adminPass === querySnapshot.docs[0].data().password) {
       // login successfully
-      props.setUserLoggedIn(true)
+      props.setUserLoggedIn(true);
       navigate("/admin");
     } else {
       props.setAdminError("Invalid credentials.");
@@ -63,32 +64,35 @@ export default function LoginPage(props: LoginProps) {
   }
 
   function handleGoogleSignIn() {
-<<<<<<< HEAD
-    return new Promise((resolve, reject) => {
-      gapi.load("auth2", () => {
-        gapi.auth2
-          .init({
-            client_id: "642860876099-0tmtpntka1f3jhl7nro5e0nnsbi7th2s", // client ID from Google cloud
-            scope: "https://www.googleapis.com/auth/cloud-platform.read-only", // specify the scopes you need
-          })
-          .then(() => {
-            const authInstance = gapi.auth2.getAuthInstance();
-            resolve(authInstance);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    });
-=======
-    console.log("logging in...")
->>>>>>> 4c7ea72af069b1897517cd1c56f2fd5c4ca293ef
+    console.log("logging in...");
   }
 
-  return (
-    props.userLoggedIn? (
-        <h2> You are already logged in!</h2>
-    ) :
+  const auth = getAuth();
+  getRedirectResult(auth)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access Google APIs.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+
+      // The signed-in user info.
+      const user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    });
+
+  return props.userLoggedIn ? (
+    <h2> You are already logged in!</h2>
+  ) : (
     <div className="login-page">
       <h2>This is the login form!</h2>
       <div className="login-forms">
@@ -118,7 +122,7 @@ export default function LoginPage(props: LoginProps) {
           <button
             type="submit"
             id="intern-submit"
-            onClick={(ev) => checkRecordsforIntern(ev)}
+            onClick={(ev) => checkRecordsforIntern(ev, props)}
           >
             Login
           </button>
@@ -160,7 +164,7 @@ export default function LoginPage(props: LoginProps) {
           <button
             type="submit"
             id="landlord-submit"
-            onClick={(ev) => checkRecordsforLandlord(ev)}
+            onClick={(ev) => checkRecordsforLandlord(ev, props)}
           >
             Login
           </button>
@@ -200,7 +204,7 @@ export default function LoginPage(props: LoginProps) {
           <h3> {props.adminError} </h3>
           <button
             className="admin-login-button"
-            onClick={(ev) => handleAdminLogin(ev)}
+            onClick={(ev) => handleAdminLogin(ev, props)}
           >
             Login
           </button>
@@ -217,12 +221,9 @@ export default function LoginPage(props: LoginProps) {
         </form>
       </div>
     </div>
-  
   );
 
-  async function checkRecordsforIntern(
-    event: React.FormEvent,
-  ) {
+  async function checkRecordsforIntern(event: React.FormEvent, props) {
     event.preventDefault();
 
     const querySnapshot = await props.db
@@ -236,9 +237,9 @@ export default function LoginPage(props: LoginProps) {
     } else if (props.studentPass === querySnapshot.docs[0].data().password) {
       // allow successful login
       handleGoogleSignIn();
-      props.setStudentAddress(querySnapshot.docs[0].data().address)
-      props.setStudentName(querySnapshot.docs[0].data().name)
-      props.setUserLoggedIn(true)
+      props.setStudentAddress(querySnapshot.docs[0].data().address);
+      props.setStudentName(querySnapshot.docs[0].data().name);
+      props.setUserLoggedIn(true);
       navigate("/listings");
     } else {
       // wrong user or password
@@ -246,37 +247,37 @@ export default function LoginPage(props: LoginProps) {
     }
   }
 
-  async function checkRecordsforLandlord(
-    event: React.FormEvent,
-  ) {
+  async function checkRecordsforLandlord(event: React.FormEvent, props) {
     event.preventDefault();
     const querySnapshot = await props.db
       .collection("landlords")
       .where("email", "==", props.landlordEmail)
       .get();
-    console.log("SNAP: ", querySnapshot)
+    console.log("SNAP: ", querySnapshot);
     if (!props.landlordEmail || !props.landlordPass) {
-      console.log("ERROR 1")
+      console.log("ERROR 1");
       props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {
-      console.log("ERROR 2")
+      console.log("ERROR 2");
       props.setLandlordError("This landlord does not exist in our database.");
     } // FIGURE OUT LANDLORD VERIFICATION
     else if (querySnapshot.docs[0].data().verified == "false") {
-      console.log("ERROR 3")
-      props.setLandlordError("This landlord is not yet verified in our database.");
+      console.log("ERROR 3");
+      props.setLandlordError(
+        "This landlord is not yet verified in our database."
+      );
     } else if (props.landlordPass === querySnapshot.docs[0].data().password) {
       // allow successful login
-      console.log("SUCCESS")
+      console.log("SUCCESS");
       handleGoogleSignIn();
-      props.setUserLoggedIn(true)
-      console.log("props: ", props)
-      props.setLandlordName(querySnapshot.docs[0].data().name)
-      props.setLandlordPhone(querySnapshot.docs[0].data().phone)
+      props.setUserLoggedIn(true);
+      console.log("props: ", props);
+      props.setLandlordName(querySnapshot.docs[0].data().name);
+      props.setLandlordPhone(querySnapshot.docs[0].data().phone);
       navigate("/LandLordsHomepage");
     } else {
       // wrong user or password
-      console.log("ERROR 4")
+      console.log("ERROR 4");
       props.setLandlordError("Invalid login credentials.");
     }
   }
