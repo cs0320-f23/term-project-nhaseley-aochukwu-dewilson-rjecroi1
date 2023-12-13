@@ -9,7 +9,7 @@ export default function HomePage() {
         locator application <br></br> made for students at Brown University
         seeking summer intern housing in the Boston area.<br></br> Now, finding
         housing is as easy as a click of a button. Login below to see <br></br>
-        what housing opportunities awaits!
+        what housing opportunities await!
       </p>
       <a href="/login">
         <button type="start">LOGIN</button>
