@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: space-around;
   width: 100%;
+  align-items: center;
 }
 
 #root {
