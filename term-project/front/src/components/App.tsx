@@ -52,12 +52,10 @@ function App() {
   const [listingTitle, setListingTitle] = useState<string>("");
   const [listingURL, setListingURL] = useState<string>("");
   const [listingAddress, setListingAddress] = useState<string>("");
-  const [listingBedrooms, setListingBedrooms] = useState<string>("");
-  const [listingPrice, setListingPrice] = useState<string>("");
+  const [listingBedrooms, setListingBedrooms] = useState<number>(0);
+  const [listingPrice, setListingPrice] = useState<number>(0);
   const [listingDetails, setListingDetails] = useState<string>("");
   const [listingError, setListingError] = useState<string>("");
-
-  
 
 
   return (
