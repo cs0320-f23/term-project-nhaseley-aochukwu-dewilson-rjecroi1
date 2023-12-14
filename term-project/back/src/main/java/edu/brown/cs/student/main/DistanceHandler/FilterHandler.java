@@ -60,7 +60,6 @@ public class FilterHandler implements Route {
       // Convert address to coordinates in order to use distance API
       CoordinateApiResponse conversionRes = this.coord.getCoordinateData(address);
       if (conversionRes != null) {
-        System.out.println("CONVERSION RES status: " + conversionRes.status);
         if (conversionRes.status != null) {
           if (conversionRes.status.equals("OK")) {
             for (CoordinateApiResponse.Result res : conversionRes.result) {
