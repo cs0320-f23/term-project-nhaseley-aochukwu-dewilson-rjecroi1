@@ -1,3 +1,7 @@
+.registration-page {
+  width: 100%;
+}
+
 .registration-forms,
 .login-forms {
   display: flex;
@@ -5,7 +9,12 @@
   justify-content: space-around;
 }
 
-.student-registration-form, .landlord-registration-form, .admin-registration-form, .login-form, .landlord-login-form, .admin-login-form {
+.student-registration-form,
+.landlord-registration-form,
+.admin-registration-form,
+.login-form,
+.landlord-login-form,
+.admin-login-form {
   display: flex;
   flex-direction: column;
 }

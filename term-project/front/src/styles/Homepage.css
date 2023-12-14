@@ -1,0 +1,17 @@
+.homepage {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  /* margin-top: 10px; */
+}
+
+.homepage h1 {
+  /* top: 70px; */
+  font-size: 50px;
+  margin-top: -20px;
+}
+
+.homepage h2 {
+  font-size: 30px;
+}

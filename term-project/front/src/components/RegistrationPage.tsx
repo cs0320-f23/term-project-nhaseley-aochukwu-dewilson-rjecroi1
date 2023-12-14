@@ -5,7 +5,7 @@ import firebase from "firebase/compat/app";
 interface RegistrationProps {
   studentName: string;
   setStudentName: Dispatch<SetStateAction<string>>;
-  
+
   studentEmail: string;
   setStudentEmail: Dispatch<SetStateAction<string>>;
   studentPass: string;
@@ -36,7 +36,6 @@ interface RegistrationProps {
 }
 
 export default function RegistrationPage(props: RegistrationProps) {
-
   async function handleStudentRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 
@@ -57,14 +56,14 @@ export default function RegistrationPage(props: RegistrationProps) {
     ) {
       // missing input
       props.setError("Please be sure to input all fields.");
-    } else if (!props.studentEmail.includes("@brown.edu")){
-      props.setError("You must provide your Brown email address.")
+    } else if (!props.studentEmail.includes("@brown.edu")) {
+      props.setError("You must provide your Brown email address.");
     } else {
       // register successfully
       props.db
         .collection("interns")
         .add({
-          id: props.db.collection("interns").doc().id, 
+          id: props.db.collection("interns").doc().id,
           name: props.studentName,
           email: props.studentEmail,
           password: props.studentPass,
@@ -76,12 +75,12 @@ export default function RegistrationPage(props: RegistrationProps) {
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
-        props.setStudentAddress("")
-        props.setStudentEmail("")
-        props.setStudentPass("")
-        props.setStudentName("")
-        props.setError("")
-      }
+      props.setStudentAddress("");
+      props.setStudentEmail("");
+      props.setStudentPass("");
+      props.setStudentName("");
+      props.setError("");
+    }
   }
 
   async function handleLandlordRegistration(event: React.FormEvent) {
@@ -114,7 +113,7 @@ export default function RegistrationPage(props: RegistrationProps) {
           password: props.landlordPass,
           phone: props.landlordPhone,
           verified: false,
-          listings: []
+          listings: [],
         })
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
@@ -122,12 +121,12 @@ export default function RegistrationPage(props: RegistrationProps) {
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
-        props.setLandlordPhone("")
-        props.setLandlordEmail("")
-        props.setLandlordPass("")
-        props.setLandlordName("")
-        props.setLandlordError("")
-      }
+      props.setLandlordPhone("");
+      props.setLandlordEmail("");
+      props.setLandlordPass("");
+      props.setLandlordName("");
+      props.setLandlordError("");
+    }
   }
   async function handleAdminRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
@@ -141,10 +140,7 @@ export default function RegistrationPage(props: RegistrationProps) {
 
     if (emailExists) {
       props.setAdminError("User with this email already exists.");
-    } else if (
-      !props.adminEmail ||
-      !props.adminPass
-    ) {
+    } else if (!props.adminEmail || !props.adminPass) {
       // missing input
       props.setAdminError("Please be sure to input all fields.");
     } else {
@@ -152,7 +148,7 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.db
         .collection("admins")
         .add({
-          id: props.db.collection("admins").doc().id, 
+          id: props.db.collection("admins").doc().id,
           name: props.adminName,
           email: props.adminEmail,
           password: props.adminPass,
@@ -163,11 +159,11 @@ export default function RegistrationPage(props: RegistrationProps) {
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
-        props.setAdminName("")
-        props.setAdminEmail("")
-        props.setAdminPass("")
-        props.setAdminError("")
-      }
+      props.setAdminName("");
+      props.setAdminEmail("");
+      props.setAdminPass("");
+      props.setAdminError("");
+    }
   }
 
   return (

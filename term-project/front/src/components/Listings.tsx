@@ -6,8 +6,9 @@ import { ACCESS_TOKEN } from "../private/MapboxToken.tsx";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
 import firebase from "firebase/compat/app";
-
 import Slider from "@mui/material/Slider";
+import Typography from "@mui/material/Typography";
+
 function valuetext(value: number) {
   return `${value} miles`;
 }
@@ -137,6 +138,12 @@ export default function ListingsPage(props: ListingPageProps) {
         "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcxNy0wNTItdi5qcGc.jpg",
     },
   ];
+
+  const [mapInitialized, setMapInitialized] = useState(false);
+  const [sliderValue, setSliderValue] = useState(30);
+  const handleSliderChange = (event, newValue) => {
+    setSliderValue(newValue);
+  };
 
   useEffect(() => {
     if (!props.studentEmail || !props.userLoggedIn) {
