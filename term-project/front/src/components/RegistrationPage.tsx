@@ -159,7 +159,7 @@ export default function RegistrationPage(props: RegistrationProps) {
 
   return (
     <div className="registration-page">
-      <h2> This is the registration form! </h2>
+      <p> Fill out the correct registration form based on your needs </p>
       <div className="registration-forms">
         <form
           className="student-registration-form"
@@ -167,36 +167,38 @@ export default function RegistrationPage(props: RegistrationProps) {
         >
           <h2> Intern</h2>
           <label> Intern Registration </label>
-          <input
-            className="student-name"
-            aria-label="You can enter your name here"
-            placeholder="Enter your name here"
-            value={props.studentName}
-            onChange={(ev) => props.setStudentName(ev.target.value)}
-          ></input>
-          <input
-            className="student-email"
-            aria-label="You can enter your email here (must be Brown)"
-            placeholder="Enter your Brown email here"
-            value={props.studentEmail}
-            onChange={(ev) => props.setStudentEmail(ev.target.value)}
-          ></input>
-          <input
-            className="student-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter your password here"
-            value={props.studentPass}
-            type="password"
-            onChange={(ev) => props.setStudentPass(ev.target.value)}
-          ></input>
-          <input
-            className="student-address"
-            aria-label="You can enter your work address here"
-            placeholder="Enter your Work Address here"
-            value={props.studentAddress}
-            onChange={(ev) => props.setStudentAddress(ev.target.value)}
-          ></input>
-          <h3 className="student registration error"> {props.error} </h3>
+          <div id="registration-form">
+            <input
+              className="student-name"
+              aria-label="You can enter your name here"
+              placeholder="Enter your name here"
+              value={props.studentName}
+              onChange={(ev) => props.setStudentName(ev.target.value)}
+            ></input>
+            <input
+              className="student-email"
+              aria-label="You can enter your email here (must be Brown)"
+              placeholder="Enter your Brown email here"
+              value={props.studentEmail}
+              onChange={(ev) => props.setStudentEmail(ev.target.value)}
+            ></input>
+            <input
+              className="student-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter your password here"
+              value={props.studentPass}
+              type="password"
+              onChange={(ev) => props.setStudentPass(ev.target.value)}
+            ></input>
+            <input
+              className="student-address"
+              aria-label="You can enter your work address here"
+              placeholder="Enter your work address here"
+              value={props.studentAddress}
+              onChange={(ev) => props.setStudentAddress(ev.target.value)}
+            ></input>
+          </div>
+          <h3 className="student-registration-error"> {props.error} </h3>
           <button
             className="student-register-button"
             onClick={(ev) => handleStudentRegistration(ev)}
@@ -223,35 +225,37 @@ export default function RegistrationPage(props: RegistrationProps) {
         >
           <h2>Landlord </h2>
           <label>Landlord Registration </label>
-          <input
-            className="landlord-name"
-            aria-label="You can enter your name here"
-            placeholder="Enter your name here"
-            value={props.landlordName}
-            onChange={(ev) => props.setLandlordName(ev.target.value)}
-          ></input>
-          <input
-            className="landlord-email"
-            aria-label="You can enter your email here"
-            placeholder="Enter your email here"
-            value={props.landlordEmail}
-            onChange={(ev) => props.setLandlordEmail(ev.target.value)}
-          ></input>
-          <input
-            className="landlord-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter your password here"
-            value={props.landlordPass}
-            type="password"
-            onChange={(ev) => props.setLandlordPass(ev.target.value)}
-          ></input>
-          <input
-            className="landlord-phone"
-            aria-label="You can enter your phone number here"
-            placeholder="Enter your phone number here"
-            value={props.landlordPhone}
-            onChange={(ev) => props.setLandlordPhone(ev.target.value)}
-          ></input>
+          <div id="registration-form">
+            <input
+              className="landlord-name"
+              aria-label="You can enter your name here"
+              placeholder="Enter your name here"
+              value={props.landlordName}
+              onChange={(ev) => props.setLandlordName(ev.target.value)}
+            ></input>
+            <input
+              className="landlord-email"
+              aria-label="You can enter your email here"
+              placeholder="Enter your email here"
+              value={props.landlordEmail}
+              onChange={(ev) => props.setLandlordEmail(ev.target.value)}
+            ></input>
+            <input
+              className="landlord-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter your password here"
+              value={props.landlordPass}
+              type="password"
+              onChange={(ev) => props.setLandlordPass(ev.target.value)}
+            ></input>
+            <input
+              className="landlord-phone"
+              aria-label="You can enter your phone number here"
+              placeholder="Enter your phone number here"
+              value={props.landlordPhone}
+              onChange={(ev) => props.setLandlordPhone(ev.target.value)}
+            ></input>
+          </div>
           <h3> {props.landlordError} </h3>
           <button
             className="landlord-register-button"
@@ -269,7 +273,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               props.setLandlordPass("password");
             }}
           >
-            Demo Registration
+            Demo Registration #1
           </button>
           <button
             className="demo-landlord-registration-for-listing-test"
@@ -291,29 +295,30 @@ export default function RegistrationPage(props: RegistrationProps) {
         >
           <h2> Admin</h2>
           <label> Admin Registration </label>
-          <input
-            className="admin-name"
-            aria-label="You can enter your name here"
-            placeholder="Enter your name here"
-            value={props.adminName}
-            onChange={(ev) => props.setAdminName(ev.target.value)}
-          ></input>
-          <input
-            className="admin-email"
-            aria-label="You can enter your email here (must be Brown)"
-            placeholder="Enter your Brown email here"
-            value={props.adminEmail}
-            onChange={(ev) => props.setAdminEmail(ev.target.value)}
-          ></input>
-          <input
-            className="admin-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter your password here"
-            value={props.adminPass}
-            type="password"
-            onChange={(ev) => props.setAdminPass(ev.target.value)}
-          ></input>
-
+          <div id="registration-form">
+            <input
+              className="admin-name"
+              aria-label="You can enter your name here"
+              placeholder="Enter your name here"
+              value={props.adminName}
+              onChange={(ev) => props.setAdminName(ev.target.value)}
+            ></input>
+            <input
+              className="admin-email"
+              aria-label="You can enter your email here (must be Brown)"
+              placeholder="Enter your Brown email here"
+              value={props.adminEmail}
+              onChange={(ev) => props.setAdminEmail(ev.target.value)}
+            ></input>
+            <input
+              className="admin-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter your password here"
+              value={props.adminPass}
+              type="password"
+              onChange={(ev) => props.setAdminPass(ev.target.value)}
+            ></input>
+          </div>
           <h3> {props.adminError} </h3>
           <button
             className="admin-register-button"

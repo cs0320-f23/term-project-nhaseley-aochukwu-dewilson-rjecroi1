@@ -3,7 +3,10 @@
   top: 50%;
   transform: translateY(-50%);
   text-align: center;
-  /* margin-top: 10px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .homepage h1 {

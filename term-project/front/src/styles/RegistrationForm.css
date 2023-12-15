@@ -1,12 +1,18 @@
 .registration-page {
   width: 100%;
+  margin-top: 90px;
+}
+
+.registration-page p {
+  font-size: 18px;
+  font-style: italic;
 }
 
 .registration-forms,
 .login-forms {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 .student-registration-form,
@@ -17,4 +23,38 @@
 .admin-login-form {
   display: flex;
   flex-direction: column;
+}
+
+.registration-forms button {
+  margin-top: 5px;
+}
+
+.registration-forms form {
+  /* border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 20px; */
+}
+/* style={{ color: "#646cff" }} */
+#registration-form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 20px;
+  align-items: center;
+  color-scheme: light;
+  background-color: #213547;
+  width: 300px;
+}
+
+#registration-form input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid rgb(119, 119, 119);
+  border-radius: 18px;
+  width: 290px;
+}
+
+#registration-form :last-child {
+  margin-bottom: 0;
 }

@@ -48,7 +48,7 @@ public class CoordinateDataSource implements CoordinateData {
             String address) {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<CoordinateApiResponse> distanceAdapter = moshi.adapter(CoordinateApiResponse.class);
-
+        System.out.println("address to convert: " + address);
         if (address != null) {
             URL requestUrl = null;
             try {
@@ -56,7 +56,7 @@ public class CoordinateDataSource implements CoordinateData {
                 String apiKey = apiKeys.CONVERSION_API_KEY;
                 String apiUrl = "https://api.distancematrix.ai/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
                 requestUrl = new URL(apiUrl);
-//                System.out.println("API URL: "+ requestUrl);
+                System.out.println("API URL: "+ requestUrl);
 
                 HttpURLConnection clientConnection = null;
                 clientConnection = connect(requestUrl);

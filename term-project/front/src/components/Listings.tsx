@@ -1,25 +1,17 @@
 import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+
 import "../styles/Listings.css";
 import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import { ACCESS_TOKEN } from "../private/MapboxToken.tsx";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
-import firebase from "firebase/compat/app";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 
 function valuetext(value: number) {
   return `${value} miles`;
-}
-interface ListingPageProps {
-  db: firebase.firestore.Firestore;
-  studentAddress: string;
-  userLoggedIn: boolean;
-  studentEmail: string;
-}
-interface Landlord {
-  listings: Listing[];
 }
 interface Listing {
   address: string;
@@ -27,13 +19,25 @@ interface Listing {
   details: string;
   id: string;
   imgUrl: string;
-  price: string; // TODO: CHANGE TO INT
+  price: number; // TODO: CHANGE TO INT
   title: string;
   // TODO: add date posted on postNewListing?
   latitude?: number;
   longitude?: number;
   distance?: number;
 }
+interface ListingPageProps {
+  db: firebase.firestore.Firestore;
+  studentAddress: string;
+  userLoggedIn: boolean;
+  studentEmail: string;
+  allListings: Listing[];
+  setAllListings: Dispatch<SetStateAction<Listing[]>>;
+}
+interface Landlord {
+  listings: Listing[];
+}
+
 interface Coordinate {
   latitude?: number;
   longitude?: number;
@@ -43,7 +47,7 @@ interface Coordinate {
 }
 
 export default function ListingsPage(props: ListingPageProps) {
-  const [allListings, setAllListings] = useState<Listing[]>([]);
+  // const [allListings, setAllListings] = useState<Listing[]>([]);
   const [distance, setDistance] = useState<number>(8); // Initial distance value
   const [price, setPrice] = useState<number>(1000); // Initial distance value
   useEffect(() => {
@@ -95,7 +99,7 @@ export default function ListingsPage(props: ListingPageProps) {
 
         await Promise.all(fetchDistancePromises);
 
-        setAllListings(allListingsArray);
+        props.setAllListings(allListingsArray);
       } catch (error) {
         console.error("Error fetching listings:", error);
       }
@@ -104,7 +108,7 @@ export default function ListingsPage(props: ListingPageProps) {
     fetchListings();
   }, [props.db, props.studentEmail, props.userLoggedIn, distance]);
 
-  console.log("ALL LISTINGS: ", allListings);
+  console.log("ALL LISTINGS: ", props.allListings);
 
   const mockListingInfo = [
     {
@@ -151,7 +155,7 @@ export default function ListingsPage(props: ListingPageProps) {
       zoom: 12,
     });
     map.on("load", () => {
-      allListings.forEach((listing) => {
+      props.allListings.forEach((listing) => {
         if (
           listing.latitude &&
           listing.longitude &&
@@ -167,7 +171,7 @@ export default function ListingsPage(props: ListingPageProps) {
           const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
             popupContent
           );
- 
+
           new mapboxgl.Marker()
             .setLngLat([listing.longitude, listing.latitude])
             .setPopup(popup) // Move setPopup here, remove the misplaced semicolon
@@ -224,16 +228,17 @@ export default function ListingsPage(props: ListingPageProps) {
       <div id="listings-page">
         <div id="mapbox" className="map"></div>
         <div className="row">
-          {allListings.map((listing) =>
+          {props.allListings.map((listing) =>
             listing.distance && listing.price ? (
-              listing.distance <= distance && parseFloat(listing.price) <= price ? (
+              listing.distance <= distance &&
+              parseFloat(listing.price) <= price ? (
                 <div key={listing.id} className="listing-info">
                   <Link to={`/info/${listing.id}`}>
                     <img
                       src={listing.imgUrl}
                       alt={`Listing for ${listing.id}`}
                     />
-                  </Link> 
+                  </Link>
                   <p>Address: {listing.address}</p>
                   {/* <p>Date Posted: {listing.datePosted}</p> */}
                 </div>
@@ -268,7 +273,7 @@ export default function ListingsPage(props: ListingPageProps) {
             <Box
               className="slider"
               sx={{ width: 250, margin: "10px 0", color: "grey" }}
-            > 
+            >
               <Slider
                 aria-label="Price"
                 value={price}
