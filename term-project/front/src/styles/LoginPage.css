@@ -1,8 +1,41 @@
 .login-page {
   width: 100%;
+  margin-top: 130px;
 }
 
-.submit {
+.login-page p {
+  font-size: 18px;
+  font-style: italic;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 20px;
+  align-items: center;
+  color-scheme: light;
+  background-color: #213547;
+  width: 300px;
+}
+
+#login-form input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid rgb(119, 119, 119);
+  border-radius: 18px;
+  width: 290px;
+}
+
+#login-form :last-child {
+  margin-bottom: 0;
+}
+
+.login-forms button {
+  margin-top: 5px;
+}
+
+/* .submit {
   color: green;
 }
 .intern-submit {
@@ -10,7 +43,7 @@
 }
 .intern-submit {
   color: red;
-}
+} */
 /**
 * trying to make sure that the button ids are associated correctly, but when changing all colors, the outline
 * remains blue. assuming it's the hover color that's done in index.css

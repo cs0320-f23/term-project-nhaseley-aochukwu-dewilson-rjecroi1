@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import firebase from "firebase/compat/app";
 import { Dispatch, SetStateAction } from "react";
-import { getAuth, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+// import { GoogleAuthProvider } from "firebase/auth";
 
 interface LoginProps {
   studentName: string;
@@ -37,6 +38,7 @@ interface LoginProps {
   setAdminError: Dispatch<SetStateAction<string>>;
   userLoggedIn: boolean;
   setUserLoggedIn: Dispatch<SetStateAction<boolean>>;
+  setAdminName: Dispatch<SetStateAction<string>>;
 }
 
 export default function LoginPage(props: LoginProps) {
@@ -56,45 +58,49 @@ export default function LoginPage(props: LoginProps) {
       props.setAdminError("This admin email does not exist in database.");
     } else if (props.adminPass === querySnapshot.docs[0].data().password) {
       // login successfully
-      props.setUserLoggedIn(true);
-      navigate("/admin");
+      try {
+        const adminGmail = await handleGoogleSignIn();
+        if (adminGmail != null) {
+          if (adminGmail == props.adminEmail) {
+            props.setUserLoggedIn(true);
+            props.setAdminName(querySnapshot.docs[0].data().name);
+            navigate("/admin");
+          } else {
+            props.setAdminError(
+              "Please be sure your email matches the one selected on Google Login."
+            );
+          }
+        } else {
+          props.setAdminError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setAdminError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     } else {
       props.setAdminError("Invalid credentials.");
     }
   }
 
-  function handleGoogleSignIn() {
-    console.log("logging in...");
+  async function handleGoogleSignIn() {
+    try {
+      const data = await signInWithPopup(auth, provider);
+      return data.user.email;
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      return null;
+    }
   }
 
-  const auth = getAuth();
-  getRedirectResult(auth)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access Google APIs.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
+  const provider = new GoogleAuthProvider();
 
-      // The signed-in user info.
-      const user = result.user;
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-    });
+  const auth = getAuth();
 
   return props.userLoggedIn ? (
     <h2> You are already logged in!</h2>
   ) : (
     <div className="login-page">
-      <h2>This is the login form!</h2>
+      <p>Fill out the correct login form based on your needs</p>
       <div className="login-forms">
         <form
           className="login-form"
@@ -102,23 +108,25 @@ export default function LoginPage(props: LoginProps) {
         >
           <h2>Intern</h2>
           <label></label>
-          <input
-            className="student-email"
-            aria-label="You can enter your email here (must be Brown)"
-            placeholder="Enter Brown email here"
-            value={props.studentEmail}
-            onChange={(ev) => props.setStudentEmail(ev.target.value)}
-          ></input>
-          <input
-            className="student-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
-            type="password"
-            value={props.studentPass}
-            onChange={(ev) => props.setStudentPass(ev.target.value)}
-          ></input>
-          <h3> {props.error} </h3>
+          <div id="login-form">
+            <input
+              className="student-email"
+              aria-label="You can enter your email here (must be Brown)"
+              placeholder="Enter Brown email here"
+              value={props.studentEmail}
+              onChange={(ev) => props.setStudentEmail(ev.target.value)}
+            ></input>
+            <input
+              className="student-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.studentPass}
+              onChange={(ev) => props.setStudentPass(ev.target.value)}
+            ></input>
+          </div>
 
+          <h3> {props.error} </h3>
           <button
             type="submit"
             id="intern-submit"
@@ -144,23 +152,25 @@ export default function LoginPage(props: LoginProps) {
         >
           <h2> Landlord </h2>
           <label></label>
-          <input
-            className="landlord-email"
-            aria-label="You can enter your email here (Must be a Google account)"
-            placeholder="Enter email here"
-            value={props.landlordEmail}
-            onChange={(ev) => props.setLandlordEmail(ev.target.value)}
-          ></input>
-          <input
-            className="landlord-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
-            type="password"
-            value={props.landlordPass}
-            onChange={(ev) => props.setLandlordPass(ev.target.value)}
-          ></input>
-          <h3> {props.landlordError} </h3>
+          <div id="login-form">
+            <input
+              className="landlord-email"
+              aria-label="You can enter your email here (Must be a Google account)"
+              placeholder="Enter email here"
+              value={props.landlordEmail}
+              onChange={(ev) => props.setLandlordEmail(ev.target.value)}
+            ></input>
+            <input
+              className="landlord-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.landlordPass}
+              onChange={(ev) => props.setLandlordPass(ev.target.value)}
+            ></input>
+          </div>
 
+          <h3> {props.landlordError} </h3>
           <button
             type="submit"
             id="landlord-submit"
@@ -186,21 +196,24 @@ export default function LoginPage(props: LoginProps) {
         >
           <h2> Admin </h2>
           <label></label>
-          <input
-            className="admin-email"
-            aria-label="You can enter your email here (must be Brown)"
-            placeholder="Enter email here"
-            value={props.adminEmail}
-            onChange={(ev) => props.setAdminEmail(ev.target.value)}
-          ></input>
-          <input
-            className="admin-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
-            type="password"
-            value={props.adminPass}
-            onChange={(ev) => props.setAdminPass(ev.target.value)}
-          ></input>
+          <div id="login-form">
+            <input
+              className="admin-email"
+              aria-label="You can enter your email here (must be Brown)"
+              placeholder="Enter email here"
+              value={props.adminEmail}
+              onChange={(ev) => props.setAdminEmail(ev.target.value)}
+            ></input>
+            <input
+              className="admin-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.adminPass}
+              onChange={(ev) => props.setAdminPass(ev.target.value)}
+            ></input>
+          </div>
+
           <h3> {props.adminError} </h3>
           <button
             className="admin-login-button"
@@ -236,11 +249,26 @@ export default function LoginPage(props: LoginProps) {
       props.setError("This intern does not exist in our database.");
     } else if (props.studentPass === querySnapshot.docs[0].data().password) {
       // allow successful login
-      handleGoogleSignIn();
-      props.setStudentAddress(querySnapshot.docs[0].data().address);
-      props.setStudentName(querySnapshot.docs[0].data().name);
-      props.setUserLoggedIn(true);
-      navigate("/listings");
+      try {
+        const studentGmail = await handleGoogleSignIn();
+        if (studentGmail != null) {
+          if (studentGmail == props.studentEmail) {
+            props.setStudentAddress(querySnapshot.docs[0].data().address);
+            props.setStudentName(querySnapshot.docs[0].data().name);
+            props.setUserLoggedIn(true);
+            navigate("/listings");
+          } else {
+            props.setError(
+              "Please be sure your email matches the one selected during Google Login."
+            );
+          }
+        } else {
+          props.setError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     } else {
       // wrong user or password
       props.setError("Invalid login credentials.");
@@ -257,18 +285,32 @@ export default function LoginPage(props: LoginProps) {
       props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {
       props.setLandlordError("This landlord does not exist in our database.");
-    } // FIGURE OUT LANDLORD VERIFICATION
-    else if (querySnapshot.docs[0].data().verified == "false") {
+    } else if (querySnapshot.docs[0].data().verified == "false") {
       props.setLandlordError(
         "This landlord is not yet verified in our database."
       );
     } else if (props.landlordPass === querySnapshot.docs[0].data().password) {
       // allow successful login
-      handleGoogleSignIn();
-      props.setUserLoggedIn(true);
-      props.setLandlordName(querySnapshot.docs[0].data().name);
-      props.setLandlordPhone(querySnapshot.docs[0].data().phone);
-      navigate("/LandLordsHomepage");
+      try {
+        const landlordGmail = await handleGoogleSignIn();
+        if (landlordGmail != null) {
+          if (landlordGmail == props.landlordEmail) {
+            props.setLandlordName(querySnapshot.docs[0].data().name);
+            props.setLandlordPhone(querySnapshot.docs[0].data().phone);
+            props.setUserLoggedIn(true);
+            navigate("/LandLordsHomepage");
+          } else {
+            props.setLandlordError(
+              "Please be sure your email matches the one selected on Google Login."
+            );
+          }
+        } else {
+          props.setLandlordError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setLandlordError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     } else {
       // wrong user or password
       props.setLandlordError("Invalid login credentials.");

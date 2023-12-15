@@ -39,7 +39,7 @@ public class CoordinateMockedData implements CoordinateData {
             mockedConversionObject.result = allResults;
 
         } else if (address.equals("4%20DEVONSHIRE%20ST%20BOSTON%20MA")){
-            System.out.println("FOUND ADDRESS 1");
+            System.out.println("FOUND ADDRESS 2");
 
             mockedConversionObject.status = "OK";
             ArrayList<CoordinateApiResponse.Result> allResults = new ArrayList<>();
