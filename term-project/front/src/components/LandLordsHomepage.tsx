@@ -227,7 +227,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
             type="button"
             className="demo-landlord-registration-for-listing-test-here"
             onClick={(ev) => {
-              console.log("Button clicked!");
               ev.preventDefault();
               props.setListingTitle("Modern house");
               props.setListingURL(

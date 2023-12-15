@@ -139,12 +139,6 @@ export default function ListingsPage(props: ListingPageProps) {
     },
   ];
 
-  const [mapInitialized, setMapInitialized] = useState(false);
-  const [sliderValue, setSliderValue] = useState(30);
-  const handleSliderChange = (event, newValue) => {
-    setSliderValue(newValue);
-  };
-
   useEffect(() => {
     if (!props.studentEmail || !props.userLoggedIn) {
       return;

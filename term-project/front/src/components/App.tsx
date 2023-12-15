@@ -29,8 +29,6 @@ firebase.initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = firebase.firestore();
 
-console.log("FIREBASE DATABASE: ", db);
-
 function App() {
   const [studentName, setStudentName] = useState<string>("");
   const [studentEmail, setStudentEmail] = useState<string>("");
@@ -117,6 +115,7 @@ function App() {
                 setAdminPass={setAdminPass}
                 adminError={adminError}
                 setAdminError={setAdminError}
+                setAdminName={setAdminName}
                 userLoggedIn={userLoggedIn}
                 setUserLoggedIn={setUserLoggedIn}
               ></LoginPage>
@@ -164,7 +163,7 @@ function App() {
           ></Route>
           <Route
             path="/admin"
-            element={<AdminPage db={db} userLoggedIn={userLoggedIn} adminEmail={adminEmail}></AdminPage>}
+            element={<AdminPage db={db} userLoggedIn={userLoggedIn} adminEmail={adminEmail} ></AdminPage>}
           ></Route>
           <Route
             path="/info/:id"
