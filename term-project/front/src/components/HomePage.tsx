@@ -11,8 +11,8 @@ export default function HomePage() {
         housing is as easy as a click of a button. Login below to see <br></br>
         what housing opportunities await!
       </p>
-      <a href="/login">
-        <button type="start">LOGIN</button>
+      <a href="/register">
+        <button type="start">START</button>
       </a>
     </div>
   );
