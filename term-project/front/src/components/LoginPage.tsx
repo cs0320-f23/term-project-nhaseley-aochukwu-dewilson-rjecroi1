@@ -94,7 +94,7 @@ export default function LoginPage(props: LoginProps) {
     <h2> You are already logged in!</h2>
   ) : (
     <div className="login-page">
-      <h2>This is the login form!</h2>
+      <p>Fill out the correct login form based on your needs</p>
       <div className="login-forms">
         <form
           className="login-form"
@@ -102,23 +102,25 @@ export default function LoginPage(props: LoginProps) {
         >
           <h2>Intern</h2>
           <label></label>
-          <input
-            className="student-email"
-            aria-label="You can enter your email here (must be Brown)"
-            placeholder="Enter Brown email here"
-            value={props.studentEmail}
-            onChange={(ev) => props.setStudentEmail(ev.target.value)}
-          ></input>
-          <input
-            className="student-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
-            type="password"
-            value={props.studentPass}
-            onChange={(ev) => props.setStudentPass(ev.target.value)}
-          ></input>
-          <h3> {props.error} </h3>
+          <div id="login-form">
+            <input
+              className="student-email"
+              aria-label="You can enter your email here (must be Brown)"
+              placeholder="Enter Brown email here"
+              value={props.studentEmail}
+              onChange={(ev) => props.setStudentEmail(ev.target.value)}
+            ></input>
+            <input
+              className="student-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.studentPass}
+              onChange={(ev) => props.setStudentPass(ev.target.value)}
+            ></input>
+          </div>
 
+          <h3> {props.error} </h3>
           <button
             type="submit"
             id="intern-submit"
@@ -144,23 +146,25 @@ export default function LoginPage(props: LoginProps) {
         >
           <h2> Landlord </h2>
           <label></label>
-          <input
-            className="landlord-email"
-            aria-label="You can enter your email here (Must be a Google account)"
-            placeholder="Enter email here"
-            value={props.landlordEmail}
-            onChange={(ev) => props.setLandlordEmail(ev.target.value)}
-          ></input>
-          <input
-            className="landlord-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
-            type="password"
-            value={props.landlordPass}
-            onChange={(ev) => props.setLandlordPass(ev.target.value)}
-          ></input>
-          <h3> {props.landlordError} </h3>
+          <div id="login-form">
+            <input
+              className="landlord-email"
+              aria-label="You can enter your email here (Must be a Google account)"
+              placeholder="Enter email here"
+              value={props.landlordEmail}
+              onChange={(ev) => props.setLandlordEmail(ev.target.value)}
+            ></input>
+            <input
+              className="landlord-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.landlordPass}
+              onChange={(ev) => props.setLandlordPass(ev.target.value)}
+            ></input>
+          </div>
 
+          <h3> {props.landlordError} </h3>
           <button
             type="submit"
             id="landlord-submit"
@@ -186,21 +190,24 @@ export default function LoginPage(props: LoginProps) {
         >
           <h2> Admin </h2>
           <label></label>
-          <input
-            className="admin-email"
-            aria-label="You can enter your email here (must be Brown)"
-            placeholder="Enter email here"
-            value={props.adminEmail}
-            onChange={(ev) => props.setAdminEmail(ev.target.value)}
-          ></input>
-          <input
-            className="admin-password"
-            aria-label="You can enter your password here"
-            placeholder="Enter password here"
-            type="password"
-            value={props.adminPass}
-            onChange={(ev) => props.setAdminPass(ev.target.value)}
-          ></input>
+          <div id="login-form">
+            <input
+              className="admin-email"
+              aria-label="You can enter your email here (must be Brown)"
+              placeholder="Enter email here"
+              value={props.adminEmail}
+              onChange={(ev) => props.setAdminEmail(ev.target.value)}
+            ></input>
+            <input
+              className="admin-password"
+              aria-label="You can enter your password here"
+              placeholder="Enter password here"
+              type="password"
+              value={props.adminPass}
+              onChange={(ev) => props.setAdminPass(ev.target.value)}
+            ></input>
+          </div>
+
           <h3> {props.adminError} </h3>
           <button
             className="admin-login-button"
