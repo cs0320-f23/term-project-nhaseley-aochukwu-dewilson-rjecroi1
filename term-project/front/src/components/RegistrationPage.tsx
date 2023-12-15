@@ -1,7 +1,16 @@
+/**
+ * RegistrationPage Component
+ *
+ * This component provides registration forms for students, landlords, and admins.
+ * It includes input fields for user details, validation checks, and registration functionality.
+ */
+
 import { Dispatch, SetStateAction } from "react";
 import "../styles/RegistrationForm.css";
 import firebase from "firebase/compat/app";
 
+
+//  Interface defining the props for the RegistrationPage component
 interface RegistrationProps {
   studentName: string;
   setStudentName: Dispatch<SetStateAction<string>>;
@@ -36,10 +45,17 @@ interface RegistrationProps {
 }
 
 export default function RegistrationPage(props: RegistrationProps) {
+  
+  /**
+   * Handles student registration form submission.
+   * Validates input, checks for existing email, and registers the student if successful.
+   *
+   * @param {React.FormEvent} event - Form submission event.
+   */
   async function handleStudentRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 
-    // check if user with this email already in db
+    // checks if user with this email already exists in the database
     const emailExists = await props.db
       .collection("interns")
       .where("email", "==", props.studentEmail)
@@ -48,6 +64,8 @@ export default function RegistrationPage(props: RegistrationProps) {
 
     if (emailExists) {
       props.setError("User with this email already exists.");
+
+      // Checks if any input fields are missing
     } else if (
       !props.studentName ||
       !props.studentEmail ||
@@ -80,6 +98,12 @@ export default function RegistrationPage(props: RegistrationProps) {
     }
   }
 
+  /**
+   * Handles landlord registration form submission.
+   * Validates input, checks for existing email, and registers the landlord if successful.
+   *
+   * @param {React.FormEvent} event - Form submission event.
+   */
   async function handleLandlordRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
     // check if user with this email already in db
@@ -122,6 +146,13 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.setLandlordError("");
     }
   }
+
+  /**
+   * Handles admin registration form submission.
+   * Validates input, checks for existing email, and registers the admin if successful.
+   *
+   * @param {React.FormEvent} event - Form submission event.
+   */
   async function handleAdminRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 

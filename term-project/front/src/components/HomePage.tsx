@@ -1,5 +1,12 @@
 import "../styles/Homepage.css";
 
+/**
+ * HomePage Component
+ * 
+ * This component represents the landing page of the application.
+ * It provides an overview of the mission of the housing locator application
+ * and encourages users to start exploring housing opportunities.
+ */
 export default function HomePage() {
   return (
     <div className="homepage">

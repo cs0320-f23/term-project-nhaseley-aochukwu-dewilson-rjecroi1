@@ -1,3 +1,9 @@
+/**
+ * Admin Compenents 
+ * 
+ * This compenents allows an admin to verify landlords. Displays lists of 
+ * landlords and interns 
+ */
 import "../styles/RegistrationForm.css";
 import firebase from "firebase/compat/app";
 import { useEffect, useState } from "react";
@@ -8,6 +14,7 @@ interface AdminProps {
   adminEmail: string;
 }
 
+//Defines the structure of a user object
 interface User {
   name: string;
   email: string;
@@ -15,16 +22,21 @@ interface User {
   numListings?:number;
 }
 
+// Defines the AdminPage component
 export default function AdminPage(props: AdminProps) {
+  // State variables to manage lists of interns, landlords, and admins
   const [interns, setInterns] = useState<User[]>([]);
   const [landlords, setLandlords] = useState<User[]>([]);
   const [admins, setAdmins] = useState<User[]>([]);
 
+  // Fetch user data from the database when the component mounts
   useEffect(() => {
     readUsersFromDB();
   }, []);
 
+  // Function to read user data from the database
   async function readUsersFromDB() {
+    // Reads interns data from Firestore and update state
     props.db
       .collection("interns")
       .get()
@@ -42,6 +54,7 @@ export default function AdminPage(props: AdminProps) {
         setInterns(internsArray);
       });
 
+    // Reads landlords data from Firestore and update state
     props.db
       .collection("landlords")
       .get()
@@ -52,7 +65,7 @@ export default function AdminPage(props: AdminProps) {
             name: doc.data().name,
             email: doc.data().email,
             verified: doc.data().verified,
-            numListings: doc.data().listings.length
+            numListings: doc.data().listings.length,
           };
           landlordsArray.push(landlordData);
         });
@@ -60,6 +73,7 @@ export default function AdminPage(props: AdminProps) {
         setLandlords(landlordsArray);
       });
 
+    // Reads admins data from Firestore and update state
     props.db
       .collection("admins")
       .get()
@@ -77,9 +91,10 @@ export default function AdminPage(props: AdminProps) {
       });
   }
 
-function verifyLandlord(email: string) {
+  // Function to verify a landlord by updating their verification status in the database
+  function verifyLandlord(email: string) {
     const adminRef = props.db.collection("landlords");
-  
+
     adminRef
       .where("email", "==", email)
       .get()
@@ -89,22 +104,24 @@ function verifyLandlord(email: string) {
             verified: true,
           });
         });
-  
+
         return Promise.all(updatePromises);
       })
+
       .then(() => {
+        // Reload the page after updating the verification status
         location.reload();
       })
       .catch((error) => {
         console.error("Error updating email: ", error);
       });
   }
+  // Render different UI based on user login status and admin access
+  // Render the main UI for the admin page, displaying lists of interns, landlords, and admins
   return !props.userLoggedIn ? (
     <h2> Please log in. </h2>
   ) : !props.adminEmail ? (
-    <h2>
-      Only admin can have acess to this page. Please log in as an admin.
-    </h2>
+    <h2>Only admin can have acess to this page. Please log in as an admin.</h2>
   ) : (
     <div className="admin-page">
       this is the admin page!
@@ -123,8 +140,11 @@ function verifyLandlord(email: string) {
             {landlord.email}, <strong>Verification Status: </strong>{" "}
             {landlord.verified ? "Verified" : "Not Verified"}
             {landlord.verified !== true && (
-              <button onClick={() => {verifyLandlord(landlord.email);}
-              }>
+              <button
+                onClick={() => {
+                  verifyLandlord(landlord.email);
+                }}
+              >
                 Verify
               </button>
             )}

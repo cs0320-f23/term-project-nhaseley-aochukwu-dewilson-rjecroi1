@@ -1,3 +1,11 @@
+/**
+ * LoginPage Component
+ *
+ * This component provides login forms for Interns, Landlords, and Admins.
+ * Users can input their credentials, and login is facilitated through both
+ * traditional email/password authentication and Google Sign-In.
+ */
+
 import React from "react";
 import "../styles/LoginPage.css";
 import "../styles/RegistrationForm.css";
@@ -8,6 +16,8 @@ import { Dispatch, SetStateAction } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 // import { GoogleAuthProvider } from "firebase/auth";
 
+
+// Interface defining the properties for the LoginPage component with list of props and types 
 interface LoginProps {
   studentName: string;
   setStudentName: Dispatch<SetStateAction<string>>;
@@ -44,6 +54,7 @@ interface LoginProps {
 export default function LoginPage(props: LoginProps) {
   const navigate = useNavigate();
 
+  // function to login admin
   async function handleAdminLogin(event: React.FormEvent, props) {
     event.preventDefault(); // prevents page from re-rendering
     // check if user with this email already in db
@@ -82,6 +93,7 @@ export default function LoginPage(props: LoginProps) {
     }
   }
 
+  // Function to handle Google Sign-In
   async function handleGoogleSignIn() {
     try {
       const data = await signInWithPopup(auth, provider);
@@ -96,6 +108,7 @@ export default function LoginPage(props: LoginProps) {
 
   const auth = getAuth();
 
+  // Render different content based on user login status
   return props.userLoggedIn ? (
     <h2> You are already logged in!</h2>
   ) : (
@@ -236,6 +249,7 @@ export default function LoginPage(props: LoginProps) {
     </div>
   );
 
+  // Function to check records for Intern login
   async function checkRecordsforIntern(event: React.FormEvent, props) {
     event.preventDefault();
 
@@ -275,6 +289,7 @@ export default function LoginPage(props: LoginProps) {
     }
   }
 
+  /// Function to check records for Landlord login 
   async function checkRecordsforLandlord(event: React.FormEvent, props) {
     event.preventDefault();
     const querySnapshot = await props.db
