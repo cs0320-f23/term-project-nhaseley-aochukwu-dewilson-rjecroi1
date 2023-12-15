@@ -24,7 +24,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = firebase.firestore();
@@ -32,6 +34,19 @@ const db = firebase.firestore();
 console.log("FIREBASE DATABASE: ", db);
 
 function App() {
+  interface Listing {
+    address: string;
+    bedrooms: string; // TODO: CHANGE TO INT
+    details: string;
+    id: string;
+    imgUrl: string;
+    price: string; // TODO: CHANGE TO INT
+    title: string;
+    // TODO: add date posted on postNewListing?
+    latitude?: number;
+    longitude?: number;
+    distance?: number;
+  }
   const [studentName, setStudentName] = useState<string>("");
   const [studentEmail, setStudentEmail] = useState<string>("");
   const [studentPass, setStudentPass] = useState<string>("");
@@ -48,7 +63,7 @@ function App() {
   const [adminName, setAdminName] = useState<string>("");
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
 
-  //consts for listing page 
+  //consts for listing page
   const [listingTitle, setListingTitle] = useState<string>("");
   const [listingURL, setListingURL] = useState<string>("");
   const [listingAddress, setListingAddress] = useState<string>("");
@@ -56,34 +71,40 @@ function App() {
   const [listingPrice, setListingPrice] = useState<number>(0);
   const [listingDetails, setListingDetails] = useState<string>("");
   const [listingError, setListingError] = useState<string>("");
-
+  const [allListings, setAllListings] = useState<Listing[]>([]);
 
   return (
     <div className="app">
       <BrowserRouter>
-        <Navbar userLoggedIn ={userLoggedIn} setUserLoggedIn={setUserLoggedIn} adminEmail={adminEmail}></Navbar>
+        <Navbar
+          userLoggedIn={userLoggedIn}
+          setUserLoggedIn={setUserLoggedIn}
+          adminEmail={adminEmail}
+        ></Navbar>
         <Routes>
           <Route
             path="/LandLordsHomepage"
             element={
-            <LandLordsHomePage
-            listingTitle= {listingTitle}
-            setListingTitle= {setListingTitle}
-            listingURL= {listingURL}
-            setListingURL={setListingURL}
-            listingAddress={listingAddress}
-            setListingAddress={setListingAddress}
-            listingBedrooms= {listingBedrooms}
-            setListingBedrooms={setListingBedrooms}
-            listingPrice={listingPrice}
-            setListingPrice={setListingPrice}
-            listingDetails={listingDetails}
-            setListingDetails={setListingDetails}
-            db ={db}
-            listingError={listingError}
-            setListingError={setListingError}
-            userLoggedIn={userLoggedIn} landlordEmail={landlordEmail}
-            ></LandLordsHomePage>}
+              <LandLordsHomePage
+                listingTitle={listingTitle}
+                setListingTitle={setListingTitle}
+                listingURL={listingURL}
+                setListingURL={setListingURL}
+                listingAddress={listingAddress}
+                setListingAddress={setListingAddress}
+                listingBedrooms={listingBedrooms}
+                setListingBedrooms={setListingBedrooms}
+                listingPrice={listingPrice}
+                setListingPrice={setListingPrice}
+                listingDetails={listingDetails}
+                setListingDetails={setListingDetails}
+                db={db}
+                listingError={listingError}
+                setListingError={setListingError}
+                userLoggedIn={userLoggedIn}
+                landlordEmail={landlordEmail}
+              ></LandLordsHomePage>
+            }
           ></Route>
           <Route path="/" element={<HomePage></HomePage>}></Route>
           <Route
@@ -160,20 +181,37 @@ function App() {
           ></Route>
           <Route
             path="/listings"
-            element={<ListingsPage userLoggedIn={userLoggedIn} studentAddress={studentAddress} db={db} studentEmail={studentEmail}></ListingsPage>}
+            element={
+              <ListingsPage
+                allListings={allListings}
+                setAllListings={setAllListings}
+                userLoggedIn={userLoggedIn}
+                studentAddress={studentAddress}
+                db={db}
+                studentEmail={studentEmail}
+              ></ListingsPage>
+            }
           ></Route>
           <Route
             path="/admin"
-            element={<AdminPage db={db} userLoggedIn={userLoggedIn} adminEmail={adminEmail}></AdminPage>}
+            element={
+              <AdminPage
+                db={db}
+                userLoggedIn={userLoggedIn}
+                adminEmail={adminEmail}
+              ></AdminPage>
+            }
           ></Route>
           <Route
             path="/info/:id"
-            element={<RentalInfoPage></RentalInfoPage>}
+            element={
+              <RentalInfoPage allListings={allListings}></RentalInfoPage>
+            }
           ></Route>
         </Routes>
       </BrowserRouter>
     </div>
-  )
+  );
 }
 
 export default App;

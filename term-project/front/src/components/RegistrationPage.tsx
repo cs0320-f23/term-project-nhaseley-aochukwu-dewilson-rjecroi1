@@ -168,7 +168,7 @@ export default function RegistrationPage(props: RegistrationProps) {
 
   return (
     <div className="registration-page">
-      <h2> This is the registration form! </h2>
+      <p> Fill out the correct registration form based on your needs </p>
       <div className="registration-forms">
         <form
           className="student-registration-form"
@@ -290,7 +290,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               props.setLandlordPass("strongPassword");
             }}
           >
-            Demo Registration #2
+            Demo Registration
           </button>
         </form>
 

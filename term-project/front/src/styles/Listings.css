@@ -176,11 +176,13 @@
 .map {
   position: relative;
   top: 50px;
-  width: 800;
+  width: 1000px;
+  transform: translateX(12%);
   /* bottom: 150; */
   height: 450px;
   margin-left: 300px;
   display: flex;
+  align-items: center;
 }
 
 .mapboxgl-popup {
