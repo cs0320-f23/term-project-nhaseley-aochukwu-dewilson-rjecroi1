@@ -1,71 +1,100 @@
-/* LandLords HomePage component styles */
-
 .LandLords-HomePage {
   display: flex;
-  justify-content: space-between;
-  max-width: 100%; /* Sets a maximum width for the component */
-  margin: 0 auto; /* Centers the component on the page */
-  padding: 20px;
+  width: 100%;
+  margin: 0 auto;
+  /* transform: translateX(-410.5px); */
 }
 
 .listings-section,
 .post-listing-section {
-  width: 48%; /* width */
-  margin-bottom: 500px; /* creates space between the sections */
+  width: 50%;
+  /* margin-bottom: 20px;
+  align-items: center;
+  justify-content: center; */
 }
 
-/* Style for each section the listing section and the post listing section */
 .listings-section {
-  background-color: #888;
+  height: 91vh;
+  background-color: #213547;
   padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 5px;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.listings-section h2 {
+  color: white;
+  margin-bottom: 20px;
 }
 
 .post-listing-section {
-  background-color: #242424;
   padding: 10px;
-  border-radius: 5px;
-  
-
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-/* Additional styling for headings and other elements if needed color : #242424 */
 .post-listing-section h2 {
-    margin-bottom: 150px;
+  margin-bottom: 20px;
 }
 
-
-/*style for the form */
-.listings-form{
+.listings-form {
   display: flex;
   flex-direction: column;
-
 }
-/*style for the listing boxes section */
+
 .listing-boxes {
+  /* transform: translateY(50px); */
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px; /* Adjust the gap between boxes as needed */
+  justify-content: space-evenly;
+  /* gap: 16px; */
+}
+
+.listing-boxes p,
+h3 {
+  color: #213547;
 }
 
 .listing-box {
-  background-color: #997272;
+  /* width: 200px;
+  height: 200px; */
+  background-color: #ffffff;
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
-  flex-basis: calc(50% - 16px); /* Set the initial size for two boxes in each row */
-  box-sizing: border-box; /* Include padding and border in the width */
+  border-radius: 20px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  flex-basis: calc(50% - 10px);
+  box-sizing: border-box;
+  margin-top: 10px;
 }
 
-/* styles for the individual listing boxes*/
-/* .listing-box {
-  background-color: #997272;
-  padding: 50px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
-  /* width: calc(50% - 8px); /* Adjusts the width and account for gap */
-  /* margin: 9px; */ 
-/* } */ 
+#post-form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 20px;
+  align-items: center;
+  color-scheme: light;
+  background-color: #213547;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  width: 400px;
+}
 
+#post-form input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid rgb(119, 119, 119);
+  border-radius: 18px;
+  width: 390px;
+}
+
+#post-form :last-child {
+  margin-bottom: 0;
+}
+
+.post-listing-section button {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+}

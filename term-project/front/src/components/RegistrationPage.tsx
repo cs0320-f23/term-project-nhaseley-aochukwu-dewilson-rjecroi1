@@ -172,10 +172,10 @@ export default function RegistrationPage(props: RegistrationProps) {
       <div className="registration-forms">
         <form
           className="student-registration-form"
-          aria-label="You can registration as a student here"
+          aria-label="You can register as a student here"
         >
-          <h2> Intern</h2>
-          <label> Intern Registration </label>
+          <h2> Intern Registration</h2>
+          {/* <label> Intern Registration </label> */}
           <div id="registration-form">
             <input
               className="student-name"
@@ -232,8 +232,8 @@ export default function RegistrationPage(props: RegistrationProps) {
           className="landlord-registration-form"
           aria-label="You can registration as a landlord here"
         >
-          <h2>Landlord </h2>
-          <label>Landlord Registration </label>
+          <h2>Landlord Registration</h2>
+          {/* <label>Landlord Registration </label> */}
           <div id="registration-form">
             <input
               className="landlord-name"
@@ -302,8 +302,8 @@ export default function RegistrationPage(props: RegistrationProps) {
           className="admin-registration-form"
           aria-label="You can registration as an admin here"
         >
-          <h2> Admin</h2>
-          <label> Admin Registration </label>
+          <h2> Admin Registration</h2>
+          {/* <label> Admin Registration </label> */}
           <div id="registration-form">
             <input
               className="admin-name"

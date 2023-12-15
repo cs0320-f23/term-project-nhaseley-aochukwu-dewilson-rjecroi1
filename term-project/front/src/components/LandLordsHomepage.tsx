@@ -151,20 +151,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
     </h2>
   ) : (
     <div className="LandLords-HomePage">
-      <div className="listings-section">
-        <h2>My Listings</h2>
-        <div className="listing-boxes">
-          {updatedListings.map((listing) => (
-            <div key={listing.id} className="listing-box">
-              <h3>{listing.title}</h3>
-              <p>Address: {listing.address}</p>
-              <p>Bedrooms: {listing.bedrooms}</p>
-              <p>Price: {listing.price}</p>
-              <p>{listing.details}</p>
-            </div>
-          ))}
-        </div>
-      </div>
       <div className="post-listing-section">
         <h2>Post New Listing</h2>
         <form
@@ -172,50 +158,56 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
           aria-label="You can submit your listings here"
         >
           <label></label>
-          <input
-            className="Title"
-            aria-label="You can enter the title of your listing here"
-            placeholder="Enter title here"
-            value={props.listingTitle}
-            onChange={(ev) => props.setListingTitle(ev.target.value)}
-          ></input>
-          <input
-            className="image_url"
-            aria-label="You can enter the url of the housing option here "
-            placeholder="Enter url of image here"
-            value={props.listingURL}
-            onChange={(ev) => props.setListingURL(ev.target.value)}
-          ></input>
-          <input
-            className="Address"
-            aria-label="You can enter your address here (must be a valid address)"
-            placeholder="Enter address here"
-            value={props.listingAddress}
-            onChange={(ev) => props.setListingAddress(ev.target.value)}
-          ></input>
-          <input
-            className="Bedrooms "
-            aria-label="You can enter number of bedrooms Here"
-            placeholder="Enter number of bedrooms here"
-            value={props.listingBedrooms}
-            type="number"
-            onChange={(ev) => props.setListingBedrooms(parseFloat(ev.target.value))}
-          ></input>
-          <input
-            className="Price"
-            aria-label="You can enter the price of the housing option"
-            placeholder="Enter the price here"
-            value={props.listingPrice}
-            type="number"
-            onChange={(ev) => props.setListingPrice(parseFloat(ev.target.value))}
-          ></input>
-          <input
-            className="Details"
-            aria-label="You can enter any neccessary details"
-            placeholder="Description and Details: Lorem ipsum dolor sit amet"
-            value={props.listingDetails}
-            onChange={(ev) => props.setListingDetails(ev.target.value)}
-          ></input>
+          <div id="post-form">
+            <input
+              className="Title"
+              aria-label="You can enter the title of your listing here"
+              placeholder="Enter title here"
+              value={props.listingTitle}
+              onChange={(ev) => props.setListingTitle(ev.target.value)}
+            ></input>
+            <input
+              className="image_url"
+              aria-label="You can enter the url of the housing option here "
+              placeholder="Enter url of image here"
+              value={props.listingURL}
+              onChange={(ev) => props.setListingURL(ev.target.value)}
+            ></input>
+            <input
+              className="Address"
+              aria-label="You can enter your address here (must be a valid address)"
+              placeholder="Enter address here"
+              value={props.listingAddress}
+              onChange={(ev) => props.setListingAddress(ev.target.value)}
+            ></input>
+            <input
+              className="Bedrooms "
+              aria-label="You can enter number of bedrooms Here"
+              placeholder="Enter number of bedrooms here"
+              value={props.listingBedrooms}
+              type="number"
+              onChange={(ev) =>
+                props.setListingBedrooms(parseFloat(ev.target.value))
+              }
+            ></input>
+            <input
+              className="Price"
+              aria-label="You can enter the price of the housing option"
+              placeholder="Enter the price here"
+              value={props.listingPrice}
+              type="number"
+              onChange={(ev) =>
+                props.setListingPrice(parseFloat(ev.target.value))
+              }
+            ></input>
+            <input
+              className="Details"
+              aria-label="You can enter any neccessary details"
+              placeholder="Description and Details: Lorem ipsum dolor sit amet"
+              value={props.listingDetails}
+              onChange={(ev) => props.setListingDetails(ev.target.value)}
+            ></input>
+          </div>
           <h3> {props.listingError} </h3>
           <button
             className="student-register-button"
@@ -242,6 +234,22 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
             Demo Posting
           </button>
         </form>
+      </div>
+      <div className="listings-section">
+        <h2>My Listings</h2>
+        <div className="listing-boxes">
+          <div className="listing-info">
+            {updatedListings.map((listing) => (
+              <div key={listing.id} className="listing-box">
+                <h3>{listing.title}</h3>
+                <p>Address: {listing.address}</p>
+                <p>Bedrooms: {listing.bedrooms}</p>
+                <p>Price: {listing.price}</p>
+                <p>{listing.details}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
