@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import "../styles/RegistrationForm.css";
 import firebase from "firebase/compat/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 interface RegistrationProps {
   studentName: string;
@@ -36,6 +37,19 @@ interface RegistrationProps {
 }
 
 export default function RegistrationPage(props: RegistrationProps) {
+  const provider = new GoogleAuthProvider();
+
+  const auth = getAuth();
+  async function handleGoogleSignIn() {
+    try {
+      const data = await signInWithPopup(auth, provider);
+      return data.user.email;
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      return null;
+    }
+  }
+
   async function handleStudentRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 
@@ -60,23 +74,39 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.setError("You must provide your Brown email address.");
     } else {
       // register successfully
-      props.db
-        .collection("interns")
-        .add({
-          id: props.db.collection("interns").doc().id,
-          name: props.studentName,
-          email: props.studentEmail,
-          password: props.studentPass,
-          address: props.studentAddress,
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-      props.setStudentAddress("");
-      props.setStudentEmail("");
-      props.setStudentPass("");
-      props.setStudentName("");
-      props.setError("");
+      const studentGmail = await handleGoogleSignIn();
+      try {
+        if (studentGmail != null) {
+          if (studentGmail == props.studentEmail) {
+            props.db
+              .collection("interns")
+              .add({
+                id: props.db.collection("interns").doc().id,
+                name: props.studentName,
+                email: props.studentEmail,
+                password: props.studentPass,
+                address: props.studentAddress,
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+            props.setStudentAddress("");
+            props.setStudentEmail("");
+            props.setStudentPass("");
+            props.setStudentName("");
+            props.setError("");
+          } else {
+            props.setError(
+              "Please be sure your email matches the one selected during Google Login."
+            );
+          }
+        } else {
+          props.setError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     }
   }
 
@@ -101,25 +131,41 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.setLandlordError("Please be sure to input all fields.");
     } else {
       // register successfully
-      props.db
-        .collection("landlords")
-        .add({
-          id: props.db.collection("landlords").doc().id, // add a unique id
-          name: props.landlordName,
-          email: props.landlordEmail,
-          password: props.landlordPass,
-          phone: props.landlordPhone,
-          verified: false,
-          listings: [],
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-      props.setLandlordPhone("");
-      props.setLandlordEmail("");
-      props.setLandlordPass("");
-      props.setLandlordName("");
-      props.setLandlordError("");
+      const landlordGmail = await handleGoogleSignIn();
+      try {
+        if (landlordGmail != null) {
+          if (landlordGmail == props.landlordEmail) {
+            props.db
+              .collection("landlords")
+              .add({
+                id: props.db.collection("landlords").doc().id, // add a unique id
+                name: props.landlordName,
+                email: props.landlordEmail,
+                password: props.landlordPass,
+                phone: props.landlordPhone,
+                verified: false,
+                listings: [],
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+            props.setLandlordPhone("");
+            props.setLandlordEmail("");
+            props.setLandlordPass("");
+            props.setLandlordName("");
+            props.setLandlordError("");
+          } else {
+            props.setLandlordError(
+              "Please be sure your email matches the one selected during Google Login."
+            );
+          }
+        } else {
+          props.setLandlordError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setLandlordError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     }
   }
   async function handleAdminRegistration(event: React.FormEvent) {
@@ -139,21 +185,37 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.setAdminError("Please be sure to input all fields.");
     } else {
       // register successfully
-      props.db
-        .collection("admins")
-        .add({
-          id: props.db.collection("admins").doc().id,
-          name: props.adminName,
-          email: props.adminEmail,
-          password: props.adminPass,
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-      props.setAdminName("");
-      props.setAdminEmail("");
-      props.setAdminPass("");
-      props.setAdminError("");
+      try {
+        const landlordGmail = await handleGoogleSignIn();
+        if (landlordGmail != null) {
+          if (landlordGmail == props.landlordEmail) {
+            props.db
+              .collection("admins")
+              .add({
+                id: props.db.collection("admins").doc().id,
+                name: props.adminName,
+                email: props.adminEmail,
+                password: props.adminPass,
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+            props.setAdminName("");
+            props.setAdminEmail("");
+            props.setAdminPass("");
+            props.setAdminError("");
+          } else {
+            props.setAdminError(
+              "Please be sure your email matches the one selected on Google Login."
+            );
+          }
+        } else {
+          props.setAdminError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setAdminError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     }
   }
 
@@ -279,9 +341,9 @@ export default function RegistrationPage(props: RegistrationProps) {
             className="demo-landlord-registration-for-listing-test"
             onClick={(ev) => {
               ev.preventDefault();
-              props.setLandlordName("tessa");
+              props.setLandlordName("Nya");
               props.setLandlordPhone("98765432");
-              props.setLandlordEmail("tessa@gmail.com");
+              props.setLandlordEmail("nya_haseley-ayende@brown.edu");
               props.setLandlordPass("strongPassword");
             }}
           >

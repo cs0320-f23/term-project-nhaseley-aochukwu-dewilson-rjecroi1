@@ -15,16 +15,17 @@ function valuetext(value: number) {
 }
 interface Listing {
   address: string;
-  bedrooms: string; // TODO: CHANGE TO INT
+  bedrooms: number;
   details: string;
   id: string;
   imgUrl: string;
-  price: number; // TODO: CHANGE TO INT
+  price: number;
   title: string;
   // TODO: add date posted on postNewListing?
   latitude?: number;
   longitude?: number;
   distance?: number;
+  datePosted: string;
 }
 interface ListingPageProps {
   db: firebase.firestore.Firestore;
@@ -231,7 +232,7 @@ export default function ListingsPage(props: ListingPageProps) {
           {props.allListings.map((listing) =>
             listing.distance && listing.price ? (
               listing.distance <= distance &&
-              parseFloat(listing.price) <= price ? (
+              listing.price <= price ? (
                 <div key={listing.id} className="listing-info">
                   <Link to={`/info/${listing.id}`}>
                     <img
@@ -240,7 +241,7 @@ export default function ListingsPage(props: ListingPageProps) {
                     />
                   </Link>
                   <p>Address: {listing.address}</p>
-                  {/* <p>Date Posted: {listing.datePosted}</p> */}
+                  <p>Date Posted: {listing.datePosted}</p>
                 </div>
               ) : null
             ) : null
