@@ -138,7 +138,9 @@ Coordinate Data:
 
 # Features 
 **Google Firebase:** 
-    * hosts the database for our project which stores the accounts of administrators, Landlords, and Interns
+- hosts the database for our project which stores the accounts of administrators, Landlords, and Interns
+**mapBox:**
+-  allows users to see listing on a map includes drop pins at the location the listing is at. clicking on the drop pin sends you a page which provides the description of the selected listing
 
 **For Security:** 
 - The use of **Google Authentication:**
@@ -146,7 +148,7 @@ Coordinate Data:
 
 **For Accessibilty:** 
 - Aria Labels 
-    * Including Aria Roles, attributes, and descriptions
+    -  Including Aria Roles, attributes, and descriptions
 - High Color Constrast in UI
 - Keyboard navigation 
     
