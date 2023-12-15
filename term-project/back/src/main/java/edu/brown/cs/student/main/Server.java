@@ -80,6 +80,7 @@ public class Server {
 
             // Wait until the server has started.
             Spark.awaitInitialization();
+            System.out.println("Server started at http://localhost:" + port);
         }
 
         /**
