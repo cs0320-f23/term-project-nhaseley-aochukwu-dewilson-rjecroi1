@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import firebase from "firebase/compat/app";
 import { Dispatch, SetStateAction } from "react";
-import { getAuth, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 interface LoginProps {
   studentName: string;
@@ -37,6 +37,7 @@ interface LoginProps {
   setAdminError: Dispatch<SetStateAction<string>>;
   userLoggedIn: boolean;
   setUserLoggedIn: Dispatch<SetStateAction<boolean>>;
+  setAdminName: Dispatch<SetStateAction<string>>;
 }
 
 export default function LoginPage(props: LoginProps) {
@@ -56,39 +57,43 @@ export default function LoginPage(props: LoginProps) {
       props.setAdminError("This admin email does not exist in database.");
     } else if (props.adminPass === querySnapshot.docs[0].data().password) {
       // login successfully
-      props.setUserLoggedIn(true);
-      navigate("/admin");
+      try {
+        const adminGmail = await handleGoogleSignIn();
+        if (adminGmail != null) {
+          if (adminGmail == props.adminEmail) {
+            props.setUserLoggedIn(true);
+            props.setAdminName(querySnapshot.docs[0].data().name);
+            navigate("/admin");
+          } else {
+            props.setAdminError(
+              "Please be sure your email matches the one selected on Google Login."
+            );
+          }
+        } else {
+          props.setAdminError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setAdminError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     } else {
       props.setAdminError("Invalid credentials.");
     }
   }
 
-  function handleGoogleSignIn() {
-    console.log("logging in...");
+  async function handleGoogleSignIn() {
+    try {
+      const data = await signInWithPopup(auth, provider);
+      return data.user.email;
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      return null;
+    }
   }
 
-  const auth = getAuth();
-  getRedirectResult(auth)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access Google APIs.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
+  const provider = new GoogleAuthProvider();
 
-      // The signed-in user info.
-      const user = result.user;
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-    });
+  const auth = getAuth();
 
   return props.userLoggedIn ? (
     <h2> You are already logged in!</h2>
@@ -176,8 +181,8 @@ export default function LoginPage(props: LoginProps) {
             className="demo-landlord-login"
             onClick={(ev) => {
               ev.preventDefault();
-              props.setLandlordEmail("tessa@gmail.com");
-              props.setLandlordPass("strongPassword");
+              props.setLandlordEmail("nya_haseley-ayende@brown.edu");
+              props.setLandlordPass("password");
             }}
           >
             Demo Login
@@ -243,11 +248,26 @@ export default function LoginPage(props: LoginProps) {
       props.setError("This intern does not exist in our database.");
     } else if (props.studentPass === querySnapshot.docs[0].data().password) {
       // allow successful login
-      handleGoogleSignIn();
-      props.setStudentAddress(querySnapshot.docs[0].data().address);
-      props.setStudentName(querySnapshot.docs[0].data().name);
-      props.setUserLoggedIn(true);
-      navigate("/listings");
+      try {
+        const studentGmail = await handleGoogleSignIn();
+        if (studentGmail != null) {
+          if (studentGmail == props.studentEmail) {
+            props.setStudentAddress(querySnapshot.docs[0].data().address);
+            props.setStudentName(querySnapshot.docs[0].data().name);
+            props.setUserLoggedIn(true);
+            navigate("/listings");
+          } else {
+            props.setError(
+              "Please be sure your email matches the one selected during Google Login."
+            );
+          }
+        } else {
+          props.setError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     } else {
       // wrong user or password
       props.setError("Invalid login credentials.");
@@ -260,22 +280,37 @@ export default function LoginPage(props: LoginProps) {
       .collection("landlords")
       .where("email", "==", props.landlordEmail)
       .get();
+
     if (!props.landlordEmail || !props.landlordPass) {
       props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {
       props.setLandlordError("This landlord does not exist in our database.");
-    } // FIGURE OUT LANDLORD VERIFICATION
-    else if (querySnapshot.docs[0].data().verified == "false") {
+    } else if (querySnapshot.docs[0].data().verified == false) {
       props.setLandlordError(
         "This landlord is not yet verified in our database."
       );
     } else if (props.landlordPass === querySnapshot.docs[0].data().password) {
       // allow successful login
-      handleGoogleSignIn();
-      props.setUserLoggedIn(true);
-      props.setLandlordName(querySnapshot.docs[0].data().name);
-      props.setLandlordPhone(querySnapshot.docs[0].data().phone);
-      navigate("/LandLordsHomepage");
+      try {
+        const landlordGmail = await handleGoogleSignIn();
+        if (landlordGmail != null) {
+          if (landlordGmail == props.landlordEmail) {
+            props.setLandlordName(querySnapshot.docs[0].data().name);
+            props.setLandlordPhone(querySnapshot.docs[0].data().phone);
+            props.setUserLoggedIn(true);
+            navigate("/LandLordsHomepage");
+          } else {
+            props.setLandlordError(
+              "Please be sure your email matches the one selected on Google Login."
+            );
+          }
+        } else {
+          props.setLandlordError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setLandlordError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     } else {
       // wrong user or password
       props.setLandlordError("Invalid login credentials.");

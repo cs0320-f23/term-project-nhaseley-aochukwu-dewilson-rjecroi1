@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
 import { Link } from "react-router-dom";
-
 interface NavLinksProps {
   userLoggedIn: boolean;
   setUserLoggedIn: Dispatch<SetStateAction<boolean>>;
@@ -10,12 +9,16 @@ export default function NavLinks(props: NavLinksProps) {
   return (
     <div className="navLinks">
       {props.userLoggedIn == true ? (
-        <Link className="nav-login" to="/login" onClick={() => 
-        props.setUserLoggedIn(false)
-        // TODO: set all other fields to their default values
-        }>
-        Sign Out
-      </Link>
+        <Link
+          className="nav-login"
+          to="/login"
+          onClick={
+            () => props.setUserLoggedIn(false)
+            // TODO: set all other fields to their default values
+          }
+        >
+          Sign Out
+        </Link>
       ) : (
         <Link className="nav-login" to="/login">
           Login
@@ -30,9 +33,11 @@ export default function NavLinks(props: NavLinksProps) {
       <Link className="nav-landlords-homepage" to="/LandLordsHomepage">
         My Listings
       </Link>
-      {props.adminEmail ? <Link className="nav-admin-homepage" to="/admin">
-        Admin
-      </Link>: null}
+      {props.adminEmail ? (
+        <Link className="nav-admin-homepage" to="/admin">
+          Admin
+        </Link>
+      ) : null}
     </div>
   );
 }

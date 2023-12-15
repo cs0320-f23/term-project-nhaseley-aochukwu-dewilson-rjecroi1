@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import NavLinks from "./NavLinks";
-import { Dispatch, SetStateAction } from "react";
 import "../styles/Navbar.css";
+import { Dispatch, SetStateAction } from "react";
+
 interface NavBarProps {
   userLoggedIn: boolean;
   setUserLoggedIn: Dispatch<SetStateAction<boolean>>;
