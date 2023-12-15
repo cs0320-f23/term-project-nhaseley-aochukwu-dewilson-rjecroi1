@@ -16,9 +16,8 @@
   align-items: center;
   color-scheme: light;
   background-color: #213547;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
-
-  width: 300px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */    
+  width: 85%;
 }
 
 #login-form input {
