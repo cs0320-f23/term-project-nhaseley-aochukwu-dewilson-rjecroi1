@@ -207,7 +207,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               onChange={(ev) => props.setStudentAddress(ev.target.value)}
             ></input>
           </div>
-          <h3> {props.error} </h3>
+          <h3 className="student registration error"> {props.error} </h3>
           <button
             className="student-register-button"
             onClick={(ev) => handleStudentRegistration(ev)}
