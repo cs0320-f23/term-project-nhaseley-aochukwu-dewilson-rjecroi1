@@ -31,8 +31,6 @@ if (!firebase.apps.length) {
 // Initialize Cloud Firestore and get a reference to the service
 const db = firebase.firestore();
 
-console.log("FIREBASE DATABASE: ", db);
-
 function App() {
   interface Listing {
     address: string;
@@ -40,7 +38,7 @@ function App() {
     details: string;
     id: string;
     imgUrl: string;
-    price: string; // TODO: CHANGE TO INT
+    price: number; // TODO: CHANGE TO INT
     title: string;
     // TODO: add date posted on postNewListing?
     latitude?: number;
@@ -138,6 +136,7 @@ function App() {
                 setAdminPass={setAdminPass}
                 adminError={adminError}
                 setAdminError={setAdminError}
+                setAdminName={setAdminName}
                 userLoggedIn={userLoggedIn}
                 setUserLoggedIn={setUserLoggedIn}
               ></LoginPage>

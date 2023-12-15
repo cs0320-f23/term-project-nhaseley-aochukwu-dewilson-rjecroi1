@@ -69,9 +69,6 @@ export default function RegistrationPage(props: RegistrationProps) {
           password: props.studentPass,
           address: props.studentAddress,
         })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-        })
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
@@ -115,9 +112,6 @@ export default function RegistrationPage(props: RegistrationProps) {
           verified: false,
           listings: [],
         })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-        })
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
@@ -152,9 +146,6 @@ export default function RegistrationPage(props: RegistrationProps) {
           name: props.adminName,
           email: props.adminEmail,
           password: props.adminPass,
-        })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
         })
         .catch((error) => {
           console.error("Error adding document: ", error);
@@ -207,7 +198,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               onChange={(ev) => props.setStudentAddress(ev.target.value)}
             ></input>
           </div>
-          <h3> {props.error} </h3>
+          <h3 className="student-registration-error"> {props.error} </h3>
           <button
             className="student-register-button"
             onClick={(ev) => handleStudentRegistration(ev)}

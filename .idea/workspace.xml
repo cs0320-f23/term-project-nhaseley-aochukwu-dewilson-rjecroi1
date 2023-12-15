@@ -122,4 +122,9 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/open-react-template" />
+    </ignored-roots>
+  </component>
 </project>
