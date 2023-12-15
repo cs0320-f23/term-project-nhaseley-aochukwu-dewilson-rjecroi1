@@ -106,7 +106,7 @@ export default function LoginPage(props: LoginProps) {
           className="login-form"
           aria-label="You can login as a student here"
         >
-          <h2>Intern</h2>
+          <h2>Intern Login</h2>
           <label></label>
           <div id="login-form">
             <input
@@ -150,7 +150,7 @@ export default function LoginPage(props: LoginProps) {
           className="landlord-login-form"
           aria-label="You can login as a landlord here"
         >
-          <h2> Landlord </h2>
+          <h2> Landlord Login</h2>
           <label></label>
           <div id="login-form">
             <input
@@ -194,7 +194,7 @@ export default function LoginPage(props: LoginProps) {
           className="admin-login-form"
           aria-label="You can login as an admin here"
         >
-          <h2> Admin </h2>
+          <h2> Admin Login</h2>
           <label></label>
           <div id="login-form">
             <input

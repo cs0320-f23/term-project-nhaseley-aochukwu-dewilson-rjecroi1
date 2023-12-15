@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="74e9fbe8-59c9-42fd-a3c4-45a858817a21" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/term-project/front/src/styles/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/styles/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/term-project/front/src/styles/Homepage.css" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/styles/Homepage.css" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/term-project-nhaseley-aochukwu-dewilson-rjecroi1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/term-project-nhaseley-aochukwu-dewilson-rjecroi1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +41,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/nylevenya/Desktop/CS0320/Term-Project/term-project-nhaseley-aochukwu-dewilson-rjecroi1",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.30751175",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external"
+
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -53,6 +74,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.30751175&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external&quot;
+
   },
   &quot;keyToStringList&quot;: {
     &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
@@ -62,6 +84,7 @@
     ]
   }
 }</component>
+
   <component name="RunManager" selected="Application.Server">
     <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="edu.brown.cs.student.main.Server" />
@@ -98,6 +121,7 @@
       </list>
     </recent_temporary>
   </component>
+
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -108,8 +132,12 @@
       <updated>1701638353038</updated>
       <workItem from="1701638361562" duration="331000" />
       <workItem from="1701917138372" duration="1542000" />
-      <workItem from="1702141876734" duration="61000" />
-      <workItem from="1702497563237" duration="629000" />
+
+      <workItem from="1702501689644" duration="174000" />
+      <workItem from="1702501870416" duration="918000" />
+      <workItem from="1702502814510" duration="344000" />
+      <workItem from="1702503163735" duration="370000" />
+
     </task>
     <servers />
   </component>

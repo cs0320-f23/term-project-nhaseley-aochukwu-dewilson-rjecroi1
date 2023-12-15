@@ -1,6 +1,6 @@
 .registration-page {
   width: 100%;
-  margin-top: 90px;
+  margin-top: 80px;
 }
 
 .registration-page p {
@@ -27,6 +27,7 @@
 
 .registration-forms button {
   margin-top: 5px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
 }
 
 .registration-forms form {
@@ -44,6 +45,7 @@
   align-items: center;
   color-scheme: light;
   background-color: #213547;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
   width: 300px;
 }
 
