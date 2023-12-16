@@ -7,7 +7,7 @@
 
 ### How to Use:
 
-- **For a Brown Intern:**
+#### For a Brown Intern 
 1. Register
    - By including your name, brown email, password for the application, and your work address
 2. Log in
@@ -15,9 +15,9 @@
    - You will be directed to login though google authentication. Make sure the email you
      registered with is the same email your passing in for google authentication
 3. Feel free to browse:
-   - By looking at potential housing options.Toggle and therfore filter between price points and / or distances between your work address and a number of avaialble listings. Click on any listing and you will be navigated for a page dedicated to more information about that listing
+   - By looking at potential housing options. Toggle and therefore filter between price points and / or distances between your work address and a number of avaialble listings. Click on any listing and you will be navigated for a page dedicated to more information about that listing
 
-- **For a Landlord:**
+#### For a Landlord 
 1. Register
    - By including your name, brown email, password for the application, and your phone number
 2. Log in
@@ -27,7 +27,7 @@
 3. Feel free to post new listings by completing the post new listing form and browse through listings you
    have already posted
 
-- **For an Administrators**
+#### For an Administrators 
 1. Register
    - By including your name, brown email, password for the application 
 2. Log in
@@ -37,23 +37,23 @@
 3. navigated to you admin homepage, which allows you to see lists of all the interns, 
 and landlords and verify the accounts of lanlords for security purposes 
 
-### Setup
+## Setup
 
-1. npm isntall react-router-dom
+-  npm isntall react-router-dom
 
 Installing firebase:
 
-1. npm install firebase@10.7.0 --save
+-  npm install firebase@10.7.0 --save
 
 Installing MapBox:
 
-1. npm install
-2. npm install react-map-gl
-3. npm install mapbox-gl
+-  npm install
+-  npm install react-map-gl
+-  npm install mapbox-gl
 
 Installing Playwright
 
-1. npm install playwright
+-  npm install playwright
 
 Run frontend:
 cd into term-project, then front, then run npm run dev
@@ -119,7 +119,8 @@ Coordinate Data:
    Implements the CoordinateData interface and handles fetching real coordinate data.
 4. **CoordinateMockedData.java**
    Provides mock responses for testing the handling of distance data.
-   Distance Data:
+   
+Distance Data:
 5. apiKeys
 6. **DistanceApiRepsonse.java:**
    Represents the response structure for distance data from an external API.
@@ -136,7 +137,7 @@ Coordinate Data:
     Represents the main class for the server, initializes SparkJava, and defines API endpoints.
     allows for the retrieval of data from the APIs
 
-# Features 
+## Features 
 **Google Firebase:** 
 - hosts the database for our project which stores the accounts of administrators, Landlords, and Interns
 **mapBox:**
@@ -153,7 +154,7 @@ Coordinate Data:
 - Keyboard navigation 
     
 
-### testing
+## testing
 front end testing :
 - Integration testing
 
