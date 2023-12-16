@@ -1,6 +1,7 @@
 .login-page {
   width: 100%;
   margin-top: 130px;
+  /* display: flex; */
 }
 
 .login-page p {
@@ -16,8 +17,8 @@
   align-items: center;
   color-scheme: light;
   background-color: #213547;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */    
-  width: 85%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
+  width: 300px;
 }
 
 #login-form input {
@@ -35,6 +36,10 @@
 .login-forms button {
   margin-top: 5px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
+}
+
+h3 {
+  font-size: 18px;
 }
 
 /* .submit {
