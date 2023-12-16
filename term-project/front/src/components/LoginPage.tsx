@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
 import { Dispatch, SetStateAction } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-// import { GoogleAuthProvider } from "firebase/auth";
 
 
 // Interface defining the properties for the LoginPage component with list of props and types 
@@ -195,8 +194,8 @@ export default function LoginPage(props: LoginProps) {
             className="demo-landlord-login"
             onClick={(ev) => {
               ev.preventDefault();
-              props.setLandlordEmail("tessa@gmail.com");
-              props.setLandlordPass("strongPassword");
+              props.setLandlordEmail("nya_haseley-ayende@brown.edu");
+              props.setLandlordPass("password");
             }}
           >
             Demo Login
@@ -296,11 +295,12 @@ export default function LoginPage(props: LoginProps) {
       .collection("landlords")
       .where("email", "==", props.landlordEmail)
       .get();
+
     if (!props.landlordEmail || !props.landlordPass) {
       props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {
       props.setLandlordError("This landlord does not exist in our database.");
-    } else if (querySnapshot.docs[0].data().verified == "false") {
+    } else if (querySnapshot.docs[0].data().verified == false) {
       props.setLandlordError(
         "This landlord is not yet verified in our database."
       );

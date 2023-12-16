@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 // Interface defining the structure of a Listing object
 interface Listing {
   address: string;
-  bedrooms: string;
+  bedrooms: number;
   details: string;
   id: string;
   imgUrl: string;
@@ -22,6 +22,7 @@ interface Listing {
   latitude?: number;
   longitude?: number;
   distance?: number;
+  datePosted: string;
 }
 
 interface RentalInfoPageProps {
