@@ -14,7 +14,6 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.20",
-    "@playwright/test": "^1.38.1",
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.6.2",
     "firebase": "^10.7.0",
@@ -25,7 +24,9 @@
     "react-router-dom": "^6.19.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.1",
     "@types/gapi.auth2": "^0.0.60",
+    "@types/node": "^20.10.4",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",

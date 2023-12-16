@@ -285,7 +285,7 @@ export default function LoginPage(props: LoginProps) {
       props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {
       props.setLandlordError("This landlord does not exist in our database.");
-    } else if (querySnapshot.docs[0].data().verified == "false") {
+    } else if (querySnapshot.docs[0].data().verified == false) {
       props.setLandlordError(
         "This landlord is not yet verified in our database."
       );
