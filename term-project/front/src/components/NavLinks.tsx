@@ -1,3 +1,10 @@
+/**
+ * NavLinks Component
+ *
+ * This component represents a set of navigation links displayed in the Navbar.
+ * It includes links for user authentication (Login, Register) and additional
+ * links for browsing listings and accessing a landlord's homepage.
+ */
 import { Dispatch, SetStateAction } from "react";
 import { Link } from "react-router-dom";
 interface NavLinksProps {

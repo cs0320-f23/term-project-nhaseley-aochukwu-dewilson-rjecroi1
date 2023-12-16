@@ -1,3 +1,7 @@
+/**
+ * The main entry point for the React application, 
+ * where components are rendered and routes are defined.
+ */
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../styles/App.css";
@@ -32,6 +36,7 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 
 function App() {
+  // Define the structure of a listing object
   interface Listing {
     address: string;
     bedrooms: number;
@@ -45,23 +50,30 @@ function App() {
     longitude?: number;
     distance?: number;
   }
+  // State variables for student registration
   const [studentName, setStudentName] = useState<string>("");
   const [studentEmail, setStudentEmail] = useState<string>("");
   const [studentPass, setStudentPass] = useState<string>("");
   const [studentAddress, setStudentAddress] = useState<string>("");
   const [error, setError] = useState<string>("");
+
+  // State variables for landlord registration
   const [landlordName, setLandlordName] = useState<string>("");
   const [landlordEmail, setLandlordEmail] = useState<string>("");
   const [landlordPass, setLandlordPass] = useState<string>("");
   const [landlordPhone, setLandlordPhone] = useState<string>("");
   const [landlordError, setLandlordError] = useState<string>("");
+
+  // State variables for admin registration
   const [adminEmail, setAdminEmail] = useState<string>("");
   const [adminPass, setAdminPass] = useState<string>("");
   const [adminError, setAdminError] = useState<string>("");
   const [adminName, setAdminName] = useState<string>("");
+
+  // State variable for user login status
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
 
-  //consts for listing page
+  // State variables for listing page
   const [listingTitle, setListingTitle] = useState<string>("");
   const [listingURL, setListingURL] = useState<string>("");
   const [listingAddress, setListingAddress] = useState<string>("");
@@ -71,6 +83,7 @@ function App() {
   const [listingError, setListingError] = useState<string>("");
   const [allListings, setAllListings] = useState<Listing[]>([]);
 
+  //renders 
   return (
     <div className="app">
       <BrowserRouter>

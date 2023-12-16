@@ -1,3 +1,12 @@
+/**
+ * ListingsPage Component
+ *
+ * This component displays a list of available housing listings
+ * on a map and in a side-by-side view. Users can filter listings
+ * by distance and price using sliders.
+ */
+
+
 import { useEffect, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 
@@ -10,9 +19,13 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 
+
+// Function to display the value for the distance and price sliders
 function valuetext(value: number) {
   return `${value} miles`;
 }
+
+// Interface defining the structure of a housing listing
 interface Listing {
   address: string;
   bedrooms: number;
@@ -27,6 +40,7 @@ interface Listing {
   distance?: number;
   datePosted: string;
 }
+// Interface defining the properties for the ListingsPage component
 interface ListingPageProps {
   db: firebase.firestore.Firestore;
   studentAddress: string;
@@ -35,10 +49,13 @@ interface ListingPageProps {
   allListings: Listing[];
   setAllListings: Dispatch<SetStateAction<Listing[]>>;
 }
+
+//Interface defining the structure of a landlord 
 interface Landlord {
   listings: Listing[];
 }
 
+// Interface defining the structure of geographical coords 
 interface Coordinate {
   latitude?: number;
   longitude?: number;
@@ -47,10 +64,13 @@ interface Coordinate {
   status?: string;
 }
 
+
 export default function ListingsPage(props: ListingPageProps) {
   // const [allListings, setAllListings] = useState<Listing[]>([]);
   const [distance, setDistance] = useState<number>(8); // Initial distance value
   const [price, setPrice] = useState<number>(1000); // Initial distance value
+
+  // Fetch and update listings when the component mounts
   useEffect(() => {
     if (!props.studentEmail || !props.userLoggedIn) {
       return;
@@ -155,6 +175,8 @@ export default function ListingsPage(props: ListingPageProps) {
       center: [-71.057083, 42.361145],
       zoom: 12,
     });
+
+    // Event listener when the map loads 
     map.on("load", () => {
       props.allListings.forEach((listing) => {
         if (
