@@ -4,6 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="c32320a9-d18c-4f66-9448-df47c060fb8a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$AddressComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$AddressComponent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$Geometry.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$Geometry.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$Location.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$Location.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$PlusCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$PlusCode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$Result.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$Result.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$Viewport.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse$Viewport.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateApiResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateDataSource.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateDataSource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateMockedData.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateMockedData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/DistanceDataSource.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/DistanceDataSource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/DistanceMockedData.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/DistanceMockedData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/apiKeys/apiKeys.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/apiKeys/apiKeys.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/DistanceHandler/FilterHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/DistanceHandler/FilterHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/back/target/classes/edu/brown/cs/student/main/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/term-project/front/src/components/LandLordsHomepage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/term-project/front/src/components/LandLordsHomepage.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,8 +31,158 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2ZbjRP7wOeFSSMK0FhSXgTmypRF" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.brown.cs.student.main.Server" />
+      <module name="s0" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.brown.cs.student.main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType">
+      <module name="term-project-nhaseley-aochukwu-dewilson-rjecroi1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="term-project-nhaseley-aochukwu-dewilson-rjecroi1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="term-project-nhaseley-aochukwu-dewilson-rjecroi1" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <module name="term-project-nhaseley-aochukwu-dewilson-rjecroi1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="term-project-nhaseley-aochukwu-dewilson-rjecroi1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="term-project-nhaseley-aochukwu-dewilson-rjecroi1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="term-project-nhaseley-aochukwu-dewilson-rjecroi1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Server" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c32320a9-d18c-4f66-9448-df47c060fb8a" name="Changes" comment="" />
+      <created>1702697665413</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1702697665413</updated>
+      <workItem from="1702697667913" duration="488000" />
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>
