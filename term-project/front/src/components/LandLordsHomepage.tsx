@@ -97,7 +97,7 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
     } else if (
       postedListings.some((listing) => listing.address === props.listingAddress)
     ) {
-      console.log("adresss same ")
+     
       // Set an error message for duplicate address
       props.setListingError("A listing with the same address already exists.");
     } else {
