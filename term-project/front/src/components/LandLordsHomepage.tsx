@@ -110,7 +110,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
           day: "numeric",
         }
       );
-      console.log("date: ", formattedDate);
       const newListing = {
         id: generateUniqueId(), // Generates a random uniqueu id based on time posted
         title: props.listingTitle,
@@ -137,9 +136,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
         doc.ref
           .update({
             listings: updatedListings,
-          })
-          .then(() => {
-            console.log("Listing added successfully");
           })
           .catch((error) => {
             console.error("Error adding listing:", error);
@@ -254,7 +250,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
       <div className="listings-section">
         <h2>My Listings</h2>
         <div className="listing-boxes">
-          <div className="listing-info">
             {updatedListings.map((listing) => (
               <div key={listing.id} className="listing-box">
                 <h3>{listing.title}</h3>
@@ -264,7 +259,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
                 <p>{listing.details}</p>
               </div>
             ))}
-          </div>
         </div>
       </div>
     </div>

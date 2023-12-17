@@ -67,7 +67,7 @@ export default function RegistrationPage(props: RegistrationProps) {
   async function handleStudentRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 
-    // checks if user with this email already exists in the database
+    // checks if intern with this email already exists in the database
     const emailExists = await props.db
       .collection("interns")
       .where("email", "==", props.studentEmail)
@@ -75,7 +75,7 @@ export default function RegistrationPage(props: RegistrationProps) {
       .then((querySnapshot) => !querySnapshot.empty);
 
     if (emailExists) {
-      props.setError("User with this email already exists.");
+      props.setError("Intern with this email already exists.");
 
       // Checks if any input fields are missing
     } else if (
@@ -134,7 +134,7 @@ export default function RegistrationPage(props: RegistrationProps) {
    */
   async function handleLandlordRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
-    // check if user with this email already in db
+    // check if landlord with this email already in db
     const emailExists = await props.db
       .collection("landlords")
       .where("email", "==", props.landlordEmail)
@@ -142,7 +142,7 @@ export default function RegistrationPage(props: RegistrationProps) {
       .then((querySnapshot) => !querySnapshot.empty);
 
     if (emailExists) {
-      props.setLandlordError("User with this email already exists.");
+      props.setLandlordError("Landlord with this email already exists.");
     } else if (
       !props.landlordName ||
       !props.landlordEmail ||
@@ -200,7 +200,7 @@ export default function RegistrationPage(props: RegistrationProps) {
   async function handleAdminRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 
-    // check if user with this email already in db
+    // check if admin with this email already in db
     const emailExists = await props.db
       .collection("admins")
       .where("email", "==", props.adminEmail)
@@ -208,10 +208,12 @@ export default function RegistrationPage(props: RegistrationProps) {
       .then((querySnapshot) => !querySnapshot.empty);
 
     if (emailExists) {
-      props.setAdminError("User with this email already exists.");
+      props.setAdminError("Admin with this email already exists.");
     } else if (!props.adminEmail || !props.adminPass) {
       // missing input
       props.setAdminError("Please be sure to input all fields.");
+    }  else if (!props.adminEmail.includes("@brown.edu")) {
+      props.setAdminError("You must provide your Brown email address.");
     } else {
       // register successfully
       try {
@@ -289,7 +291,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               onChange={(ev) => props.setStudentAddress(ev.target.value)}
             ></input>
           </div>
-          <h3 className="student registration error"> {props.error} </h3>
+          <h3 className="student-registration-error"> {props.error} </h3>
           <button
             className="student-register-button"
             onClick={(ev) => handleStudentRegistration(ev)}
@@ -347,7 +349,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               onChange={(ev) => props.setLandlordPhone(ev.target.value)}
             ></input>
           </div>
-          <h3> {props.landlordError} </h3>
+          <h3 className="landlord-registration-error"> {props.landlordError} </h3>
           <button
             className="landlord-register-button"
             onClick={(ev) => handleLandlordRegistration(ev)}
@@ -410,7 +412,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               onChange={(ev) => props.setAdminPass(ev.target.value)}
             ></input>
           </div>
-          <h3> {props.adminError} </h3>
+          <h3 className="admin-registration-error"> {props.adminError} </h3>
           <button
             className="admin-register-button"
             onClick={(ev) => handleAdminRegistration(ev)}

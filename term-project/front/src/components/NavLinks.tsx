@@ -40,7 +40,7 @@ export default function NavLinks(props: NavLinksProps) {
       <Link className="nav-landlords-homepage" to="/LandLordsHomepage">
         My Listings
       </Link>
-      {props.adminEmail ? (
+      {props.adminEmail && props.userLoggedIn == true ? (
         <Link className="nav-admin-homepage" to="/admin">
           Admin
         </Link>

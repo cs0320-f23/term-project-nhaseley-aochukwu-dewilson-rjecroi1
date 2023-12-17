@@ -21,16 +21,14 @@ public class CoordinateDataSource implements CoordinateData {
     private static HttpURLConnection connect(URL requestUrl) throws IOException {
         URLConnection urlConnection = requestUrl.openConnection();
         if (!(urlConnection instanceof HttpURLConnection)) {
-            System.out.println("wrong connection type??");
+            System.out.println("Wrong connection type for coordinate API");
             return null;
         }
-//    urlConnection.setRequestMethod("GET");
-//        urlConnection.setRequestProperty("Authorization", "prj_live_sk_1372f831005166889c9bf372c3a33e5bbc3ef230");
 
         HttpURLConnection clientConnection = (HttpURLConnection) urlConnection;
         clientConnection.connect(); // GET
         if (clientConnection.getResponseCode() != 200) {
-            System.out.println("connection unsuccessful");
+            System.out.println("Connection unsuccessful for coordinate API");
             return null;
         }
         return clientConnection;
@@ -48,7 +46,7 @@ public class CoordinateDataSource implements CoordinateData {
             String address) {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<CoordinateApiResponse> distanceAdapter = moshi.adapter(CoordinateApiResponse.class);
-        System.out.println("address to convert: " + address);
+//        System.out.println("address to convert: " + address);
         if (address != null) {
             URL requestUrl = null;
             try {
@@ -56,16 +54,20 @@ public class CoordinateDataSource implements CoordinateData {
                 String apiKey = apiKeys.CONVERSION_API_KEY;
                 String apiUrl = "https://api.distancematrix.ai/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
                 requestUrl = new URL(apiUrl);
-                System.out.println("API URL: "+ requestUrl);
+//                System.out.println("API URL: "+ requestUrl);
 
                 HttpURLConnection clientConnection = null;
                 clientConnection = connect(requestUrl);
-
+                if (clientConnection == null){
+                    return null;
+                }
                 CoordinateApiResponse body =
                         distanceAdapter.fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
                 clientConnection.disconnect();
+
                 return body;
+
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("error: "+ e);

@@ -21,16 +21,14 @@ public class DistanceDataSource implements DistanceData {
   private static HttpURLConnection connect(URL requestUrl) throws IOException {
     URLConnection urlConnection = requestUrl.openConnection();
     if (!(urlConnection instanceof HttpURLConnection)) {
-      System.out.println("wrong connectiontype??");
+      System.out.println("Wrong connection type for distance API");
       return null;
     }
-//    urlConnection.setRequestMethod("GET");
-//    urlConnection.setRequestProperty("Authorization", "prj_live_sk_1372f831005166889c9bf372c3a33e5bbc3ef230");
 
     HttpURLConnection clientConnection = (HttpURLConnection) urlConnection;
     clientConnection.connect(); // GET
     if (clientConnection.getResponseCode() != 200) {
-      System.out.println("connection unsuccessful");
+      System.out.println("Connection unsuccessful for distance API");
       return null;
     }
     return clientConnection;
@@ -64,7 +62,9 @@ public class DistanceDataSource implements DistanceData {
 
         HttpURLConnection clientConnection = null;
         clientConnection = connect(requestUrl);
-
+        if (clientConnection == null){
+          return null;
+        }
         DistanceApiResponse body =
                 distanceAdapter.fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
