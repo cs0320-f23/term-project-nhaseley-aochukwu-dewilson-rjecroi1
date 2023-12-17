@@ -56,7 +56,7 @@ export default function LoginPage(props: LoginProps) {
   // function to login admin
   async function handleAdminLogin(event: React.FormEvent, props) {
     event.preventDefault(); // prevents page from re-rendering
-    // check if user with this email already in db
+    // check if admin with this email already in db
     const querySnapshot = await props.db
       .collection("admins")
       .where("email", "==", props.adminEmail)
@@ -138,7 +138,7 @@ export default function LoginPage(props: LoginProps) {
             ></input>
           </div>
 
-          <h3> {props.error} </h3>
+          <h3 className="student-login-error"> {props.error} </h3>
           <button
             type="submit"
             id="intern-submit"
@@ -182,7 +182,7 @@ export default function LoginPage(props: LoginProps) {
             ></input>
           </div>
 
-          <h3> {props.landlordError} </h3>
+          <h3 className="landlord-login-error"> {props.landlordError} </h3>
           <button
             type="submit"
             id="landlord-submit"
@@ -212,7 +212,7 @@ export default function LoginPage(props: LoginProps) {
             <input
               className="admin-email"
               aria-label="You can enter your email here (must be Brown)"
-              placeholder="Enter email here"
+              placeholder="Enter Brown email here"
               value={props.adminEmail}
               onChange={(ev) => props.setAdminEmail(ev.target.value)}
             ></input>
@@ -226,7 +226,7 @@ export default function LoginPage(props: LoginProps) {
             ></input>
           </div>
 
-          <h3> {props.adminError} </h3>
+          <h3 className="admin-login-error"> {props.adminError} </h3>
           <button
             className="admin-login-button"
             onClick={(ev) => handleAdminLogin(ev, props)}

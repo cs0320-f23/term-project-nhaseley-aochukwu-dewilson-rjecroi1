@@ -1,6 +1,6 @@
 .registration-page {
   width: 100%;
-  margin-top: 80px;
+  margin-top: 4%;
 }
 
 .registration-page p {
@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  margin-bottom: 2%;
 }
 
 .student-registration-form,
@@ -24,37 +25,32 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width:35%;
 }
 
 .registration-forms button {
-  margin-top: 5px;
+  margin-bottom: 3%;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
 }
 
-.registration-forms form {
-  /* border: 1px solid #ccc;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 20px; */
-}
-/* style={{ color: "#646cff" }} */
 #registration-form {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  border-radius: 20px;
+  padding: 6%;
+  border-radius: 2vh;
   align-items: center;
   color-scheme: light;
   background-color: #213547;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  width:85%;
 }
 
 #registration-form input {
-  margin-bottom: 10px;
-  padding: 8px;
+  margin-bottom: 6%;
+  padding: 4%;
   border: 1px solid rgb(119, 119, 119);
-  border-radius: 18px;
-  width: 290px;
+  border-radius: 10vh;
+  width: 100%;
 }
 
 #registration-form :last-child {

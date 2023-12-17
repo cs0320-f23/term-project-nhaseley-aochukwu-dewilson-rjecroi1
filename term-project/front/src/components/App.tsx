@@ -49,6 +49,7 @@ function App() {
     latitude?: number;
     longitude?: number;
     distance?: number;
+    duration?: number;
   }
   // State variables for student registration
   const [studentName, setStudentName] = useState<string>("");
@@ -83,7 +84,6 @@ function App() {
   const [listingError, setListingError] = useState<string>("");
   const [allListings, setAllListings] = useState<Listing[]>([]);
 
-  //renders 
   return (
     <div className="app">
       <BrowserRouter>
@@ -212,6 +212,7 @@ function App() {
                 userLoggedIn={userLoggedIn}
                 adminEmail={adminEmail}
               ></AdminPage>
+              
             }
           ></Route>
           <Route

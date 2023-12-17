@@ -16,10 +16,11 @@
 .listings-section {
   height: 91vh;
   background-color: #213547;
-  padding: 15px;
+  padding: 2vh;
   justify-content: center;
   align-items: center;
   overflow-y: auto;
+  margin-top: 4vh;
 }
 
 .listings-section h2 {
@@ -49,11 +50,15 @@
   /* transform: translateY(50px); */
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-
-  /* gap: 16px; */
+  /* justify-content: space-evenly; */
+  /* width: 25%; */
+  /* align-items: center; */
+  justify-content: center;
+  gap: 3%;
 }
-
+.student-registration-error, .landlord-registration-error, .admin-registration-error, .student-login-error, .landlord-login-error, .admin-registration-error{
+  color: #A52A2A
+}
 .listing-boxes p,
 h3 {
   color: #213547;

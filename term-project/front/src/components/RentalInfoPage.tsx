@@ -33,7 +33,7 @@ interface RentalInfoPageProps {
 export default function RentalInfoPage(props: RentalInfoPageProps) {
   // Gets the 'id' parameter from the route
   const { id } = useParams<{ id: string }>();
-
+  console.log("all in rental: ", props.allListings)
   // Finds the selected listing based on the provided ID
   const selectedListing = props.allListings.find(
     (listing) => listing.id === id
@@ -46,7 +46,7 @@ export default function RentalInfoPage(props: RentalInfoPageProps) {
   
   //go through all the listing using the props and display information for lisitng that matches
   return (
-    <div>
+    <div className="rental-info-page">
       <div className="rental-img">
         <img
           src={selectedListing.imgUrl}
@@ -64,7 +64,7 @@ export default function RentalInfoPage(props: RentalInfoPageProps) {
               {selectedListing.bedrooms}
             </p>
             <p>
-              <span className="bold-text"> Details: </span>{" "}
+              <span className="bold-text"> Details: </span>
               {selectedListing.details}
             </p>
             <p>
