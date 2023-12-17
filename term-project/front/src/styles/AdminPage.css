@@ -1,3 +1,31 @@
-.admin-page{
-    display:flex;
+.admin-page {
+  width: 100%;
+  margin-top: 90px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.all-admins,
+.all-landlords,
+.all-interns {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #213547;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  width: 440px;
+}
+
+#user-list h2 {
+  position: sticky;
+  z-index: 1;
+}
+
+tbody {
+  text-align: center;
+}
+
+td {
+  padding: 10px;
 }
