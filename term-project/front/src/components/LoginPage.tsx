@@ -1,3 +1,11 @@
+/**
+ * LoginPage Component
+ *
+ * This component provides login forms for Interns, Landlords, and Admins.
+ * Users can input their credentials, and login is facilitated through both
+ * traditional email/password authentication and Google Sign-In.
+ */
+
 import React from "react";
 import "../styles/LoginPage.css";
 import "../styles/RegistrationForm.css";
@@ -6,8 +14,9 @@ import { useNavigate } from "react-router-dom";
 import firebase from "firebase/compat/app";
 import { Dispatch, SetStateAction } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-// import { GoogleAuthProvider } from "firebase/auth";
 
+
+// Interface defining the properties for the LoginPage component with list of props and types 
 interface LoginProps {
   studentName: string;
   setStudentName: Dispatch<SetStateAction<string>>;
@@ -44,9 +53,10 @@ interface LoginProps {
 export default function LoginPage(props: LoginProps) {
   const navigate = useNavigate();
 
+  // function to login admin
   async function handleAdminLogin(event: React.FormEvent, props) {
     event.preventDefault(); // prevents page from re-rendering
-    // check if user with this email already in db
+    // check if admin with this email already in db
     const querySnapshot = await props.db
       .collection("admins")
       .where("email", "==", props.adminEmail)
@@ -82,6 +92,7 @@ export default function LoginPage(props: LoginProps) {
     }
   }
 
+  // Function to handle Google Sign-In
   async function handleGoogleSignIn() {
     try {
       const data = await signInWithPopup(auth, provider);
@@ -96,6 +107,7 @@ export default function LoginPage(props: LoginProps) {
 
   const auth = getAuth();
 
+  // Render different content based on user login status
   return props.userLoggedIn ? (
     <h2> You are already logged in!</h2>
   ) : (
@@ -106,7 +118,7 @@ export default function LoginPage(props: LoginProps) {
           className="login-form"
           aria-label="You can login as a student here"
         >
-          <h2>Intern</h2>
+          <h2>Intern Login</h2>
           <label></label>
           <div id="login-form">
             <input
@@ -126,7 +138,7 @@ export default function LoginPage(props: LoginProps) {
             ></input>
           </div>
 
-          <h3> {props.error} </h3>
+          <h3 className="student-login-error"> {props.error} </h3>
           <button
             type="submit"
             id="intern-submit"
@@ -150,7 +162,7 @@ export default function LoginPage(props: LoginProps) {
           className="landlord-login-form"
           aria-label="You can login as a landlord here"
         >
-          <h2> Landlord </h2>
+          <h2> Landlord Login</h2>
           <label></label>
           <div id="login-form">
             <input
@@ -170,7 +182,7 @@ export default function LoginPage(props: LoginProps) {
             ></input>
           </div>
 
-          <h3> {props.landlordError} </h3>
+          <h3 className="landlord-login-error"> {props.landlordError} </h3>
           <button
             type="submit"
             id="landlord-submit"
@@ -182,8 +194,8 @@ export default function LoginPage(props: LoginProps) {
             className="demo-landlord-login"
             onClick={(ev) => {
               ev.preventDefault();
-              props.setLandlordEmail("tessa@gmail.com");
-              props.setLandlordPass("strongPassword");
+              props.setLandlordEmail("nya_haseley-ayende@brown.edu");
+              props.setLandlordPass("password");
             }}
           >
             Demo Login
@@ -194,13 +206,13 @@ export default function LoginPage(props: LoginProps) {
           className="admin-login-form"
           aria-label="You can login as an admin here"
         >
-          <h2> Admin </h2>
+          <h2> Admin Login</h2>
           <label></label>
           <div id="login-form">
             <input
               className="admin-email"
               aria-label="You can enter your email here (must be Brown)"
-              placeholder="Enter email here"
+              placeholder="Enter Brown email here"
               value={props.adminEmail}
               onChange={(ev) => props.setAdminEmail(ev.target.value)}
             ></input>
@@ -214,7 +226,7 @@ export default function LoginPage(props: LoginProps) {
             ></input>
           </div>
 
-          <h3> {props.adminError} </h3>
+          <h3 className="admin-login-error"> {props.adminError} </h3>
           <button
             className="admin-login-button"
             onClick={(ev) => handleAdminLogin(ev, props)}
@@ -236,6 +248,7 @@ export default function LoginPage(props: LoginProps) {
     </div>
   );
 
+  // Function to check records for Intern login
   async function checkRecordsforIntern(event: React.FormEvent, props) {
     event.preventDefault();
 
@@ -275,12 +288,14 @@ export default function LoginPage(props: LoginProps) {
     }
   }
 
+  /// Function to check records for Landlord login 
   async function checkRecordsforLandlord(event: React.FormEvent, props) {
     event.preventDefault();
     const querySnapshot = await props.db
       .collection("landlords")
       .where("email", "==", props.landlordEmail)
       .get();
+
     if (!props.landlordEmail || !props.landlordPass) {
       props.setLandlordError("Please be sure to input all fields.");
     } else if (querySnapshot.empty) {

@@ -1,3 +1,12 @@
+/**
+ * ListingsPage Component
+ *
+ * This component displays a list of available housing listings
+ * on a map and in a side-by-side view. Users can filter listings
+ * by distance and price using sliders.
+ */
+
+
 import { useEffect, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 
@@ -8,24 +17,29 @@ import { ACCESS_TOKEN } from "../private/MapboxToken.tsx";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
 
+// Function to display the value for the distance and price sliders
 function valuetext(value: number) {
   return `${value} miles`;
 }
+
+// Interface defining the structure of a housing listing
 interface Listing {
   address: string;
-  bedrooms: string; // TODO: CHANGE TO INT
+  bedrooms: number;
   details: string;
   id: string;
   imgUrl: string;
-  price: number; // TODO: CHANGE TO INT
+  price: number;
   title: string;
   // TODO: add date posted on postNewListing?
   latitude?: number;
   longitude?: number;
   distance?: number;
+  duration?: number;
+  datePosted: string;
 }
+// Interface defining the properties for the ListingsPage component
 interface ListingPageProps {
   db: firebase.firestore.Firestore;
   studentAddress: string;
@@ -34,22 +48,28 @@ interface ListingPageProps {
   allListings: Listing[];
   setAllListings: Dispatch<SetStateAction<Listing[]>>;
 }
+
+//Interface defining the structure of a landlord 
 interface Landlord {
   listings: Listing[];
 }
 
+// Interface defining the structure of geographical coords 
 interface Coordinate {
   latitude?: number;
   longitude?: number;
   distance?: number;
+  duration?: number;
   error?: string;
   status?: string;
 }
 
+
 export default function ListingsPage(props: ListingPageProps) {
-  // const [allListings, setAllListings] = useState<Listing[]>([]);
   const [distance, setDistance] = useState<number>(8); // Initial distance value
   const [price, setPrice] = useState<number>(1000); // Initial distance value
+
+  // Fetch and update listings when the component mounts
   useEffect(() => {
     if (!props.studentEmail || !props.userLoggedIn) {
       return;
@@ -81,6 +101,7 @@ export default function ListingsPage(props: ListingPageProps) {
                       latitude: coordinateConverted.latitude,
                       longitude: coordinateConverted.longitude,
                       distance: coordinateConverted.distance,
+                      duration: coordinateConverted.duration,
                     };
                   } else {
                     console.log("NO LAT/LONG FIELDS FOUND: ", listing);
@@ -106,7 +127,7 @@ export default function ListingsPage(props: ListingPageProps) {
     };
 
     fetchListings();
-  }, [props.db, props.studentEmail, props.userLoggedIn, distance]);
+  }, [props.userLoggedIn]);
 
   console.log("ALL LISTINGS: ", props.allListings);
 
@@ -154,19 +175,25 @@ export default function ListingsPage(props: ListingPageProps) {
       center: [-71.057083, 42.361145],
       zoom: 12,
     });
+    // Event listener when the map loads 
     map.on("load", () => {
       props.allListings.forEach((listing) => {
         if (
-          listing.latitude &&
+          listing.latitude &&  
           listing.longitude &&
           listing.distance &&
           listing.distance <= distance
         ) {
+          // const linkElement = (
+          //   <Link to={`/info/${listing.id}`}>See More here</Link>
+          // );
           const popupContent = `
         <div>
              <h3>${listing.address}</h3>
-              <p> ${listing.title} </p>
-              <a href="/info/${listing.id}">See More</a>
+             <p> ${listing.title} </p>
+             <p> ${listing.distance} mi from your work </p>
+             <p> ${listing.duration} mins commute </p> 
+             <a href="/info/${listing.id}">See More</a>
         </div>`;
           const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
             popupContent
@@ -204,11 +231,12 @@ export default function ListingsPage(props: ListingPageProps) {
           latitude: result.converted_selected_latitude,
           longitude: result.converted_selected_longitude,
           distance: parseFloat(result.distance),
+          duration: parseFloat(result.duration),
         };
       } else {
         return {
           error: result.error,
-          status: result.status,
+          status: result.status, 
         };
       }
     } catch (error) {
@@ -231,7 +259,7 @@ export default function ListingsPage(props: ListingPageProps) {
           {props.allListings.map((listing) =>
             listing.distance && listing.price ? (
               listing.distance <= distance &&
-              parseFloat(listing.price) <= price ? (
+              listing.price <= price ? ( 
                 <div key={listing.id} className="listing-info">
                   <Link to={`/info/${listing.id}`}>
                     <img
@@ -239,8 +267,10 @@ export default function ListingsPage(props: ListingPageProps) {
                       alt={`Listing for ${listing.id}`}
                     />
                   </Link>
-                  <p>Address: {listing.address}</p>
-                  {/* <p>Date Posted: {listing.datePosted}</p> */}
+                  <p><b>Address: </b>{listing.address}</p>
+                  <p><b>Date Posted: </b>{listing.datePosted}</p>
+                  <p><b>Price:</b> {listing.price}</p>
+                  <p><b>Distance from your work:</b> {listing.distance} mi</p>
                 </div>
               ) : null
             ) : null
@@ -250,29 +280,29 @@ export default function ListingsPage(props: ListingPageProps) {
         {/* SideBar */}
         <div className="sidenav">
           <div className="distance-slider">
-            <label>Distance</label>
+            <label>Distance: {distance} mi</label>
             <Box
               className="slider"
-              sx={{ width: 250, margin: "10px 0", color: "grey" }}
+              sx={{ width: "90%", margin: "6% 0", color: "grey",  marginLeft: '4%' }}
             >
               <Slider
                 aria-label="Distance"
                 value={distance}
                 getAriaValueText={valuetext}
                 valueLabelDisplay="auto"
-                step={3}
+                step={1}
                 marks
                 min={0}
-                max={20}
+                max={15}
                 onChange={(event, newValue) => setDistance(newValue as number)}
               />
             </Box>
           </div>
           <div className="price-slider">
-            <label>Price</label>
+            <label>Price: ${price}</label>
             <Box
               className="slider"
-              sx={{ width: 250, margin: "10px 0", color: "grey" }}
+              sx={{ width: "90%", margin: "6% 0", color: "grey",  marginLeft: '4%' }}
             >
               <Slider
                 aria-label="Price"
@@ -281,14 +311,14 @@ export default function ListingsPage(props: ListingPageProps) {
                 valueLabelDisplay="auto"
                 step={100}
                 marks
-                min={0}
+                min={0} 
                 max={3500}
                 onChange={(event, newValue) => setPrice(newValue as number)}
               />
             </Box>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   );
 }

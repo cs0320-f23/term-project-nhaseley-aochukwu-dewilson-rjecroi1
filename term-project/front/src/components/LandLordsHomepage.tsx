@@ -2,9 +2,11 @@ import "../styles/LandLordsHomepage.css"; // Import the CSS file
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 
+// Defines the props expected by the LandLordsHomePage component
 interface LandLordsHomepageProps {
-  db: firebase.firestore.Firestore;
+  db: firebase.firestore.Firestore; // Firestore database reference
 
+  // Listing details and setters for state updates
   listingError: string;
   setListingError: Dispatch<SetStateAction<string>>;
 
@@ -30,8 +32,10 @@ interface LandLordsHomepageProps {
   userLoggedIn: boolean;
 }
 
+// Defines the LandLordsHomePage component
 export default function LandLordsHomePage(props: LandLordsHomepageProps) {
   interface theListings {
+    // Defines the structure of a single listing
     id: string;
     title: string;
     imgUrl: string;
@@ -41,18 +45,21 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
     details: string;
     datePosted: string;
   }
+  // State variables to manage posted and updated listings
   const [postedListings, setPostedListings] = useState<theListings[]>([]);
   const [updatedListings, setUpdatedListings] = useState<theListings[]>([]);
 
-  // Fetch and update listings when the component mounts
+  // Fetches and updates listings when the component mounts
   useEffect(() => {
     const fetchListings = async () => {
       try {
+        // Retrieves listings for the specific landlord from Firestore
         const querySnapshot = await props.db
           .collection("landlords")
           .where("email", "==", props.landlordEmail)
           .get();
 
+        // Updates postedListings and updatedListings with retrieved listings data
         querySnapshot.forEach((doc) => {
           const storedListings = doc.data().listings || [];
           setPostedListings(storedListings);
@@ -66,14 +73,17 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
     fetchListings();
   }, [props.db, props.landlordEmail]);
 
+  // Function to handle posting new listings
   async function handlePosting(event: React.FormEvent) {
+    // Generates a unique ID for the new listing based on time posted
     function generateUniqueId() {
-      const timestamp = new Date().getTime(); // Get current timestamp
-      const random = Math.floor(Math.random() * 1000); // Generate a random number between 0 and 999
+      const timestamp = new Date().getTime(); // Gets  current timestamp
+      const random = Math.floor(Math.random() * 1000); // Generates a random number between 0 and 999
       return `${timestamp}_${random}`;
     }
 
     event.preventDefault(); // prevents page from re-rendering
+    // Checks for missing input or duplicate address
     if (
       !props.listingTitle ||
       !props.listingURL ||
@@ -82,11 +92,13 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
       !props.listingPrice ||
       !props.listingDetails
     ) {
-      // missing input
+      // Sets an error message for missing input fields
       props.setListingError("Please be sure to input all fields.");
     } else if (
       postedListings.some((listing) => listing.address === props.listingAddress)
     ) {
+     
+      // Set an error message for duplicate address
       props.setListingError("A listing with the same address already exists.");
     } else {
       //post successfully
@@ -98,7 +110,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
           day: "numeric",
         }
       );
-      console.log("date: ", formattedDate);
       const newListing = {
         id: generateUniqueId(), // Generates a random uniqueu id based on time posted
         title: props.listingTitle,
@@ -110,6 +121,7 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
         datePosted: formattedDate,
       };
 
+      // Update Firestore with the new listing for the specific landlord
       const querySnapshot = await props.db
         .collection("landlords")
         .where("email", "==", props.landlordEmail)
@@ -125,13 +137,12 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
           .update({
             listings: updatedListings,
           })
-          .then(() => {
-            console.log("Listing added successfully");
-          })
           .catch((error) => {
             console.error("Error adding listing:", error);
           });
       });
+
+      // Reset input fields and error message
       props.setListingTitle("");
       props.setListingURL("");
       props.setListingAddress("");
@@ -143,6 +154,8 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
   }
   console.log(postedListings);
 
+  //Render different UI based on user login status and landlord access & Render the 
+  //main UI for landlords to post and view listings
   return !props.userLoggedIn ? (
     <h2> Please log in. </h2>
   ) : !props.landlordEmail ? (
@@ -151,20 +164,6 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
     </h2>
   ) : (
     <div className="LandLords-HomePage">
-      <div className="listings-section">
-        <h2>My Listings</h2>
-        <div className="listing-boxes">
-          {updatedListings.map((listing) => (
-            <div key={listing.id} className="listing-box">
-              <h3>{listing.title}</h3>
-              <p>Address: {listing.address}</p>
-              <p>Bedrooms: {listing.bedrooms}</p>
-              <p>Price: {listing.price}</p>
-              <p>{listing.details}</p>
-            </div>
-          ))}
-        </div>
-      </div>
       <div className="post-listing-section">
         <h2>Post New Listing</h2>
         <form
@@ -172,50 +171,56 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
           aria-label="You can submit your listings here"
         >
           <label></label>
-          <input
-            className="Title"
-            aria-label="You can enter the title of your listing here"
-            placeholder="Enter title here"
-            value={props.listingTitle}
-            onChange={(ev) => props.setListingTitle(ev.target.value)}
-          ></input>
-          <input
-            className="image_url"
-            aria-label="You can enter the url of the housing option here "
-            placeholder="Enter url of image here"
-            value={props.listingURL}
-            onChange={(ev) => props.setListingURL(ev.target.value)}
-          ></input>
-          <input
-            className="Address"
-            aria-label="You can enter your address here (must be a valid address)"
-            placeholder="Enter address here"
-            value={props.listingAddress}
-            onChange={(ev) => props.setListingAddress(ev.target.value)}
-          ></input>
-          <input
-            className="Bedrooms "
-            aria-label="You can enter number of bedrooms Here"
-            placeholder="Enter number of bedrooms here"
-            value={props.listingBedrooms}
-            type="number"
-            onChange={(ev) => props.setListingBedrooms(parseFloat(ev.target.value))}
-          ></input>
-          <input
-            className="Price"
-            aria-label="You can enter the price of the housing option"
-            placeholder="Enter the price here"
-            value={props.listingPrice}
-            type="number"
-            onChange={(ev) => props.setListingPrice(parseFloat(ev.target.value))}
-          ></input>
-          <input
-            className="Details"
-            aria-label="You can enter any neccessary details"
-            placeholder="Description and Details: Lorem ipsum dolor sit amet"
-            value={props.listingDetails}
-            onChange={(ev) => props.setListingDetails(ev.target.value)}
-          ></input>
+          <div id="post-form">
+            <input
+              className="Title"
+              aria-label="You can enter the title of your listing here"
+              placeholder="Enter title here"
+              value={props.listingTitle}
+              onChange={(ev) => props.setListingTitle(ev.target.value)}
+            ></input>
+            <input
+              className="image_url"
+              aria-label="You can enter the url of the housing option here "
+              placeholder="Enter url of image here"
+              value={props.listingURL}
+              onChange={(ev) => props.setListingURL(ev.target.value)}
+            ></input>
+            <input
+              className="Address"
+              aria-label="You can enter your address here (must be a valid address)"
+              placeholder="Enter address here"
+              value={props.listingAddress}
+              onChange={(ev) => props.setListingAddress(ev.target.value)}
+            ></input>
+            <input
+              className="Bedrooms "
+              aria-label="You can enter number of bedrooms Here"
+              placeholder="Enter number of bedrooms here"
+              value={props.listingBedrooms}
+              type="number"
+              onChange={(ev) =>
+                props.setListingBedrooms(parseFloat(ev.target.value))
+              }
+            ></input>
+            <input
+              className="Price"
+              aria-label="You can enter the price of the housing option"
+              placeholder="Enter the price here"
+              value={props.listingPrice}
+              type="number"
+              onChange={(ev) =>
+                props.setListingPrice(parseFloat(ev.target.value))
+              }
+            ></input>
+            <input
+              className="Details"
+              aria-label="You can enter any neccessary details"
+              placeholder="Description and Details: Lorem ipsum dolor sit amet"
+              value={props.listingDetails}
+              onChange={(ev) => props.setListingDetails(ev.target.value)}
+            ></input>
+          </div>
           <h3> {props.listingError} </h3>
           <button
             className="student-register-button"
@@ -241,6 +246,20 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
             Demo Posting
           </button>
         </form>
+      </div>
+      <div className="listings-section">
+        <h2>My Listings</h2>
+        <div className="listing-boxes">
+            {updatedListings.map((listing) => (
+              <div key={listing.id} className="listing-box">
+                <h3>{listing.title}</h3>
+                <p>Address: {listing.address}</p>
+                <p>Bedrooms: {listing.bedrooms}</p>
+                <p>Price: {listing.price}</p>
+                <p>{listing.details}</p>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

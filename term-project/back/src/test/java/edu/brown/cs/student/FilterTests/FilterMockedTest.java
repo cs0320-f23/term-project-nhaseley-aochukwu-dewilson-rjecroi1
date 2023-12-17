@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.brown.cs.student.FilterTests.MockedFilterResponse.MockedFilterResponse;
-import edu.brown.cs.student.main.CoordinateData.CoordinateDataSource;
 import edu.brown.cs.student.main.CoordinateData.CoordinateMockedData;
 import edu.brown.cs.student.main.DistanceData.DistanceMockedData;
 import edu.brown.cs.student.main.DistanceHandler.FilterHandler;
@@ -81,6 +80,7 @@ public class FilterMockedTest {
         assertEquals(200, loadConnection.getResponseCode());
         MockedFilterResponse body =
                 filterAdapter.fromJson(new Buffer().readFrom(loadConnection.getInputStream()));
+        System.out.println("body" + body.status);
         assertEquals("42.3560387", body.converted_work_latitude);
         assertEquals("-71.052138", body.converted_work_longitude);
         assertEquals("42.3587053", body.converted_selected_latitude);

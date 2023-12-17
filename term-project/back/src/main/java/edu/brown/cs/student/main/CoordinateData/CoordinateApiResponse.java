@@ -2,6 +2,13 @@ package edu.brown.cs.student.main.CoordinateData;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Represents the data structure for parsing and storing the response from a geocoding API
+ * that returns information based on geographic coordinates.
+ *
+ * This class includes nested classes to represent different components of the geocoding response.
+ * It follows the structure specified by the GeoCodeAPI documentation.
+ */
 public class CoordinateApiResponse {
 
     public List<Result> result;

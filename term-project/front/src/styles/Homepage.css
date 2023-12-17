@@ -1,10 +1,11 @@
 .homepage {
   position: absolute;
-  top: 50%;
+  top: 55%;
   transform: translateY(-50%);
   text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-around;
   width: 100%;
 }
@@ -17,4 +18,12 @@
 
 .homepage h2 {
   font-size: 30px;
+}
+
+.homepage button {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
+}
+
+.homepage-description{
+  width:50%;
 }

@@ -1,13 +1,13 @@
 import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:5174/");
+  await page.goto("http://localhost:5173/");
 });
 
 test("if intern tries to register with non-Brown email, will see error message", async ({
   page,
 }) => {
-  await page.goto("http://localhost:5174/register");
+  await page.goto("http://localhost:5173/register");
   await page.locator("#root").click();
   await page
     .getByLabel("You can registration as a student here")
@@ -73,6 +73,7 @@ test("if intern exists in database, can log in with correct user and password", 
   await page.close();
 });
 
+
 test("if renter tries to log in and isn't verified, error message", async ({
   page,
 }) => {});
@@ -92,3 +93,4 @@ test("clicking 'start' button on home screen takes you to registration page", as
   expect(page.toBe("http://localhost:5173/register"));
   // same issue, want to check url
 });
+

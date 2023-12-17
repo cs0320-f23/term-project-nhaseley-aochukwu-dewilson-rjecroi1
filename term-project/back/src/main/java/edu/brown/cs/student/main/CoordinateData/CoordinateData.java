@@ -3,6 +3,10 @@ package edu.brown.cs.student.main.CoordinateData;
 import edu.brown.cs.student.main.CoordinateData.CoordinateApiResponse;
 import java.util.List;
 
+/**
+ * Represents an interface for obtaining relevant data from an address-to-coordinate conversion API.
+ * Implementations of this interface are responsible for making requests to the API and parsing the responses.
+ */
 public interface CoordinateData {
     /**
      * Gets relevant data from the address to coordinate conversion API.

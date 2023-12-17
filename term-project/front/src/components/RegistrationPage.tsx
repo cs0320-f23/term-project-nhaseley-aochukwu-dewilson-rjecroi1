@@ -1,7 +1,17 @@
+/**
+ * RegistrationPage Component
+ *
+ * This component provides registration forms for students, landlords, and admins.
+ * It includes input fields for user details, validation checks, and registration functionality.
+ */
+
 import { Dispatch, SetStateAction } from "react";
 import "../styles/RegistrationForm.css";
 import firebase from "firebase/compat/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
+
+//  Interface defining the props for the RegistrationPage component
 interface RegistrationProps {
   studentName: string;
   setStudentName: Dispatch<SetStateAction<string>>;
@@ -36,10 +46,28 @@ interface RegistrationProps {
 }
 
 export default function RegistrationPage(props: RegistrationProps) {
+  const provider = new GoogleAuthProvider();
+
+  const auth = getAuth();
+  async function handleGoogleSignIn() {
+    try {
+      const data = await signInWithPopup(auth, provider);
+      return data.user.email;
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      return null;
+    }
+  }
+  /**
+   * Handles student registration form submission.
+   * Validates input, checks for existing email, and registers the student if successful.
+   *
+   * @param {React.FormEvent} event - Form submission event.
+   */
   async function handleStudentRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 
-    // check if user with this email already in db
+    // checks if intern with this email already exists in the database
     const emailExists = await props.db
       .collection("interns")
       .where("email", "==", props.studentEmail)
@@ -47,7 +75,9 @@ export default function RegistrationPage(props: RegistrationProps) {
       .then((querySnapshot) => !querySnapshot.empty);
 
     if (emailExists) {
-      props.setError("User with this email already exists.");
+      props.setError("Intern with this email already exists.");
+
+      // Checks if any input fields are missing
     } else if (
       !props.studentName ||
       !props.studentEmail ||
@@ -60,29 +90,51 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.setError("You must provide your Brown email address.");
     } else {
       // register successfully
-      props.db
-        .collection("interns")
-        .add({
-          id: props.db.collection("interns").doc().id,
-          name: props.studentName,
-          email: props.studentEmail,
-          password: props.studentPass,
-          address: props.studentAddress,
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-      props.setStudentAddress("");
-      props.setStudentEmail("");
-      props.setStudentPass("");
-      props.setStudentName("");
-      props.setError("");
+      const studentGmail = await handleGoogleSignIn();
+      try {
+        if (studentGmail != null) {
+          if (studentGmail == props.studentEmail) {
+            props.db
+              .collection("interns")
+              .add({
+                id: props.db.collection("interns").doc().id,
+                name: props.studentName,
+                email: props.studentEmail,
+                password: props.studentPass,
+                address: props.studentAddress,
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+            props.setStudentAddress("");
+            props.setStudentEmail("");
+            props.setStudentPass("");
+            props.setStudentName("");
+            props.setError("");
+          } else {
+            props.setError(
+              "Please be sure your email matches the one selected during Google Login."
+            );
+          }
+        } else {
+          props.setError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     }
   }
 
+  /**
+   * Handles landlord registration form submission.
+   * Validates input, checks for existing email, and registers the landlord if successful.
+   *
+   * @param {React.FormEvent} event - Form submission event.
+   */
   async function handleLandlordRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
-    // check if user with this email already in db
+    // check if landlord with this email already in db
     const emailExists = await props.db
       .collection("landlords")
       .where("email", "==", props.landlordEmail)
@@ -90,7 +142,7 @@ export default function RegistrationPage(props: RegistrationProps) {
       .then((querySnapshot) => !querySnapshot.empty);
 
     if (emailExists) {
-      props.setLandlordError("User with this email already exists.");
+      props.setLandlordError("Landlord with this email already exists.");
     } else if (
       !props.landlordName ||
       !props.landlordEmail ||
@@ -101,31 +153,54 @@ export default function RegistrationPage(props: RegistrationProps) {
       props.setLandlordError("Please be sure to input all fields.");
     } else {
       // register successfully
-      props.db
-        .collection("landlords")
-        .add({
-          id: props.db.collection("landlords").doc().id, // add a unique id
-          name: props.landlordName,
-          email: props.landlordEmail,
-          password: props.landlordPass,
-          phone: props.landlordPhone,
-          verified: false,
-          listings: [],
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-      props.setLandlordPhone("");
-      props.setLandlordEmail("");
-      props.setLandlordPass("");
-      props.setLandlordName("");
-      props.setLandlordError("");
+      const landlordGmail = await handleGoogleSignIn();
+      try {
+        if (landlordGmail != null) {
+          if (landlordGmail == props.landlordEmail) {
+            props.db
+              .collection("landlords")
+              .add({
+                id: props.db.collection("landlords").doc().id, // add a unique id
+                name: props.landlordName,
+                email: props.landlordEmail,
+                password: props.landlordPass,
+                phone: props.landlordPhone,
+                verified: false,
+                listings: [],
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+            props.setLandlordPhone("");
+            props.setLandlordEmail("");
+            props.setLandlordPass("");
+            props.setLandlordName("");
+            props.setLandlordError("");
+          } else {
+            props.setLandlordError(
+              "Please be sure your email matches the one selected during Google Login."
+            );
+          }
+        } else {
+          props.setLandlordError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setLandlordError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     }
   }
+
+  /**
+   * Handles admin registration form submission.
+   * Validates input, checks for existing email, and registers the admin if successful.
+   *
+   * @param {React.FormEvent} event - Form submission event.
+   */
   async function handleAdminRegistration(event: React.FormEvent) {
     event.preventDefault(); // prevents page from re-rendering
 
-    // check if user with this email already in db
+    // check if admin with this email already in db
     const emailExists = await props.db
       .collection("admins")
       .where("email", "==", props.adminEmail)
@@ -133,27 +208,45 @@ export default function RegistrationPage(props: RegistrationProps) {
       .then((querySnapshot) => !querySnapshot.empty);
 
     if (emailExists) {
-      props.setAdminError("User with this email already exists.");
+      props.setAdminError("Admin with this email already exists.");
     } else if (!props.adminEmail || !props.adminPass) {
       // missing input
       props.setAdminError("Please be sure to input all fields.");
+    }  else if (!props.adminEmail.includes("@brown.edu")) {
+      props.setAdminError("You must provide your Brown email address.");
     } else {
       // register successfully
-      props.db
-        .collection("admins")
-        .add({
-          id: props.db.collection("admins").doc().id,
-          name: props.adminName,
-          email: props.adminEmail,
-          password: props.adminPass,
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-      props.setAdminName("");
-      props.setAdminEmail("");
-      props.setAdminPass("");
-      props.setAdminError("");
+      try {
+        const landlordGmail = await handleGoogleSignIn();
+        if (landlordGmail != null) {
+          if (landlordGmail == props.landlordEmail) {
+            props.db
+              .collection("admins")
+              .add({
+                id: props.db.collection("admins").doc().id,
+                name: props.adminName,
+                email: props.adminEmail,
+                password: props.adminPass,
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+            props.setAdminName("");
+            props.setAdminEmail("");
+            props.setAdminPass("");
+            props.setAdminError("");
+          } else {
+            props.setAdminError(
+              "Please be sure your email matches the one selected on Google Login."
+            );
+          }
+        } else {
+          props.setAdminError("Login with Google was unsuccessful.");
+        }
+      } catch (error) {
+        props.setAdminError("An error occurred during Google sign-in.");
+        console.error("Error in handleGoogleSignIn:", error);
+      }
     }
   }
 
@@ -163,10 +256,10 @@ export default function RegistrationPage(props: RegistrationProps) {
       <div className="registration-forms">
         <form
           className="student-registration-form"
-          aria-label="You can registration as a student here"
+          aria-label="You can register as a student here"
         >
-          <h2> Intern</h2>
-          <label> Intern Registration </label>
+          <h2> Intern Registration</h2>
+          {/* <label> Intern Registration </label> */}
           <div id="registration-form">
             <input
               className="student-name"
@@ -223,8 +316,8 @@ export default function RegistrationPage(props: RegistrationProps) {
           className="landlord-registration-form"
           aria-label="You can registration as a landlord here"
         >
-          <h2>Landlord </h2>
-          <label>Landlord Registration </label>
+          <h2>Landlord Registration</h2>
+          {/* <label>Landlord Registration </label> */}
           <div id="registration-form">
             <input
               className="landlord-name"
@@ -256,7 +349,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               onChange={(ev) => props.setLandlordPhone(ev.target.value)}
             ></input>
           </div>
-          <h3> {props.landlordError} </h3>
+          <h3 className="landlord-registration-error"> {props.landlordError} </h3>
           <button
             className="landlord-register-button"
             onClick={(ev) => handleLandlordRegistration(ev)}
@@ -279,9 +372,9 @@ export default function RegistrationPage(props: RegistrationProps) {
             className="demo-landlord-registration-for-listing-test"
             onClick={(ev) => {
               ev.preventDefault();
-              props.setLandlordName("tessa");
+              props.setLandlordName("Nya");
               props.setLandlordPhone("98765432");
-              props.setLandlordEmail("tessa@gmail.com");
+              props.setLandlordEmail("nya_haseley-ayende@brown.edu");
               props.setLandlordPass("strongPassword");
             }}
           >
@@ -293,8 +386,8 @@ export default function RegistrationPage(props: RegistrationProps) {
           className="admin-registration-form"
           aria-label="You can registration as an admin here"
         >
-          <h2> Admin</h2>
-          <label> Admin Registration </label>
+          <h2> Admin Registration</h2>
+          {/* <label> Admin Registration </label> */}
           <div id="registration-form">
             <input
               className="admin-name"
@@ -319,7 +412,7 @@ export default function RegistrationPage(props: RegistrationProps) {
               onChange={(ev) => props.setAdminPass(ev.target.value)}
             ></input>
           </div>
-          <h3> {props.adminError} </h3>
+          <h3 className="admin-registration-error"> {props.adminError} </h3>
           <button
             className="admin-register-button"
             onClick={(ev) => handleAdminRegistration(ev)}
