@@ -32,7 +32,6 @@ interface Listing {
   imgUrl: string;
   price: number;
   title: string;
-  // TODO: add date posted on postNewListing?
   latitude?: number;
   longitude?: number;
   distance?: number;

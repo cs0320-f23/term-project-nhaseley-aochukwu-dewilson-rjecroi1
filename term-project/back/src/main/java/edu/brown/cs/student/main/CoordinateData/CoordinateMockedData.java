@@ -20,8 +20,7 @@ public class CoordinateMockedData implements CoordinateData {
     public CoordinateApiResponse getCoordinateData(String address) {
         CoordinateApiResponse mockedConversionObject = new CoordinateApiResponse();
 
-        if (address.equals("1%20INTERNATIONAL%20PL%20STE%20P110%20BOSTON%20MA")) {
-            System.out.println("FOUND ADDRESS 1");
+        if (address.equals("1 INTERNATIONAL PL STE P110 BOSTON MA")) {
             mockedConversionObject.status = "OK";
             ArrayList<CoordinateApiResponse.Result> allResults = new ArrayList<>();
 
@@ -38,9 +37,7 @@ public class CoordinateMockedData implements CoordinateData {
             allResults.add(result);
             mockedConversionObject.result = allResults;
 
-        } else if (address.equals("4%20DEVONSHIRE%20ST%20BOSTON%20MA")){
-            System.out.println("FOUND ADDRESS 2");
-
+        } else if (address.equals("4 DEVONSHIRE ST BOSTON MA")){
             mockedConversionObject.status = "OK";
             ArrayList<CoordinateApiResponse.Result> allResults = new ArrayList<>();
 
@@ -56,8 +53,55 @@ public class CoordinateMockedData implements CoordinateData {
 
             allResults.add(result);
             mockedConversionObject.result = allResults;
-        } else {
-            mockedConversionObject.error_message = "This address was not found in mocked data.";
+        } else if (address.equals("150 Morrissey Blvd, Boston, MA 02125")) {
+            mockedConversionObject.status = "OK";
+            ArrayList<CoordinateApiResponse.Result> allResults = new ArrayList<>();
+
+            CoordinateApiResponse.Result result = new CoordinateApiResponse.Result();
+            result.formatted_address = "150 Morrissey Boulevard, Dorchester, Dorchester 02125, United States";
+
+            CoordinateApiResponse.Geometry geometry = new CoordinateApiResponse.Geometry();
+            CoordinateApiResponse.Location location = new CoordinateApiResponse.Location();
+            location.lat = 42.315949849999996;
+            location.lng = -71.04466860363372;
+            geometry.location = location;
+            result.geometry = geometry;
+
+            allResults.add(result);
+            mockedConversionObject.result = allResults;
+        } else if (address.equals("INVALID_ADDRESS")){
+            mockedConversionObject.status = "OK";
+            ArrayList<CoordinateApiResponse.Result> allResults = new ArrayList<>();
+
+            CoordinateApiResponse.Result result = new CoordinateApiResponse.Result();
+            result.formatted_address = "";
+
+            CoordinateApiResponse.Geometry geometry = new CoordinateApiResponse.Geometry();
+            CoordinateApiResponse.Location location = new CoordinateApiResponse.Location();
+            location.lat = 0.0;
+            location.lng = 0.0;
+            geometry.location = location;
+            result.geometry = geometry;
+
+            allResults.add(result);
+            mockedConversionObject.result = allResults;
+        } else { // address is not mocked
+            mockedConversionObject.status = "NOT_MOCKED";
+            ArrayList<CoordinateApiResponse.Result> allResults = new ArrayList<>();
+
+            CoordinateApiResponse.Result result = new CoordinateApiResponse.Result();
+            result.formatted_address = "";
+
+            CoordinateApiResponse.Geometry geometry = new CoordinateApiResponse.Geometry();
+            CoordinateApiResponse.Location location = new CoordinateApiResponse.Location();
+            location.lat = 0.0;
+            location.lng = 0.0;
+            geometry.location = location;
+            result.geometry = geometry;
+
+            allResults.add(result);
+            mockedConversionObject.result = allResults;
+            mockedConversionObject.error_message = "Address coordinates are unmocked.";
         }
         return mockedConversionObject;
     }
