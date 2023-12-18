@@ -80,18 +80,167 @@ public class FilterMockedTest {
         assertEquals(200, loadConnection.getResponseCode());
         MockedFilterResponse body =
                 filterAdapter.fromJson(new Buffer().readFrom(loadConnection.getInputStream()));
-        System.out.println("body" + body.status);
-        assertEquals("42.3560387", body.converted_work_latitude);
-        assertEquals("-71.052138", body.converted_work_longitude);
-        assertEquals("42.3587053", body.converted_selected_latitude);
-        assertEquals("-71.0567859", body.converted_selected_longitude);
-        assertEquals("4 Devonshire St, Boston, MA 02109, USA", body.formatted_address);
-        assertEquals("1 International Pl p110, Boston, MA 02110, USA", body.formatted_work_address);
-        assertEquals("42.3560387,-71.052138", body.destination);
-        assertEquals("42.3587053,-71.0567859", body.origin);
-        assertEquals("3 mins", body.duration);
-        assertEquals("200", body.status);
-        assertEquals("0.4 mi", body.distance);
+        assertEquals("42.3556559", body.converted_work_latitude);
+        assertEquals("-71.0521838", body.converted_work_longitude);
+        assertEquals("42.3540901", body.converted_selected_latitude);
+        assertEquals("-71.07004020962789", body.converted_selected_longitude);
+        assertEquals("4 Charles Street, Boston 02116, United States", body.formatted_address);
+        assertEquals("1 International Place, Downtown Boston, Boston 02110, United States", body.formatted_work_address);
+        assertEquals("42.3556559,-71.0521838", body.destination);
+        assertEquals("42.3540901,-71.07004020962789", body.origin);
+        assertEquals("9 mins", body.duration);
+        assertEquals("OK", body.status);
+        assertEquals("1.3 mi", body.distance);
+
+        loadConnection.disconnect();
+    }
+
+
+    /**
+     * Testing the filter handler with a missing selected address input
+     *
+     * @throws IOException for connection issues.
+     */
+    @Test
+    public void testFilterMissingSelected() throws IOException {
+        // Set up the request, make the request
+        HttpURLConnection loadConnection = tryRequest("filter?workAddress=1%20INTERNATIONAL%20PL%20STE%20P110%20BOSTON%20MA&address=");
+        // Get the expected response: a success
+        assertEquals(200, loadConnection.getResponseCode());
+        MockedFilterResponse body =
+                filterAdapter.fromJson(new Buffer().readFrom(loadConnection.getInputStream()));
+        assertEquals(null, body.converted_work_latitude);
+        assertEquals(null, body.converted_work_longitude);
+        assertEquals(null, body.converted_selected_latitude);
+        assertEquals(null, body.converted_selected_longitude);
+        assertEquals(null, body.formatted_address);
+        assertEquals(null, body.formatted_work_address);
+        assertEquals(null, body.destination);
+        assertEquals(null, body.origin);
+        assertEquals("error_bad_request", body.result);
+        assertEquals("selected address query parameter", body.missing);
+        assertEquals("Invalid request: missing selected address query parameter", body.error);
+        assertEquals(null, body.duration);
+        assertEquals(null, body.status);
+        assertEquals(null, body.distance);
+
+        loadConnection.disconnect();
+    }
+
+    /**
+     * Testing the filter handler with an invalid selected address input
+     *
+     * @throws IOException for connection issues.
+     */
+    @Test
+    public void testFilterInvalidSelected() throws IOException {
+        // Set up the request, make the request
+        HttpURLConnection loadConnection = tryRequest("filter?workAddress=1%20INTERNATIONAL%20PL%20STE%20P110%20BOSTON%20MA&address=INVALID_ADDRESS");
+        // Get the expected response: a success
+        assertEquals(200, loadConnection.getResponseCode());
+        MockedFilterResponse body =
+                filterAdapter.fromJson(new Buffer().readFrom(loadConnection.getInputStream()));
+        assertEquals("42.3556559", body.converted_work_latitude);
+        assertEquals("-71.0521838", body.converted_work_longitude);
+        assertEquals("0.0", body.converted_selected_latitude);
+        assertEquals("0.0", body.converted_selected_longitude);
+        assertEquals("", body.formatted_address);
+        assertEquals("1 International Place, Downtown Boston, Boston 02110, United States", body.formatted_work_address);
+        assertEquals("42.3556559,-71.0521838", body.destination);
+        assertEquals("0.0,0.0", body.origin);
+        assertEquals(null, body.duration);
+        assertEquals(null, body.distance);
+        assertEquals("ZERO_RESULTS", body.status);
+        assertEquals("No route could be found between the origin and destination.", body.error);
+
+        loadConnection.disconnect();
+    }
+
+    /**
+     * Testing the filter handler with a missing work address input
+     *
+     * @throws IOException for connection issues.
+     */
+    @Test
+    public void testFilterMissingWork() throws IOException {
+        // Set up the request, make the request
+        HttpURLConnection loadConnection = tryRequest("filter?workAddress=&address=4%20DEVONSHIRE%20ST%20BOSTON%20MA");
+        // Get the expected response: a success
+        assertEquals(200, loadConnection.getResponseCode());
+        MockedFilterResponse body =
+                filterAdapter.fromJson(new Buffer().readFrom(loadConnection.getInputStream()));
+        assertEquals(null, body.converted_work_latitude);
+        assertEquals(null, body.converted_work_longitude);
+        assertEquals("42.3540901", body.converted_selected_latitude);
+        assertEquals("-71.07004020962789", body.converted_selected_longitude);
+        assertEquals("4 Charles Street, Boston 02116, United States", body.formatted_address);
+        assertEquals(null, body.formatted_work_address);
+        assertEquals(null, body.destination);
+        assertEquals(null, body.origin);
+        assertEquals("error_bad_request", body.result);
+        assertEquals("work address query parameter", body.missing);
+        assertEquals("Invalid request: missing work address query parameter", body.error);
+        assertEquals(null, body.duration);
+        assertEquals(null, body.status);
+        assertEquals(null, body.distance);
+
+        loadConnection.disconnect();
+    }
+
+    /**
+     * Testing the filter handler with an invalid work address input
+     *
+     * @throws IOException for connection issues.
+     */
+    @Test
+    public void testFilterInvalidWork() throws IOException {
+        // Set up the request, make the request
+        HttpURLConnection loadConnection = tryRequest("filter?workAddress=INVALID_ADDRESS&address=4%20DEVONSHIRE%20ST%20BOSTON%20MA");
+        // Get the expected response: a success
+        assertEquals(200, loadConnection.getResponseCode());
+        MockedFilterResponse body =
+                filterAdapter.fromJson(new Buffer().readFrom(loadConnection.getInputStream()));
+        assertEquals("0.0", body.converted_work_latitude);
+        assertEquals("0.0", body.converted_work_longitude);
+        assertEquals("42.3540901", body.converted_selected_latitude);
+        assertEquals("-71.07004020962789", body.converted_selected_longitude);
+        assertEquals("4 Charles Street, Boston 02116, United States", body.formatted_address);
+        assertEquals("", body.formatted_work_address);
+        assertEquals("0.0,0.0", body.destination);
+        assertEquals("42.3540901,-71.07004020962789", body.origin);
+        assertEquals(null, body.duration);
+        assertEquals(null, body.distance);
+        assertEquals("ZERO_RESULTS", body.status);
+        assertEquals("No route could be found between the origin and destination.", body.error);
+
+        loadConnection.disconnect();
+    }
+
+    /**
+     * Testing the filter handler with unmocked data inputs
+     *
+     * @throws IOException for connection issues.
+     */
+    @Test
+    public void testFilterUnmocked() throws IOException {
+        // Set up the request, make the request
+        HttpURLConnection loadConnection = tryRequest("filter?workAddress=notMocked&address=notMocked");
+        // Get the expected response: a success
+        assertEquals(200, loadConnection.getResponseCode());
+        MockedFilterResponse body =
+                filterAdapter.fromJson(new Buffer().readFrom(loadConnection.getInputStream()));
+        assertEquals(null, body.converted_work_latitude);
+        assertEquals(null, body.converted_work_longitude);
+        assertEquals(null, body.converted_selected_latitude);
+        assertEquals(null, body.converted_selected_longitude);
+        assertEquals(null, body.formatted_address);
+        assertEquals(null, body.formatted_work_address);
+        assertEquals(null, body.destination);
+        assertEquals(null, body.origin);
+        assertEquals(null, body.duration);
+        assertEquals(null, body.distance);
+        assertEquals(null, body.status);
+        assertEquals("Address coordinates are unmocked.", body.error);
 
         loadConnection.disconnect();
     }
@@ -107,7 +256,6 @@ public class FilterMockedTest {
     private HttpURLConnection tryRequest(String apiCall) throws IOException {
         // Configure the connection (but don't actually send a request yet)
         URL requestURL = new URL("http://localhost:" + Spark.port() + "/" + apiCall);
-        System.out.println("sending: " + requestURL);
         HttpURLConnection clientConnection = (HttpURLConnection) requestURL.openConnection();
         // The request body contains a Json object
         clientConnection.setRequestProperty("Content-Type", "application/json");
