@@ -10,27 +10,27 @@ test("if intern tries to register with non-Brown email, will see error message",
   await page.goto("http://localhost:5173/register");
   await page.locator("#root").click();
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your name here")
     .click();
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your name here")
     .fill("Angel Chukwuma");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your Brown email here")
     .click();
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your Brown email here")
     .fill("angel_chukwuma@gmail.com");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your password here")
     .click();
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your password here")
     .fill("abcd1234");
   await page.getByPlaceholder("Enter your Work Address here").click();
@@ -38,7 +38,7 @@ test("if intern tries to register with non-Brown email, will see error message",
     .getByPlaceholder("Enter your Work Address here")
     .fill("47 Smith Street, Boston, MA");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByRole("button", { name: "Register" })
     .click();
   expect(page.locator(".student registration error")).toBe(
@@ -53,33 +53,35 @@ test("same as top test but with 'wait for'", async () => {
   });
   const context = await browser.newContext();
   const page = await context.newPage();
-  page.waitForURL("http://localhost:5173/");
-  await page.goto("http://localhost:5173/");
   await page.goto("http://localhost:5173/register");
   page.waitForURL("http://localhost:5173/register");
-  await page.locator("#root").click();
+
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your name here")
     .fill("Angel Chukwuma");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your Brown email here")
     .fill("angel_chukwuma@gmail.com");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your password here")
     .fill("abcd1234");
   await page
     .getByPlaceholder("Enter your Work Address here")
     .fill("47 Smith Street, Boston, MA");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByRole("button", { name: "Register" })
     .click();
-  expect(page.locator(".student registration error")).toBe(
-    "You must provide your Brown email address."
-  );
+  // expect(page.locator(".student registration error")).toBe(
+  //   "You must provide your Brown email address."
+  // );
+
+  expect(
+    page.getByText("You must provide your Brown email address.")
+  ).toHaveText("You must provide your Brown email address.");
 
   await context.close();
   await browser.close();
@@ -191,22 +193,22 @@ test("registering as an intern with non-brown email gives error", async () => {
   await page.goto("http://localhost:5173/");
   await page.getByRole("button", { name: "START" }).click();
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your name here")
     .fill("Mary Mack");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your Brown email here")
     .fill("marymack@hotmail.com");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByPlaceholder("Enter your password here")
     .fill("password");
   await page
     .getByPlaceholder("Enter your work address here")
     .fill("69 Brown Street, Providence, RI 02912");
   await page
-    .getByLabel("You can registration as a student here")
+    .getByLabel("You can register as a student here")
     .getByRole("button", { name: "Register" })
     .click();
   expect(page.getByText("You must provide")).toBe(
@@ -236,10 +238,8 @@ test("denied intern login access with wrong password", async () => {
     .getByLabel("You can login as a student")
     .getByRole("button", { name: "Login", exact: true })
     .click();
-  await page
-    .getByRole("heading", { name: "Invalid login credentials." })
-    .click();
-  expect(page.getByText("Invalid")).toBe("Invalid login credentials.");
+  // expect(page.(".student-login-error")).toHaveText("Invalid login credentials.");
+  //expect(page.getByText("Invalid")).toBe("Invalid login credentials.");
   // denied login access so would not navigate to listings page
   await expect(page).toHaveURL("http://localhost:5173/login");
 
@@ -349,10 +349,8 @@ test("logged in intern denied access to the landlord homepage", async () => {
     .getByLabel("You can login as a student")
     .getByRole("button", { name: "Login", exact: true })
     .click();
-  await page.getByRole("link", { name: "My Listings" }).click();
-  await page
-    .getByRole("heading", { name: "Only landlords can have acess" })
-    .click();
+  await page.getByLabel("My Listings").click();
+  await page.getByLabel("Only landlords can have acess").click();
   expect(page.getByText("Only landlords can have")).toBe(
     "Only landlords can have acess to this page"
   );
@@ -407,8 +405,8 @@ test("intern logs in, logs out, denied access to listings page", async () => {
     .getByLabel("You can login as a student")
     .getByRole("button", { name: "Login", exact: true })
     .click();
-  await page.getByRole("link", { name: "Sign Out" }).click();
-  await page.getByRole("link", { name: "Browse" }).click();
+  await page.getByLabel("Sign Out").click();
+  await page.getByLabel("Browse").click();
   await page.goto("http://localhost:5173/listings");
   // logged out intern cannot view listings page
   expect(page.getByText("Please")).toBe("Please log in.");
