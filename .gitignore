@@ -1,3 +1,6 @@
 term-project/back/src/main/java/edu/brown/cs/student/main/DistanceData/apiKeys/apiKeys.java
 term-project/front/src/private/MapboxToken.tsx
+term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/CoordinateMockedData.class
+term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/DistanceMockedData.class
+term-project/back/target/test-classes/edu/brown/cs/student/FilterTests/FilterMockedTest.class
 term-project/back/target
