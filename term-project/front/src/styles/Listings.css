@@ -26,6 +26,7 @@
   flex-wrap:wrap;
   flex-direction:row;
   gap:10vh;
+  padding-bottom: 6%;
 }
 
 .row img {

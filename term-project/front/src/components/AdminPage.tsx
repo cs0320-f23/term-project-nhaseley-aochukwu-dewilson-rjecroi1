@@ -1,12 +1,13 @@
+import "../styles/RegistrationForm.css";
+import firebase from "firebase/compat/app";
+import { useEffect, useState } from "react";
+
 /**
  * Admin Compenents 
  * 
  * This compenents allows an admin to verify landlords. Displays lists of 
  * landlords and interns 
  */
-import "../styles/RegistrationForm.css";
-import firebase from "firebase/compat/app";
-import { useEffect, useState } from "react";
 
 interface AdminProps {
   db: firebase.firestore.Firestore;
@@ -14,7 +15,7 @@ interface AdminProps {
   adminEmail: string;
 }
 
-//Defines the structure of a user object
+// Defines the structure of a user object
 interface User {
   name: string;
   email: string;

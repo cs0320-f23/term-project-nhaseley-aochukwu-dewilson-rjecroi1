@@ -88,8 +88,8 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
       !props.listingTitle ||
       !props.listingURL ||
       !props.listingAddress ||
-      !props.listingBedrooms ||
-      !props.listingPrice ||
+      props.listingBedrooms == 0||
+      props.listingPrice == 0 ||
       !props.listingDetails
     ) {
       // Sets an error message for missing input fields

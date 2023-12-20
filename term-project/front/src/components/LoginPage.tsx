@@ -1,11 +1,3 @@
-/**
- * LoginPage Component
- *
- * This component provides login forms for Interns, Landlords, and Admins.
- * Users can input their credentials, and login is facilitated through both
- * traditional email/password authentication and Google Sign-In.
- */
-
 import React from "react";
 import "../styles/LoginPage.css";
 import "../styles/RegistrationForm.css";
@@ -15,6 +7,13 @@ import firebase from "firebase/compat/app";
 import { Dispatch, SetStateAction } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
+/**
+ * LoginPage Component
+ *
+ * This component provides login forms for Interns, Landlords, and Admins.
+ * Users can input their credentials, and login is facilitated through both
+ * traditional email/password authentication and Google Sign-In.
+ */
 
 // Interface defining the properties for the LoginPage component with list of props and types 
 interface LoginProps {

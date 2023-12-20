@@ -91,6 +91,28 @@ function App() {
           userLoggedIn={userLoggedIn}
           setUserLoggedIn={setUserLoggedIn}
           adminEmail={adminEmail}
+          // props needed to reset on sign out
+          setStudentName={setStudentName}
+          setStudentEmail={setStudentEmail}
+          setStudentPass={setStudentPass}
+          setStudentAddress={setStudentAddress}
+          setError={setError}
+          setLandlordName={setLandlordName}
+          setLandlordEmail={setLandlordEmail}
+          setLandlordPass={setLandlordPass}
+          setLandlordPhone={setLandlordPhone}
+          setLandlordError={setLandlordError}
+          setAdminEmail={setAdminEmail}
+          setAdminPass={setAdminPass}
+          setAdminError={setAdminError}
+          setAdminName={setAdminName}
+          setListingTitle={setListingTitle}
+          setListingURL={setListingURL}
+          setListingAddress={setListingAddress}
+          setListingBedrooms={setListingBedrooms}
+          setListingDetails={setListingDetails}
+          setListingPrice={setListingPrice}
+          setAllListings={setAllListings}
         ></Navbar>
         <Routes>
           <Route
@@ -218,7 +240,7 @@ function App() {
           <Route
             path="/info/:id"
             element={
-              <RentalInfoPage allListings={allListings}></RentalInfoPage>
+              <RentalInfoPage allListings={allListings} userLoggedIn={userLoggedIn}></RentalInfoPage>
             }
           ></Route>
         </Routes>

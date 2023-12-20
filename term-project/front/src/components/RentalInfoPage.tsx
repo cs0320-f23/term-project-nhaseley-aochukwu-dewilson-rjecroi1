@@ -1,3 +1,6 @@
+import "../styles/RentalInfoPage.css"; // Import the CSS file
+import { useParams } from "react-router-dom";
+
 /**
  * RentalInfoPage Component
  *
@@ -6,9 +9,6 @@
  * If the listing is found, it displays information such as address, bedrooms, details, and price.
  * If the listing is not found, it shows an error message.
  */
-import "../styles/RentalInfoPage.css"; // Import the CSS file
-import { useParams } from "react-router-dom";
-
 
 // Interface defining the structure of a Listing object
 interface Listing {
@@ -22,11 +22,13 @@ interface Listing {
   latitude?: number;
   longitude?: number;
   distance?: number;
+  duration?: number;
   datePosted: string;
 }
 
 interface RentalInfoPageProps {
   allListings: Listing[];
+  userLoggedIn: boolean;
 }
 
 // Interface defining the properties for the RentalInfoPage component
@@ -38,13 +40,17 @@ export default function RentalInfoPage(props: RentalInfoPageProps) {
   const selectedListing = props.allListings.find(
     (listing) => listing.id === id
   );
+  console.log(selectedListing)
 
   // If the selected listing is not found, display an error message
   if (!selectedListing) {
-    return <div>No information found for rental {id}</div>;
+    if (!props.userLoggedIn){
+       return <h2> Please log in. </h2>
+    } else {
+    return <h3>No information found for a rental. Please return to browsing page</h3>;
+    }
   }
   
-  //go through all the listing using the props and display information for lisitng that matches
   return (
     <div className="rental-info-page">
       <div className="rental-img">
@@ -55,6 +61,14 @@ export default function RentalInfoPage(props: RentalInfoPageProps) {
         ></img>
         <div className="rental-info">
           <div className="container">
+            <div className="rental-info-header">
+              <p>
+              <span className="bold-text">{selectedListing.title} </span>
+            </p>
+            <p>
+              Posted on {selectedListing.datePosted}
+            </p>
+            </div>
             <p>
               <span className="bold-text">Address: </span>
               {selectedListing.address}
@@ -67,9 +81,20 @@ export default function RentalInfoPage(props: RentalInfoPageProps) {
               <span className="bold-text"> Details: </span>
               {selectedListing.details}
             </p>
+            
             <p>
               <span className="bold-text">Price: </span> {selectedListing.price}
             </p>
+            {selectedListing.distance ?
+            <p>
+              <span className="bold-text"> Distance from your work: </span>
+              {selectedListing.distance} mi
+            </p>: null}
+            {selectedListing.duration ? <p>
+              <span className="bold-text"> Commute from your work: </span>
+              {selectedListing.duration} mins
+            </p> : null}
+            
           </div>
         </div>
       </div>

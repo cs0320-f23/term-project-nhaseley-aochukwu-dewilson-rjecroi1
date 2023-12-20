@@ -1,15 +1,5 @@
-/**
- * ListingsPage Component
- *
- * This component displays a list of available housing listings
- * on a map and in a side-by-side view. Users can filter listings
- * by distance and price using sliders.
- */
-
-
 import { useEffect, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
-
 import "../styles/Listings.css";
 import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
@@ -17,6 +7,14 @@ import { ACCESS_TOKEN } from "../private/MapboxToken.tsx";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+
+/**
+ * ListingsPage Component
+ *
+ * This component displays a list of available housing listings
+ * on a map and in a side-by-side view. Users can filter listings
+ * by distance and price using sliders.
+ */
 
 // Function to display the value for the distance and price sliders
 function valuetext(value: number) {
@@ -32,7 +30,6 @@ interface Listing {
   imgUrl: string;
   price: number;
   title: string;
-  // TODO: add date posted on postNewListing?
   latitude?: number;
   longitude?: number;
   distance?: number;
@@ -49,12 +46,12 @@ interface ListingPageProps {
   setAllListings: Dispatch<SetStateAction<Listing[]>>;
 }
 
-//Interface defining the structure of a landlord 
+//Interface defining the structure of a landlord
 interface Landlord {
   listings: Listing[];
 }
 
-// Interface defining the structure of geographical coords 
+// Interface defining the structure of geographical coords
 interface Coordinate {
   latitude?: number;
   longitude?: number;
@@ -64,9 +61,8 @@ interface Coordinate {
   status?: string;
 }
 
-
 export default function ListingsPage(props: ListingPageProps) {
-  const [distance, setDistance] = useState<number>(8); // Initial distance value
+  const [distance, setDistance] = useState<number>(2); // Initial distance value
   const [price, setPrice] = useState<number>(1000); // Initial distance value
 
   // Fetch and update listings when the component mounts
@@ -175,18 +171,21 @@ export default function ListingsPage(props: ListingPageProps) {
       center: [-71.057083, 42.361145],
       zoom: 12,
     });
-    // Event listener when the map loads 
+    // Event listener when the map loads
     map.on("load", () => {
       props.allListings.forEach((listing) => {
         if (
-          listing.latitude &&  
+          listing.latitude &&
           listing.longitude &&
           listing.distance &&
-          listing.distance <= distance
+          listing.distance <= distance &&
+          listing.price &&
+          listing.price <= price
         ) {
           // const linkElement = (
           //   <Link to={`/info/${listing.id}`}>See More here</Link>
           // );
+
           const popupContent = `
         <div>
              <h3>${listing.address}</h3>
@@ -208,7 +207,7 @@ export default function ListingsPage(props: ListingPageProps) {
 
       return () => map.remove();
     });
-  }, []);
+  }, [distance, price]);
 
   // Call server backend to get distance between selected address and student's work address
   async function getDistance(selectedAddress: string): Promise<Coordinate> {
@@ -220,7 +219,7 @@ export default function ListingsPage(props: ListingPageProps) {
           props.studentAddress
       );
       const result = await response.json();
-      console.log("API: ", selectedAddress, props.studentAddress, result);
+      // console.log("API: ", selectedAddress, props.studentAddress, result);
 
       if (
         result.converted_selected_latitude &&
@@ -236,7 +235,7 @@ export default function ListingsPage(props: ListingPageProps) {
       } else {
         return {
           error: result.error,
-          status: result.status, 
+          status: result.status,
         };
       }
     } catch (error) {
@@ -258,19 +257,38 @@ export default function ListingsPage(props: ListingPageProps) {
         <div className="row">
           {props.allListings.map((listing) =>
             listing.distance && listing.price ? (
-              listing.distance <= distance &&
-              listing.price <= price ? ( 
+              listing.distance <= distance && listing.price <= price ? (
                 <div key={listing.id} className="listing-info">
                   <Link to={`/info/${listing.id}`}>
-                    <img
-                      src={listing.imgUrl}
-                      alt={`Listing for ${listing.id}`}
-                    />
+                    <div
+                      className="listing-image-container"
+                      onClick={() =>
+                        window.scrollTo({
+                          top: 0,
+                          behavior: "smooth",
+                        })
+                      }
+                    >
+                      <img
+                        src={listing.imgUrl}
+                        alt={`Listing for ${listing.id}`}
+                      />
+                    </div>
                   </Link>
-                  <p><b>Address: </b>{listing.address}</p>
-                  <p><b>Date Posted: </b>{listing.datePosted}</p>
-                  <p><b>Price:</b> {listing.price}</p>
-                  <p><b>Distance from your work:</b> {listing.distance} mi</p>
+                  <p>
+                    <b>Address: </b>
+                    {listing.address}
+                  </p>
+                  <p>
+                    <b>Date Posted: </b>
+                    {listing.datePosted}
+                  </p>
+                  <p>
+                    <b>Price:</b> {listing.price}
+                  </p>
+                  <p>
+                    <b>Distance from your work:</b> {listing.distance} mi
+                  </p>
                 </div>
               ) : null
             ) : null
@@ -283,17 +301,22 @@ export default function ListingsPage(props: ListingPageProps) {
             <label>Distance: {distance} mi</label>
             <Box
               className="slider"
-              sx={{ width: "90%", margin: "6% 0", color: "grey",  marginLeft: '4%' }}
+              sx={{
+                width: "90%",
+                margin: "6% 0",
+                color: "grey",
+                marginLeft: "4%",
+              }}
             >
               <Slider
                 aria-label="Distance"
                 value={distance}
                 getAriaValueText={valuetext}
                 valueLabelDisplay="auto"
-                step={1}
+                step={0.5}
                 marks
                 min={0}
-                max={15}
+                max={9}
                 onChange={(event, newValue) => setDistance(newValue as number)}
               />
             </Box>
@@ -302,7 +325,12 @@ export default function ListingsPage(props: ListingPageProps) {
             <label>Price: ${price}</label>
             <Box
               className="slider"
-              sx={{ width: "90%", margin: "6% 0", color: "grey",  marginLeft: '4%' }}
+              sx={{
+                width: "90%",
+                margin: "6% 0",
+                color: "grey",
+                marginLeft: "4%",
+              }}
             >
               <Slider
                 aria-label="Price"
@@ -311,14 +339,14 @@ export default function ListingsPage(props: ListingPageProps) {
                 valueLabelDisplay="auto"
                 step={100}
                 marks
-                min={0} 
+                min={0}
                 max={3500}
                 onChange={(event, newValue) => setPrice(newValue as number)}
               />
             </Box>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   );
 }

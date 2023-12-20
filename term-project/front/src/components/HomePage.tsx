@@ -7,6 +7,7 @@ import "../styles/Homepage.css";
  * It provides an overview of the mission of the housing locator application
  * and encourages users to start exploring housing opportunities.
  */
+
 export default function HomePage() {
   return (
     <div className="homepage">
@@ -19,7 +20,7 @@ export default function HomePage() {
         what housing opportunities await!
       </p>
       <a href="/register">
-        <button type="start">START</button>
+        <button className="start-button" type="start">START</button>
       </a>
     </div>
   );
