@@ -1,12 +1,14 @@
+import "../styles/RegistrationForm.css";
+import "../styles/AdminPage.css";
+import firebase from "firebase/compat/app";
+import { useEffect, useState } from "react";
+
 /**
  * Admin Compenents
  *
  * This compenents allows an admin to verify landlords. Displays lists of
  * landlords and interns
  */
-import "../styles/AdminPage.css";
-import firebase from "firebase/compat/app";
-import { useEffect, useState } from "react";
 
 interface AdminProps {
   db: firebase.firestore.Firestore;
@@ -14,7 +16,7 @@ interface AdminProps {
   adminEmail: string;
 }
 
-//Defines the structure of a user object
+// Defines the structure of a user object
 interface User {
   name: string;
   email: string;
@@ -119,12 +121,12 @@ export default function AdminPage(props: AdminProps) {
   // Render different UI based on user login status and admin access
   // Render the main UI for the admin page, displaying lists of interns, landlords, and admins
   return !props.userLoggedIn ? (
-    <h2>Please log in.</h2>
+    <h2 className="not-logged-in">Please log in.</h2>
   ) : !props.adminEmail ? (
     <h2>Only admin can have access to this page. Please log in as an admin.</h2>
   ) : (
     <div className="admin-page">
-      <div id="user-list">
+      <div id="intern-user-list">
         <h2>Interns</h2>
         <div className="all-interns">
           <table>
@@ -145,7 +147,7 @@ export default function AdminPage(props: AdminProps) {
           </table>
         </div>
       </div>
-      <div id="user-list">
+      <div id="landlord-user-list">
         <h2>Landlords</h2>
         <div className="all-landlords">
           <table>
@@ -161,14 +163,14 @@ export default function AdminPage(props: AdminProps) {
                 <tr key={landlord.email}>
                   <td>{landlord.name}</td>
                   <td>{landlord.email}</td>
-                  <td>{landlord.verified ? "Verified" : "Not Verified"}</td>
+                  <td>{landlord.verified ? "Verified" : <button>Verify</button>}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-      <div id="user-list">
+      <div id="admin-user-list">
         <h2>Administrators</h2>
         <div className="all-admins">
           <table>

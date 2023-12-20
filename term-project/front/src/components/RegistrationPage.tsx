@@ -1,15 +1,14 @@
+import { Dispatch, SetStateAction } from "react";
+import "../styles/RegistrationForm.css";
+import firebase from "firebase/compat/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 /**
  * RegistrationPage Component
  *
  * This component provides registration forms for students, landlords, and admins.
  * It includes input fields for user details, validation checks, and registration functionality.
  */
-
-import { Dispatch, SetStateAction } from "react";
-import "../styles/RegistrationForm.css";
-import firebase from "firebase/compat/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
 
 //  Interface defining the props for the RegistrationPage component
 interface RegistrationProps {
@@ -294,6 +293,7 @@ export default function RegistrationPage(props: RegistrationProps) {
           <h3 className="student-registration-error"> {props.error} </h3>
           <button
             className="student-register-button"
+            aria-label="You can submit registration here"
             onClick={(ev) => handleStudentRegistration(ev)}
           >
             Register

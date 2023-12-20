@@ -8,7 +8,6 @@
 }
 
 #root {
-  /* max-width: 1280px; */
   width: 100%;
   max-width: 100vw;
   min-height: 100vh;
