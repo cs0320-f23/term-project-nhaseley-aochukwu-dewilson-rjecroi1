@@ -126,7 +126,7 @@ export default function AdminPage(props: AdminProps) {
     <h2>Only admin can have access to this page. Please log in as an admin.</h2>
   ) : (
     <div className="admin-page">
-      <div id="user-list">
+      <div id="intern-user-list">
         <h2>Interns</h2>
         <div className="all-interns">
           <table>
@@ -147,7 +147,7 @@ export default function AdminPage(props: AdminProps) {
           </table>
         </div>
       </div>
-      <div id="user-list">
+      <div id="landlord-user-list">
         <h2>Landlords</h2>
         <div className="all-landlords">
           <table>
@@ -163,14 +163,14 @@ export default function AdminPage(props: AdminProps) {
                 <tr key={landlord.email}>
                   <td>{landlord.name}</td>
                   <td>{landlord.email}</td>
-                  <td>{landlord.verified ? "Verified" : "Not Verified"}</td>
+                  <td>{landlord.verified ? "Verified" : <button>Verify</button>}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-      <div id="user-list">
+      <div id="admin-user-list">
         <h2>Administrators</h2>
         <div className="all-admins">
           <table>

@@ -197,7 +197,7 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
               className="Bedrooms "
               aria-label="You can enter number of bedrooms Here"
               placeholder="Enter number of bedrooms here"
-              value={props.listingBedrooms}
+              value={props.listingBedrooms || ""}
               type="number"
               onChange={(ev) =>
                 props.setListingBedrooms(parseFloat(ev.target.value))
@@ -206,8 +206,8 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
             <input
               className="Price"
               aria-label="You can enter the price of the housing option"
-              placeholder="Enter the price here"
-              value={props.listingPrice}
+              placeholder="Enter price here"
+              value={props.listingPrice || ""}
               type="number"
               onChange={(ev) =>
                 props.setListingPrice(parseFloat(ev.target.value))
@@ -254,8 +254,9 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
               <div key={listing.id} className="listing-box">
                 <h3>{listing.title}</h3>
                 <p>Address: {listing.address}</p>
+                <p>Posted: {listing.datePosted}</p>
                 <p>Bedrooms: {listing.bedrooms}</p>
-                <p>Price: {listing.price}</p>
+                <p>Price: ${listing.price}</p>
                 <p>{listing.details}</p>
               </div>
             ))}
