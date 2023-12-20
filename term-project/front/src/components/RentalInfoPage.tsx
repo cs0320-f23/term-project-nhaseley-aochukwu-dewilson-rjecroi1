@@ -45,7 +45,7 @@ export default function RentalInfoPage(props: RentalInfoPageProps) {
   // If the selected listing is not found, display an error message
   if (!selectedListing) {
     if (!props.userLoggedIn){
-       return <h2> Please log in. </h2>
+       return <h2 className="not-logged-in"> Please log in. </h2>
     } else {
     return <h3>No information found for a rental. Please return to browsing page</h3>;
     }

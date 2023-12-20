@@ -157,7 +157,7 @@ export default function LandLordsHomePage(props: LandLordsHomepageProps) {
   //Render different UI based on user login status and landlord access & Render the 
   //main UI for landlords to post and view listings
   return !props.userLoggedIn ? (
-    <h2> Please log in. </h2>
+    <h2 className="not-logged-in"> Please log in. </h2>
   ) : !props.landlordEmail ? (
     <h2>
       Only landlords can have acess to this page. Please log in as a landlord.

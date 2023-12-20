@@ -245,7 +245,7 @@ export default function ListingsPage(props: ListingPageProps) {
   }
 
   return !props.userLoggedIn ? (
-    <h2> Please log in. </h2>
+    <h2 className="not-logged-in"> Please log in. </h2>
   ) : !props.studentEmail ? (
     <h2>
       Only students can have acess to this page. Please log in as a student.

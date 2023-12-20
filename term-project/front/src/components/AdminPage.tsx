@@ -121,7 +121,7 @@ export default function AdminPage(props: AdminProps) {
   // Render different UI based on user login status and admin access
   // Render the main UI for the admin page, displaying lists of interns, landlords, and admins
   return !props.userLoggedIn ? (
-    <h2>Please log in.</h2>
+    <h2 className="not-logged-in">Please log in.</h2>
   ) : !props.adminEmail ? (
     <h2>Only admin can have access to this page. Please log in as an admin.</h2>
   ) : (
