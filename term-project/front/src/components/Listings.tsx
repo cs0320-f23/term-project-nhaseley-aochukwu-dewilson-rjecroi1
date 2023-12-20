@@ -49,7 +49,7 @@ interface ListingPageProps {
 //Interface defining the structure of a landlord
 interface Landlord {
   listings: Listing[];
-}
+} 
 
 // Interface defining the structure of geographical coords
 interface Coordinate {
@@ -235,13 +235,13 @@ export default function ListingsPage(props: ListingPageProps) {
       } else {
         return {
           error: result.error,
-          status: result.status,
+          status: result.status, 
         };
       }
     } catch (error) {
       console.error("Error fetching distance: ", error);
       throw error; // throw?
-    }
+    } 
   }
 
   return !props.userLoggedIn ? (
@@ -284,7 +284,7 @@ export default function ListingsPage(props: ListingPageProps) {
                     {listing.datePosted}
                   </p>
                   <p>
-                    <b>Price:</b> {listing.price}
+                    <b>Price:</b> ${listing.price}
                   </p>
                   <p>
                     <b>Distance from your work:</b> {listing.distance} mi

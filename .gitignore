@@ -4,3 +4,8 @@ term-project/back/target/classes/edu/brown/cs/student/main/CoordinateData/Coordi
 term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/DistanceMockedData.class
 term-project/back/target/test-classes/edu/brown/cs/student/FilterTests/FilterMockedTest.class
 term-project/back/target
+term-project/back/target/classes/edu/brown/cs/student/main/DistanceData/DistanceDataSource.class
+.gitignore
+term-project/back/target/classes/edu/brown/cs/student/main/DistanceHandler/FilterHandler.class
+term-project/back/target/test-classes/edu/brown/cs/student/FilterTests/FilterMockedTest.class
+term-project/front/playwright-report/index.html

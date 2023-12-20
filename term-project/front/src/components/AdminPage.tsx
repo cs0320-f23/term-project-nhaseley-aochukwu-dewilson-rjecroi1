@@ -23,7 +23,28 @@ interface User {
   verified?: boolean;
   numListings?: number;
 }
-
+function verifyLandlord(email: string) {
+    const adminRef = props.db.collection("landlords");
+  
+    adminRef
+      .where("email", "==", email)
+      .get()
+      .then((adminSnapshot) => {
+        const updatePromises = adminSnapshot.docs.map(async (doc) => {
+          await adminRef.doc(doc.id).update({
+            verified: true,
+          });
+        });
+  
+        return Promise.all(updatePromises);
+      })
+      .then(() => {
+        location.reload();
+      })
+      .catch((error) => {
+        console.error("Error updating email: ", error);
+      });
+  }
 // Defines the AdminPage component
 export default function AdminPage(props: AdminProps) {
   // State variables to manage lists of interns, landlords, and admins
@@ -110,10 +131,6 @@ export default function AdminPage(props: AdminProps) {
         return Promise.all(updatePromises);
       })
 
-      .then(() => {
-        // Reload the page after updating the verification status
-        location.reload();
-      })
       .catch((error) => {
         console.error("Error updating email: ", error);
       });
@@ -163,7 +180,7 @@ export default function AdminPage(props: AdminProps) {
                 <tr key={landlord.email}>
                   <td>{landlord.name}</td>
                   <td>{landlord.email}</td>
-                  <td>{landlord.verified ? "Verified" : <button>Verify</button>}</td>
+                  <td>{landlord.verified ? "Verified" : <button onClick={() => verifyLandlord(landlord.email)}>Verify</button>}</td>
                 </tr>
               ))}
             </tbody>
