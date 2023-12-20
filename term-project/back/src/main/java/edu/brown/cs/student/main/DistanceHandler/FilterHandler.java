@@ -47,7 +47,7 @@ public class FilterHandler implements Route {
       String selectedLat = null;
       String selectedLong = null;
       String workLat = null;
-      String workLong = null; // TODO: change to empty string?
+      String workLong = null;
       if (request.queryParams("address") == null || request.queryParams("address").equals("")) {
         responseMap.put("result", "error_bad_request");
         responseMap.put("missing", "selected address query parameter");
@@ -190,7 +190,7 @@ public class FilterHandler implements Route {
               workLong);
 
       if (res != null) {
-//        if (res.status 1)
+//        if (res.status != null){
         responseMap.put("status", res.status);
         if ("OK".equals(res.status)) {
           // Process the parsed data, e.g., print the duration and distance

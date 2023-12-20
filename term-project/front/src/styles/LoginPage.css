@@ -16,7 +16,7 @@
   align-items: center;
   color-scheme: light;
   background-color: #213547;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */    
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
   width: 85%;
 }
 
@@ -25,7 +25,7 @@
   padding: 4%;
   border: 1px solid rgb(119, 119, 119);
   border-radius: 10vh;
-  width:100%;
+  width: 100%;
 }
 
 #login-form :last-child {
@@ -35,4 +35,9 @@
 .login-forms button {
   margin-top: 5px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); /* Adjusted box shadow */
+}
+
+#user-list th,
+tbody {
+  color: white;
 }

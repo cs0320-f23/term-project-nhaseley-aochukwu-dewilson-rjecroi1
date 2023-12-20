@@ -1,12 +1,13 @@
 import "../styles/RegistrationForm.css";
+import "../styles/AdminPage.css";
 import firebase from "firebase/compat/app";
 import { useEffect, useState } from "react";
 
 /**
- * Admin Compenents 
- * 
- * This compenents allows an admin to verify landlords. Displays lists of 
- * landlords and interns 
+ * Admin Compenents
+ *
+ * This compenents allows an admin to verify landlords. Displays lists of
+ * landlords and interns
  */
 
 interface AdminProps {
@@ -20,7 +21,7 @@ interface User {
   name: string;
   email: string;
   verified?: boolean;
-  numListings?:number;
+  numListings?: number;
 }
 
 // Defines the AdminPage component
@@ -120,45 +121,75 @@ export default function AdminPage(props: AdminProps) {
   // Render different UI based on user login status and admin access
   // Render the main UI for the admin page, displaying lists of interns, landlords, and admins
   return !props.userLoggedIn ? (
-    <h2> Please log in. </h2>
+    <h2>Please log in.</h2>
   ) : !props.adminEmail ? (
-    <h2>Only admin can have acess to this page. Please log in as an admin.</h2>
+    <h2>Only admin can have access to this page. Please log in as an admin.</h2>
   ) : (
     <div className="admin-page">
-      this is the admin page!
-      <div className="all-interns">
-        {interns.map((intern) => (
-          <div key={intern.email}>
-            <strong>Name:</strong> {intern.name}, <strong>Email:</strong>
-            {intern.email}
-          </div>
-        ))}
+      <div id="user-list">
+        <h2>Interns</h2>
+        <div className="all-interns">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {interns.map((intern) => (
+                <tr key={intern.email}>
+                  <td>{intern.name}</td>
+                  <td>{intern.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div className="all-landlords">
-        {landlords.map((landlord) => (
-          <div key={landlord.email}>
-            <strong>Name:</strong> {landlord.name}, <strong>Email:</strong>
-            {landlord.email}, <strong>Verification Status: </strong>{" "}
-            {landlord.verified ? "Verified" : "Not Verified"}
-            {landlord.verified !== true && (
-              <button
-                onClick={() => {
-                  verifyLandlord(landlord.email);
-                }}
-              >
-                Verify
-              </button>
-            )}
-          </div>
-        ))}
+      <div id="user-list">
+        <h2>Landlords</h2>
+        <div className="all-landlords">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {landlords.map((landlord) => (
+                <tr key={landlord.email}>
+                  <td>{landlord.name}</td>
+                  <td>{landlord.email}</td>
+                  <td>{landlord.verified ? "Verified" : "Not Verified"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div className="all-admins">
-        {admins.map((admin) => (
-          <div key={admin.email}>
-            <strong>Name:</strong> {admin.name}, <strong>Email:</strong>
-            {admin.email}
-          </div>
-        ))}
+      <div id="user-list">
+        <h2>Administrators</h2>
+        <div className="all-admins">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {admins.map((admin) => (
+                <tr key={admin.email}>
+                  <td>{admin.name}</td>
+                  <td>{admin.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
